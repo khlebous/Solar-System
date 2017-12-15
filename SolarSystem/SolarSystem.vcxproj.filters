@@ -22,6 +22,9 @@
     <Filter Include="GL">
       <UniqueIdentifier>{2bfdea6b-332a-4cd8-a5e0-eaf0d6a7bbc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Body">
+      <UniqueIdentifier>{b885c247-77ed-4718-8e31-dee866460bfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -47,6 +50,9 @@
     </ClCompile>
     <ClCompile Include="GraphicsLibrary.cpp">
       <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Body.cpp">
+      <Filter>Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +88,12 @@
     </ClInclude>
     <ClInclude Include="GraphicsLibrary.h">
       <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Edge.h">
+      <Filter>GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Body.h">
+      <Filter>Body</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
