@@ -2,13 +2,13 @@
 #include <iostream>
 #include <list>
 #include <glm/mat4x4.hpp> // glm::mat4
+
 #include "Edge.h"
 #include "Body.h"
-
 using namespace std;
 namespace GL
 {
-	void Draw(list<Body>* edges);
+	void Draw(list<Body>* edges/*, Shader ourShader*/);
 	void DrawBody(Body* body);
 }
 /*mModel = glm::mat4(

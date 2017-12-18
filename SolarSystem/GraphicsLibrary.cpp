@@ -1,18 +1,31 @@
 #include "GraphicsLibrary.h"
-#include <algorithm>  
+#include <glad\glad.h>
+//#define GLFW_INCLUDE_NONE
 #include <GLFW\glfw3.h>
+#include <algorithm>  
 #include <glm/gtc/constants.hpp> // glm::vec3
 #include <glm/mat4x4.hpp> // glm::vec3
-float angle = 0;
-float r = 4;
-float step = 0.005;
+//#include "shader_m.h"
+float angle = 0.0f;
+float r = 4.0f;
+float step = 0.005f;
 
 glm::vec3 cameraPosition = glm::vec3(50, 0, 20);
-void GL::Draw(list<Body>* bodies)
+void GL::Draw(list<Body>* bodies/*, Shader ourShader*/)
 {
 	
 	for (auto &b : *bodies)
 	{
+		glBindVertexArray(b.VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
+		glBindVertexArray(b.VAO);
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+
+		glBindVertexArray(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 		DrawBody(&b);
 	}
 }
@@ -56,7 +69,7 @@ void GL::DrawBody(Body* body)
 	int f = 100;
 	float fov = 45.0;
 	float a = float(600) / float(800);
-	float e = 1 / tan(fov*glm::pi<float>() / 360.0);
+	float e = 1.0f / tan(fov*glm::pi<float>() / 360.0);
 	mProj = glm::mat4(e, 0, 0, 0,
 		0, e / a, 0, 0,
 		0, 0, -(f + n) / (f - n), -2.0*f*n*(f - n),
@@ -86,7 +99,7 @@ void GL::DrawBody(Body* body)
 		edges[i] = e;
 	}
 
-	glMatrixMode(GL_PROJECTION);
+	/*glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(0.0, 1280, 0.0, 720, 0.0, 1.0);
 
@@ -99,6 +112,6 @@ void GL::DrawBody(Body* body)
 		glVertex2f(e.p1.x * 1280, e.p1.y * 720);
 		glVertex2f(e.p2.x * 1280, e.p2.y * 720);
 	}
-	glEnd();
+	glEnd();*/
 }
 

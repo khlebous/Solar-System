@@ -5,11 +5,12 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/vec4.hpp> // glm::mat4
 
-
 using namespace std;
 class Body
 {
 public:
+	unsigned int VBO, VAO;
+
 	float angle=0;
 	float angle2=0;
 	float radius = 0;
