@@ -5,11 +5,12 @@
 
 #include "Edge.h"
 #include "Body.h"
+#include "shader_m.h"
 using namespace std;
 namespace GL
 {
-	void Draw(list<Body>* edges/*, Shader ourShader*/);
-	void DrawBody(Body* body);
+	void Draw(list<Body>* edges, Shader ourShader);
+	void DrawBody(Body* body, Shader ourShader);
 }
 /*mModel = glm::mat4(
 1, 0, 0, 0,

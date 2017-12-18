@@ -60,12 +60,13 @@ int main(int, char**)
 	Body sun = Body();
 	sun.step = 0.0005f;
 	sun.Scale(5);
-	/*Body b1 = Body();
+	Body b1 = Body();
 	b1.step = 0.005f;
 	b1.step2 = 0.005f;
-	b1.radius = 15.0f;
+	//b1.radius = 15.0f;
+	b1.radius = 0.0f;
 	b1.Scale(1.5);
-	Body b2 = Body();
+	/*Body b2 = Body();
 	b2.step = 0.005f;
 	b2.step2 = 0.009f;
 	b2.radius = 7.0f;
@@ -75,10 +76,10 @@ int main(int, char**)
 	b3.radius = 20.0f;
 	b3.Scale(2);*/
 	list<Body> bodies = list<Body>();
-	bodies.push_back(sun);
-	/*bodies.push_back(b1);
-	bodies.push_back(b2);
-	bodies.push_back(b3);*/
+	//bodies.push_back(sun);
+	bodies.push_back(b1);
+	//bodies.push_back(b2);
+	//bodies.push_back(b3);*/
 	
 
 	Shader ourShader("shader.vs", "shader.fs");
@@ -132,14 +133,14 @@ int main(int, char**)
 		glUseProgram(0);*/
 		
 		ourShader.use();
-		GL::Draw(&bodies);
+		GL::Draw(&bodies, ourShader);
 		glUseProgram(0);
 		
 		gui.Draw();
 		// Rendering
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
-		glViewport(0, 0, display_w, display_h);
+		//glViewport(0, 0, display_w, display_h);
 		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 		glfwSwapBuffers(window);
 	}

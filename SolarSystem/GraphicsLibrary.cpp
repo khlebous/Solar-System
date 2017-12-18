@@ -5,32 +5,31 @@
 #include <algorithm>  
 #include <glm/gtc/constants.hpp> // glm::vec3
 #include <glm/mat4x4.hpp> // glm::vec3
-//#include "shader_m.h"
+#include "shader_m.h"
 float angle = 0.0f;
 float r = 4.0f;
 float step = 0.005f;
 
 glm::vec3 cameraPosition = glm::vec3(50, 0, 20);
-void GL::Draw(list<Body>* bodies/*, Shader ourShader*/)
+void GL::Draw(list<Body>* bodies, Shader ourShader)
 {
-	
 	for (auto &b : *bodies)
 	{
+		DrawBody(&b, ourShader);
+
 		glBindVertexArray(b.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
 
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
-		glDrawElements(GL_TRIANGLES, 6*6, GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, 3*12, GL_UNSIGNED_INT, 0);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-		//DrawBody(&b);
 	}
 }
 
-void GL::DrawBody(Body* body)
+void GL::DrawBody(Body* body, Shader ourShader)
 {
 	glm::mat4 mModel;
 	glm::mat4 mView;
@@ -74,16 +73,38 @@ void GL::DrawBody(Body* body)
 		0, e / a, 0, 0,
 		0, 0, -(f + n) / (f - n), -2.0*f*n*(f - n),
 		0, 0, -1, 0);
-	mModel = body->getMModel();
-	mModel = glm::transpose(mModel);
+
+	mModel = glm::mat4(
+		cos(body->angle), -sin(body->angle), 0, 0,
+		sin(body->angle), cos(body->angle), 0, body->radius,
+		0, 0, 1, 0,
+		0, 0, 0, 1);
+	mModel = mModel * glm::mat4(
+		cos(body->angle2), -sin(body->angle2), 0, 0,
+		sin(body->angle2), cos(body->angle2), 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1);
+	//mModel = body->getMModel();
+	/*mModel = glm::transpose(mModel);
 	mView = glm::transpose(mView);
-	mProj = glm::transpose(mProj);
+	mProj = glm::transpose(mProj);*/
+
+	//
+//	glm::mat4 resultMatrix = mProj * (mView*(mModel));
+	//glm::mat4 resultMatrix = glm::mat4(1);
+	ourShader.setMat4("model", mModel);
+	ourShader.setMat4("view", mView);
+	ourShader.setMat4("proj", mProj);
+	body->angle += body->step;
+	body->angle2 += body->step2;
+	//
 
 	auto edges = body->edges;
 	for (size_t i = 0; i < edges.size(); i++)
 	{
 		Edge e = edges[i];
 		glm::vec4 eVec = glm::vec4(e.p1.x, e.p1.y, e.p1.z, 1);
+
 		eVec = mProj * (mView*(mModel*eVec));
 		eVec = glm::vec4(eVec.x / eVec.w, eVec.y / eVec.w, eVec.z / eVec.w, 1);
 
