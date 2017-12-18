@@ -9,7 +9,7 @@ using namespace std;
 class Body
 {
 public:
-	unsigned int VBO, VAO;
+	unsigned int VBO, VAO, EBO;
 
 	float angle=0;
 	float angle2=0;

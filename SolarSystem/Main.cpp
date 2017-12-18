@@ -60,7 +60,7 @@ int main(int, char**)
 	Body sun = Body();
 	sun.step = 0.0005f;
 	sun.Scale(5);
-	Body b1 = Body();
+	/*Body b1 = Body();
 	b1.step = 0.005f;
 	b1.step2 = 0.005f;
 	b1.radius = 15.0f;
@@ -73,12 +73,12 @@ int main(int, char**)
 	b3.step = 0.005f;
 	b3.step2 = 0.009f;
 	b3.radius = 20.0f;
-	b3.Scale(2);
+	b3.Scale(2);*/
 	list<Body> bodies = list<Body>();
 	bodies.push_back(sun);
-	bodies.push_back(b1);
+	/*bodies.push_back(b1);
 	bodies.push_back(b2);
-	bodies.push_back(b3);
+	bodies.push_back(b3);*/
 	
 
 	Shader ourShader("shader.vs", "shader.fs");

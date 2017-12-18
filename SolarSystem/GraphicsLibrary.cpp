@@ -18,15 +18,15 @@ void GL::Draw(list<Body>* bodies/*, Shader ourShader*/)
 	{
 		glBindVertexArray(b.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
-		glBindVertexArray(b.VAO);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawElements(GL_TRIANGLES, 6*6, GL_UNSIGNED_INT, 0);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		DrawBody(&b);
+		//DrawBody(&b);
 	}
 }
 
