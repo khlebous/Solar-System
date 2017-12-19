@@ -10,7 +10,7 @@ float angle = 0.0f;
 float r = 4.0f;
 float step = 0.005f;
 
-glm::vec3 cameraPosition = glm::vec3(50, 0, 20);
+glm::vec3 cameraPosition = glm::vec3(3, 0.2, 0.7);
 void GL::Draw(list<Body>* bodies, Shader ourShader)
 {
 	for (auto &b : *bodies)
@@ -19,7 +19,7 @@ void GL::Draw(list<Body>* bodies, Shader ourShader)
 
 		glBindVertexArray(b.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
-
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b.EBO);
 		//glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDrawElements(GL_TRIANGLES, 3*12, GL_UNSIGNED_INT, 0);
 
@@ -31,14 +31,14 @@ void GL::Draw(list<Body>* bodies, Shader ourShader)
 
 void GL::DrawBody(Body* body, Shader ourShader)
 {
-	glm::mat4 mModel;
+	glm::mat4 mModel = glm::mat4(1);
 	glm::mat4 mView;
 	glm::mat4 mProj;
 
 	//std::cout << r * sin(angle) << " " << r * cos(angle) << std::endl;
 	//glm::vec3 cameraPosition = glm::vec3(r * sin(angle), r * cos(angle), 0.3);
 	angle += step;
-	glm::vec3 cameraTarget = glm::vec3(0, 0, 0);
+	glm::vec3 cameraTarget = glm::vec3(0, 0.5, 0.5);
 	glm::vec3 upVector = glm::vec3(0, 0, 1);
 	float upVecorNormal = glm::sqrt(upVector.x*upVector.x + upVector.y*upVector.y + upVector.z*upVector.z);
 	glm::vec3 upVectorVersor = glm::vec3(upVector.x / upVecorNormal, upVector.y / upVecorNormal, upVector.z / upVecorNormal);
@@ -74,20 +74,22 @@ void GL::DrawBody(Body* body, Shader ourShader)
 		0, 0, -(f + n) / (f - n), -2.0*f*n*(f - n),
 		0, 0, -1, 0);
 
-	mModel = glm::mat4(
+	/*mModel = glm::mat4(
 		cos(body->angle), -sin(body->angle), 0, 0,
 		sin(body->angle), cos(body->angle), 0, body->radius,
 		0, 0, 1, 0,
-		0, 0, 0, 1);
+		0, 0, 0, 1);*/
 	mModel = mModel * glm::mat4(
 		cos(body->angle2), -sin(body->angle2), 0, 0,
 		sin(body->angle2), cos(body->angle2), 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1);
+	// mModel = glm::mat4(1);
+
 	//mModel = body->getMModel();
-	/*mModel = glm::transpose(mModel);
+	mModel = glm::transpose(mModel);
 	mView = glm::transpose(mView);
-	mProj = glm::transpose(mProj);*/
+	mProj = glm::transpose(mProj);
 
 	//
 //	glm::mat4 resultMatrix = mProj * (mView*(mModel));

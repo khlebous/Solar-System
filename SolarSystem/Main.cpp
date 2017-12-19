@@ -31,6 +31,9 @@ int WINDOW_HEIGHT = 720;
 int main(int, char**)
 {
 	// Setup window
+	/*glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
 		return 1;
@@ -90,34 +93,17 @@ int main(int, char**)
 	//	0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
 
 	//};
-	//unsigned int VBO, VAO;
-	//glGenVertexArrays(1, &VAO);
-	//glGenBuffers(1, &VBO);
-	//// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	//glBindVertexArray(VAO);
-
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	//// position attribute
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	//glEnableVertexAttribArray(0);
-	//// color attribute
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glEnableVertexAttribArray(1);
-
-	// You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-	// VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-	// glBindVertexArray(0);
 
 	// as we only have a single shader, we could also just activate our shader once beforehand if we want to 
 	// Main loop
+	//glEnable(GL_DEPTH_TEST);
+
 	while (!glfwWindowShouldClose(window))
 	{
 
 		glfwPollEvents();
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//
 		/*glBindVertexArray(VAO);
@@ -143,6 +129,7 @@ int main(int, char**)
 		//glViewport(0, 0, display_w, display_h);
 		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	// Cleanup
