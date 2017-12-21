@@ -22,11 +22,11 @@ public:
 	vector<Edge> edges = vector<Edge>();
 	vector<glm::vec4> points = vector<glm::vec4>();
 	
-	Body();
+	Body(float s);
 	~Body();
 
 	void Scale(float s);
-	void GenerateEdges();
+	//void GenerateEdges();
 	glm::mat4 getMModel();
 };
 

@@ -54,6 +54,9 @@
     <ClCompile Include="Body.cpp">
       <Filter>Body</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsLibrary2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui_impl_glfw.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="Body.h">
       <Filter>Body</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary2.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

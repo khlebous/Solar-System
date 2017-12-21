@@ -1,8 +1,9 @@
-#include "GraphicsLibrary.h"
+﻿#include "GraphicsLibrary.h"
 #include <glad\glad.h>
 //#define GLFW_INCLUDE_NONE
 #include <GLFW\glfw3.h>
 #include <algorithm>  
+#include <glm/glm.hpp>
 #include <glm/gtc/constants.hpp> // glm::vec3
 #include <glm/mat4x4.hpp> // glm::vec3
 #include "shader_m.h"
@@ -31,6 +32,7 @@ void GL::Draw(list<Body>* bodies, Shader ourShader)
 
 void GL::DrawBody(Body* body, Shader ourShader)
 {
+
 	glm::mat4 mModel = glm::mat4(1);
 	glm::mat4 mView;
 	glm::mat4 mProj;
@@ -137,4 +139,6 @@ void GL::DrawBody(Body* body, Shader ourShader)
 	}
 	glEnd();*/
 }
+
+
 
