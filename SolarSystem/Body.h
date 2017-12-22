@@ -19,14 +19,9 @@ public:
 	float scale = 1;
 	glm::mat4 mModel = glm::mat4(1);
 
-	vector<Edge> edges = vector<Edge>();
-	vector<glm::vec4> points = vector<glm::vec4>();
-	
 	Body(float s);
 	~Body();
 
-	void Scale(float s);
-	//void GenerateEdges();
 	glm::mat4 getMModel();
 };
 

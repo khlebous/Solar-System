@@ -9,9 +9,9 @@
 class GraphicsLibrary2
 {
 public:
-	glm::vec3 cameraPosition = glm::vec3(3, 0.2, 0.7);
+	glm::vec3 cameraPosition = glm::vec3(3, 3, 0.7);
 	glm::vec3 cameraTarget = glm::vec3(0, 0.5, 0.5);
-	glm::vec3 upVector = glm::vec3(0, 0, 1);
+	glm::vec3 upVector = glm::vec3(1,1, 0.5);
 
 	GraphicsLibrary2();
 	~GraphicsLibrary2();

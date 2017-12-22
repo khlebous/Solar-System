@@ -76,68 +76,7 @@ void GL::DrawBody(Body* body, Shader ourShader)
 		0, 0, -(f + n) / (f - n), -2.0*f*n*(f - n),
 		0, 0, -1, 0);
 
-	/*mModel = glm::mat4(
-		cos(body->angle), -sin(body->angle), 0, 0,
-		sin(body->angle), cos(body->angle), 0, body->radius,
-		0, 0, 1, 0,
-		0, 0, 0, 1);*/
-	mModel = mModel * glm::mat4(
-		cos(body->angle2), -sin(body->angle2), 0, 0,
-		sin(body->angle2), cos(body->angle2), 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1);
-	// mModel = glm::mat4(1);
 
-	//mModel = body->getMModel();
-	mModel = glm::transpose(mModel);
-	mView = glm::transpose(mView);
-	mProj = glm::transpose(mProj);
-
-	//
-//	glm::mat4 resultMatrix = mProj * (mView*(mModel));
-	//glm::mat4 resultMatrix = glm::mat4(1);
-	ourShader.setMat4("model", mModel);
-	ourShader.setMat4("view", mView);
-	ourShader.setMat4("proj", mProj);
-	body->angle += body->step;
-	body->angle2 += body->step2;
-	//
-
-	auto edges = body->edges;
-	for (size_t i = 0; i < edges.size(); i++)
-	{
-		Edge e = edges[i];
-		glm::vec4 eVec = glm::vec4(e.p1.x, e.p1.y, e.p1.z, 1);
-
-		eVec = mProj * (mView*(mModel*eVec));
-		eVec = glm::vec4(eVec.x / eVec.w, eVec.y / eVec.w, eVec.z / eVec.w, 1);
-
-		eVec = (eVec + glm::vec4(1, 1, 1, 1)) / glm::vec4(2, 2, 2, 2);
-		e.p1 = glm::vec4(eVec.x, eVec.y, eVec.z,1);
-
-		eVec = glm::vec4(e.p2.x, e.p2.y, e.p2.z, e.p2.w);
-		eVec = mProj * (mView*(mModel*eVec));
-		eVec = glm::vec4(eVec.x / eVec.w, eVec.y / eVec.w, eVec.z / eVec.w, 1);
-
-		eVec = (eVec + glm::vec4(1, 1, 1, 1)) / glm::vec4(2, 2, 2, 2);
-		e.p2 = glm::vec4(eVec.x, eVec.y, eVec.z,1);
-		edges[i] = e;
-	}
-
-	/*glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0, 1280, 0.0, 720, 0.0, 1.0);
-
-	glColor3f(1, 1, 1);
-	glScalef(1, 1, 1);
-
-	glBegin(GL_LINES);
-	for (auto e : edges)
-	{
-		glVertex2f(e.p1.x * 1280, e.p1.y * 720);
-		glVertex2f(e.p2.x * 1280, e.p2.y * 720);
-	}
-	glEnd();*/
 }
 
 

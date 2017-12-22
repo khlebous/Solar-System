@@ -17,7 +17,6 @@
 #include "Edge.h"
 #include "Point.h"
 #include <vector>
-#include "GraphicsLibrary.h"
 #include "GraphicsLibrary2.h"
 #include "Body.h"
 #include "shader_m.h"
@@ -65,11 +64,11 @@ int main(int, char**)
 	//Body sun = Body(0.25);
 	//sun.step = 0.0005f;
 	//sun.Scale(5);
-	Body b1 = Body(0.05);
+	Body b1 = Body(0.1);
 	b1.step = 0.005f;
 	b1.step2 = 0.005f;
 	b1.radius = 15.0f;
-	b1.radius = 0.0f;
+	//b1.radius = 0.0f;
 	//b1.Scale(1.5);
  
 	list<Body> bodies = list<Body>();
@@ -82,6 +81,8 @@ int main(int, char**)
 	Shader ourShader("shader.vs", "shader.fs");
 	GraphicsLibrary2 gl = GraphicsLibrary2();
 
+	//glFrontFace(GL_CCW);
+	//glCullFace(GL_BACK);
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
