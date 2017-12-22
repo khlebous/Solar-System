@@ -1,4 +1,4 @@
-// ImGui - standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
+﻿// ImGui - standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
 // If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
 // (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
 
@@ -6,6 +6,8 @@
 // **Prefer using the code in the opengl3_example/ folder**
 // See imgui_impl_glfw.cpp for details.
 
+#include <glad\glad.h>
+#include <GL/gl.h>
 #include <imgui/imgui.h>
 #include "imgui_impl_glfw.h"
 #include <stdio.h>
@@ -15,8 +17,9 @@
 #include "Edge.h"
 #include "Point.h"
 #include <vector>
-#include "GraphicsLibrary.h"
+#include "GraphicsLibrary2.h"
 #include "Body.h"
+#include "shader_m.h"
 using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -29,6 +32,9 @@ int WINDOW_HEIGHT = 720;
 int main(int, char**)
 {
 	// Setup window
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwSetErrorCallback(error_callback);
 	if (!glfwInit())
 		return 1;
@@ -44,41 +50,52 @@ int main(int, char**)
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSwapInterval(1); // Enable vsync
 
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL2_Init(window, true);
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
+	
 	GUI gui = GUI();
-	Body sun = Body();
-	sun.step = 0.0005f;
-	sun.Scale(5);
-	Body b1 = Body();
+	//Body sun = Body(0.25);
+	//sun.step = 0.0005f;
+	//sun.Scale(5);
+	Body b1 = Body(0.1);
 	b1.step = 0.005f;
 	b1.step2 = 0.005f;
 	b1.radius = 15.0f;
-	b1.Scale(1.5);
-	Body b2 = Body();
-	b2.step = 0.005f;
-	b2.step2 = 0.009f;
-	b2.radius = 7.0f;
-	Body b3 = Body();
-	b3.step = 0.005f;
-	b3.step2 = 0.009f;
-	b3.radius = 20.0f;
-	b3.Scale(2);
+	//b1.radius = 0.0f;
+	//b1.Scale(1.5);
+ 
 	list<Body> bodies = list<Body>();
-	bodies.push_back(sun);
+	//bodies.push_back(sun);
 	bodies.push_back(b1);
-	bodies.push_back(b2);
-	bodies.push_back(b3);
-	// Main loop
+	//bodies.push_back(b2);
+	//bodies.push_back(b3);*/
+	
+
+	Shader ourShader("shader.vs", "shader.fs");
+	GraphicsLibrary2 gl = GraphicsLibrary2();
+
+	//glFrontFace(GL_CCW);
+	//glCullFace(GL_BACK);
+	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-		glClear(GL_COLOR_BUFFER_BIT);
+			
+		ourShader.use();
+		//GL::Draw(&bodies, ourShader);
+		gl.Draw(&bodies, ourShader);
 
-		GL::Draw(&bodies);
+		glUseProgram(0);
+		
 		gui.Draw();
 		// Rendering
 		int display_w, display_h;
@@ -86,6 +103,7 @@ int main(int, char**)
 		glViewport(0, 0, display_w, display_h);
 		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 		glfwSwapBuffers(window);
+		glfwPollEvents();
 	}
 
 	// Cleanup

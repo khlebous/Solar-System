@@ -48,11 +48,11 @@
     <ClCompile Include="GUI.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsLibrary.cpp">
-      <Filter>GL</Filter>
-    </ClCompile>
     <ClCompile Include="Body.cpp">
       <Filter>Body</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary2.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -86,14 +86,14 @@
     <ClInclude Include="GUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsLibrary.h">
-      <Filter>GL</Filter>
-    </ClInclude>
     <ClInclude Include="Edge.h">
       <Filter>GL</Filter>
     </ClInclude>
     <ClInclude Include="Body.h">
       <Filter>Body</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary2.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
