@@ -17,14 +17,15 @@
 #include "Edge.h"
 #include "Point.h"
 #include <vector>
-#include "GraphicsLibrary2.h"
+#include "GraphicsLibrary.h"
 #include "Body.h"
 #include "shader_m.h"
+#include <glm/vec4.hpp> 
+
 using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 void error_callback(int error, const char* description);
-
 
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
@@ -60,26 +61,38 @@ int main(int, char**)
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	
-	GUI gui = GUI();
-	//Body sun = Body(0.25);
-	//sun.step = 0.0005f;
-	//sun.Scale(5);
-	Body b1 = Body(0.1);
+	Body sun = Body(0.25);
+	sun.step = 0.0005f;
+	Body b1 = Body(0.15);
 	b1.step = 0.005f;
 	b1.step2 = 0.005f;
-	b1.radius = 15.0f;
-	//b1.radius = 0.0f;
-	//b1.Scale(1.5);
+	b1.radius = 1.0f;
  
 	list<Body> bodies = list<Body>();
-	//bodies.push_back(sun);
+	bodies.push_back(sun);
 	bodies.push_back(b1);
-	//bodies.push_back(b2);
-	//bodies.push_back(b3);*/
+	/*bodies.push_back(b2);
+	bodies.push_back(b3);*/
 	
 
 	Shader ourShader("shader.vs", "shader.fs");
-	GraphicsLibrary2 gl = GraphicsLibrary2();
+	float cameraPosition[] = { 3, 0.2, 0.7 };
+	glm::vec3 cameraTarget = glm::vec3(0, 0, 0);
+	glm::vec3 upVector = glm::vec3(0, 0, 0.5);
+	//
+	GraphicsLibrary gl = GraphicsLibrary();
+	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
+	gl.WINDOW_HEIGHT = &WINDOW_HEIGHT;
+	gl.cameraPosition = cameraPosition;
+	gl.cameraTarget = &cameraTarget;
+	gl.upVector = &upVector;
+	//
+	//
+	GUI gui = GUI();
+	gui.cameraPosition = cameraPosition;
+	gui.cameraTarget = &cameraTarget;
+	gui.upVector = &upVector;
+	//
 
 	//glFrontFace(GL_CCW);
 	//glCullFace(GL_BACK);

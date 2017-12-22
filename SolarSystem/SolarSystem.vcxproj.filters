@@ -51,7 +51,7 @@
     <ClCompile Include="Body.cpp">
       <Filter>Body</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsLibrary2.cpp">
+    <ClCompile Include="GraphicsLibrary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -92,7 +92,7 @@
     <ClInclude Include="Body.h">
       <Filter>Body</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsLibrary2.h">
+    <ClInclude Include="GraphicsLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

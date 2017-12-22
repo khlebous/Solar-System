@@ -25,7 +25,9 @@ void GUI::Draw()
 	if (show_another_window)
 	{
 		ImGui::Begin("Another Window", &show_another_window);
-		ImGui::Text("Hello from another window!");
+		ImGui::InputFloat("CamPos X", cameraPosition, 0.1);
+		ImGui::InputFloat("CamPos Y", cameraPosition + 1, 0.1);
+		ImGui::InputFloat("CamPos Z", cameraPosition + 2, 0.1);
 		ImGui::End();
 	}
 
