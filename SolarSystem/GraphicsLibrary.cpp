@@ -36,32 +36,18 @@ void GraphicsLibrary::Draw(list<Body>* bodies, Shader ourShader)
 
 void GraphicsLibrary::DrawBody(Body * body, Shader ourShader)
 {
-	glm::vec3 a = *upVector;
 }
 
 void GraphicsLibrary::CountViewMatrix()
 {
-	glm::vec3* cPos = &glm::make_vec3(cameraPosition);
-	float upVecorNormal = glm::sqrt((*upVector).x*(*upVector).x + (*upVector).y*(*upVector).y + (*upVector).z*(*upVector).z);
-	glm::vec3 upVectorVersor = glm::vec3((*upVector).x / upVecorNormal, (*upVector).y / upVecorNormal, (*upVector).z / upVecorNormal);
+	glm::vec3 upVec = glm::normalize(glm::make_vec3(*upVector));
+	glm::vec3 zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
+	glm::vec3 xAxis = glm::normalize(glm::cross(upVec, zAxis)); //cam Right
+	glm::vec3 yAxis = glm::cross(zAxis, xAxis);
 
-	glm::vec3 zAxis = *cPos - *cameraTarget;
-	float zAxisNormal = glm::sqrt(zAxis.x*zAxis.x + zAxis.y*zAxis.y + zAxis.z*zAxis.z);
-	glm::vec3 zAxisVersor = glm::vec3(zAxis.x / zAxisNormal, zAxis.y / zAxisNormal, zAxis.z / zAxisNormal);
-
-	glm::vec3 xAxis = glm::vec3(upVectorVersor.y * zAxisVersor.z - upVectorVersor.z*zAxisVersor.y,
-		-upVectorVersor.x * zAxisVersor.z + upVectorVersor.z*zAxisVersor.x,
-		upVectorVersor.x*zAxisVersor.y - upVectorVersor.y*zAxisVersor.x);
-	float xAxisNormal = glm::sqrt(xAxis.x*xAxis.x + xAxis.y*xAxis.y + xAxis.z*xAxis.z);
-	glm::vec3 xAxisVersor = glm::vec3(xAxis.x / xAxisNormal, xAxis.y / xAxisNormal, xAxis.z / xAxisNormal);
-
-	glm::vec3 yAxis = glm::vec3(xAxisVersor.z * zAxisVersor.y - xAxisVersor.y*zAxisVersor.z,
-		-xAxisVersor.z * zAxisVersor.x + xAxisVersor.x*zAxisVersor.z,
-		xAxisVersor.y*zAxisVersor.x - xAxisVersor.x*zAxisVersor.y);
-
-	mView = glm::mat4(xAxisVersor.x, yAxis.x, zAxisVersor.x, (*cPos).x,
-		xAxisVersor.y, yAxis.y, zAxisVersor.y, (*cPos).y,
-		xAxisVersor.z, yAxis.z, zAxisVersor.z, (*cPos).z,
+	mView = glm::mat4(xAxis.x, yAxis.x, zAxis.x, (*cameraPosition).x,
+		xAxis.y, yAxis.y, zAxis.y, (*cameraPosition).y,
+		xAxis.z, yAxis.z, zAxis.z, (*cameraPosition).z,
 		0, 0, 0, 1);
 	mView = glm::inverse(mView);
 	mView = glm::transpose(mView); 

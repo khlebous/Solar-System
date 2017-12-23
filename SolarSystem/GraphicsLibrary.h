@@ -12,7 +12,7 @@ public:
 	int* WINDOW_WIDTH;
 	int* WINDOW_HEIGHT;
 
-	float* cameraPosition;
+	glm::vec3* cameraPosition;
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
 

@@ -6,7 +6,7 @@
 class GUI
 {
 public:
-	float* cameraPosition;
+	glm::vec3* cameraPosition;
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
 
