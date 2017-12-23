@@ -79,10 +79,11 @@ int main(int, char**)
 	ImGui_ImplGlfwGL2_Init(window, true);
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
+	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
-	Body sun = Body(0.25);
-	sun.step = 0.0005f;
-	Body b1 = Body(0.15);
+	Body sun = Body(0.25, { 1.0, 1.0, 0.0 });
+	sun.step = 0.005f;
+	Body b1 = Body(0.15, color);
 	b1.step = 0.005f;
 	b1.step2 = 0.005f;
 	b1.radius = 1.0f;
@@ -92,7 +93,6 @@ int main(int, char**)
 	bodies.push_back(b1);
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
-
 
 	Shader ourShader("shader.vs", "shader.fs");
 	//
@@ -108,6 +108,9 @@ int main(int, char**)
 	gui.cameraPosition = &cameraPosition;
 	gui.cameraTarget = &cameraTarget;
 	gui.upVector = &upVector;
+	gui.color = &color;
+
+
 	//
 
 	//glFrontFace(GL_CCW);
@@ -158,7 +161,7 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = 2.5 * deltaTime;
+	float cameraSpeed = deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPosition += cameraSpeed * (cameraTarget - cameraPosition);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)

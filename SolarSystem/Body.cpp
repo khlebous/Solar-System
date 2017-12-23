@@ -1,20 +1,30 @@
 #include "Body.h"
 #include <glad\glad.h>
+int a = 100;
+float b = 100.0;
+float c = 0.5;
 
-
-Body::Body(float s)
+Body::Body(float s, glm::vec3 color)
 {
-
+	srand(time(NULL));
 	float vertices[] = {
 		// positions         // colors
-		-1.0*s, -1.0*s,  1.0*s,  1.0, 0.0, 0.5,
-		 1.0*s, -1.0*s,  1.0*s,  0.0, 1.0, 0.8,
-		 1.0*s,  1.0*s,  1.0*s,  0.0, 0.0, 0.9,
-		-1.0*s,  1.0*s,  1.0*s,  0.0, 0.0, 1.0,
-		-1.0*s, -1.0*s, -1.0*s,  1.0, 0.0, 0.0,
-		 1.0*s, -1.0*s, -1.0*s,  0.9, 1.0, 0.0,
-		 1.0*s,  1.0*s, -1.0*s,  0.7, 0.0, 1.0,
-		-1.0*s,  1.0*s, -1.0*s,  0.5 , 0.0, 0.0,
+		-1.0*s, -1.0*s,  1.0*s,  (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		1.0*s, -1.0*s,  1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		1.0*s,  1.0*s,  1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		-1.0*s,  1.0*s,  1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		-1.0*s, -1.0*s, -1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		1.0*s, -1.0*s, -1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		1.0*s,  1.0*s, -1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		-1.0*s,  1.0*s, -1.0*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		/*-1.0*s, -1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
+		 1.0*s, -1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
+		 1.0*s,  1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
+		-1.0*s,  1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
+		-1.0*s, -1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),
+		 1.0*s, -1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),
+		 1.0*s,  1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),
+		-1.0*s,  1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),*/
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		// front
@@ -80,7 +90,7 @@ glm::mat4 Body::getMModel()
 		0, cos(angle), -sin(angle), 0,
 		0, sin(angle), cos(angle), 0,
 		0, 0, 0, 1);*/
-	//mModel = glm::mat4(1);
+		//mModel = glm::mat4(1);
 	mModel = glm::transpose(mModel);
 	angle += step;
 	angle2 += step2;
