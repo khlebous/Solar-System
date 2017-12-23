@@ -18,8 +18,7 @@ void main()
 	//tmp = vec4(tmp.x, tmp.y, tmp.z, 1);
 	
 	//tmp = model * vec4(aPos.x, aPos.y, aPos.z,1.0);
-	tmp = vec4((tmp.x)/2.0, (tmp.y)/2.0,(tmp.z+1.0)/2.0, 1);
-	
+	//tmp = vec4((tmp.x)/2.0, (tmp.y)/2.0,(tmp.z)/2.0, 1);
 	
 	//tmp = vec4(aPos, 1.0);
 	

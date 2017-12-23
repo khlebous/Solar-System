@@ -123,7 +123,7 @@
   <ItemGroup>
     <ClCompile Include="Body.cpp" />
     <ClCompile Include="glad.c" />
-    <ClCompile Include="GraphicsLibrary2.cpp" />
+    <ClCompile Include="GraphicsLibrary.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="imgui_impl_glfw.cpp" />
     <ClCompile Include="Includes\imgui\imgui.cpp" />
@@ -134,7 +134,7 @@
   <ItemGroup>
     <ClInclude Include="Body.h" />
     <ClInclude Include="Edge.h" />
-    <ClInclude Include="GraphicsLibrary2.h" />
+    <ClInclude Include="GraphicsLibrary.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="imgui_impl_glfw.h" />
     <ClInclude Include="Includes\imgui\imconfig.h" />

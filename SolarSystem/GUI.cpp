@@ -4,6 +4,8 @@
 #include <imgui\imgui_internal.h>
 #include "imgui_impl_glfw.h"
 #include <stdio.h>
+#include <glm/vec3.hpp> 
+
 
 GUI::GUI()
 {
@@ -25,7 +27,23 @@ void GUI::Draw()
 	if (show_another_window)
 	{
 		ImGui::Begin("Another Window", &show_another_window);
-		ImGui::Text("Hello from another window!");
+		ImGui::Text("Position of camera");
+		static glm::vec3 a = glm::vec3(1, 0.5, 1);
+		ImGui::InputFloat("lalala", &a.x, 0.1);
+		ImGui::InputFloat("lalala2", &a.y, 0.1);
+		ImGui::InputFloat("CamPos X", &((*cameraPosition).x), 0.1);
+		ImGui::InputFloat("CamPos Y", &((*cameraPosition).y), 0.1);
+		ImGui::InputFloat("CamPos Z", &((*cameraPosition).z), 0.1);
+
+		/*ImGui::Text("Camera target");
+		ImGui::InputFloat("CamTrg X", cameraTarget, 0.01);
+		ImGui::InputFloat("CamTrg Y", cameraTarget + 1, 0.01);
+		ImGui::InputFloat("CamTrg Z", cameraTarget + 2, 0.01);
+
+		ImGui::Text("Up vector");
+		ImGui::InputFloat("upVec X", upVector, 0.01);
+		ImGui::InputFloat("upVec Y", upVector + 1, 0.01);
+		ImGui::InputFloat("upVec Z", upVector + 2, 0.01);*/
 		ImGui::End();
 	}
 

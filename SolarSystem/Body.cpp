@@ -4,7 +4,6 @@
 
 Body::Body(float s)
 {
-	angle = 0.0f;
 
 	float vertices[] = {
 		// positions         // colors
@@ -66,7 +65,7 @@ Body::~Body()
 glm::mat4 Body::getMModel()
 {
 	//mModel = glm::mat4(scale);
-	/*mModel = glm::mat4(
+	mModel = glm::mat4(
 		cos(angle), -sin(angle), 0, 0,
 		sin(angle), cos(angle), 0, radius,
 		0, 0, 1, 0,
@@ -75,14 +74,14 @@ glm::mat4 Body::getMModel()
 		cos(angle2), -sin(angle2), 0, 0,
 		sin(angle2), cos(angle2), 0, 0,
 		0, 0, 1, 0,
-		0, 0, 0, 1);*/
-	mModel = glm::mat4(
+		0, 0, 0, 1);
+	/*mModel = glm::mat4(
 		1, 0, 0, 0,
 		0, cos(angle), -sin(angle), 0,
 		0, sin(angle), cos(angle), 0,
-		0, 0, 0, 1);
+		0, 0, 0, 1);*/
 	//mModel = glm::mat4(1);
-//	mModel = glm::transpose(mModel);
+	mModel = glm::transpose(mModel);
 	angle += step;
 	angle2 += step2;
 	return mModel;

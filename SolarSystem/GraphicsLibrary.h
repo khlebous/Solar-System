@@ -1,24 +1,32 @@
 #pragma once
-#include <iostream>
+#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp> 
 #include <list>
-#include <glm/mat4x4.hpp> // glm::mat4
 
-#include "Edge.h"
 #include "Body.h"
 #include "shader_m.h"
-using namespace std;
-namespace GL
+
+class GraphicsLibrary
 {
-	void Draw(list<Body>* edges, Shader ourShader);
+public:
+	int* WINDOW_WIDTH;
+	int* WINDOW_HEIGHT;
+
+	glm::vec3* cameraPosition;
+	glm::vec3* cameraTarget;
+	glm::vec3* upVector;
+
+	GraphicsLibrary();
+	~GraphicsLibrary();
+
+	void Draw(list<Body>* bodies, Shader ourShader);
 	void DrawBody(Body* body, Shader ourShader);
-}
-/*mModel = glm::mat4(
-1, 0, 0, 0,
-0, cos(angle), -sin(angle), 0,
-0, sin(angle), cos(angle), 0,
-0, 0, 0, 1);*/
-/*mModel = glm::mat4(
-cos(angle), 0, sin(angle), 0,
-0, 1, 0, 0,
--sin(angle),0, cos(angle), 0,
-0, 0, 0, 1);*/
+
+private:
+	glm::mat4 mView;
+	glm::mat4 mProj;
+
+	void CountViewMatrix();
+	void CountProjMatrix();
+};
+
