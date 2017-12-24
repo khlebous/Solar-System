@@ -11,10 +11,10 @@ float c = 0.5;
 Body::Body(float s, glm::vec3 color)
 {
 	int vertSize = 6 * 8;
-	//vector<float> vertices = GetCubeVertices(s, color);
-	vector<float> vertices;
+	vector<float> vertices = GetCubeVertices(s, color);
+	//vector<float> vertices;
 	vector<int> indices;
-	GetIcosahedronVertices(s, color, &vertices, &indices);
+	//GetIcosahedronVertices(s, color, &vertices, &indices);
 	vertCount = vertices.size();
 	//unsigned int indices[] = {  // note that we start from 0!
 	//	// front
@@ -39,23 +39,23 @@ Body::Body(float s, glm::vec3 color)
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-	glBindVertexArray(VAO);
+//	glGenBuffers(1, &EBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float), vertices.data(), GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
 
+	glBindVertexArray(VAO);
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// normal attribute
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);
+	/*glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);*/
 }
 
 Body::~Body()
@@ -96,8 +96,49 @@ vector<float> Body::GetCubeVertices(float s, glm::vec3 color)
 	srand(1);
 
 	vector<float> vert = {
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
 		// positions         // colors
-		-1.0f*s, -1.0f*s,  1.0f*s,  (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
+		/*-1.0f*s, -1.0f*s,  1.0f*s,  (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
 		1.0f*s, -1.0f*s,  1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
 		1.0f*s,  1.0f*s,  1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
 		-1.0f*s,  1.0f*s,  1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
@@ -256,9 +297,10 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v, ve
 	Mesh m2;
 	Mesh m3;
 	Icosahedron(m1);
-	SubdivideMesh(m1, m2);
-	//SubdivideMesh(m2, m3);
-	SubdivideMesh(m2, m);
+	Icosahedron(m);
+	/*SubdivideMesh(m1, m2);
+	SubdivideMesh(m2, m3);
+	SubdivideMesh(m2, m);*/
 	for (auto &el : m.vertices)
 		el *= s;
 	vector<glm::vec3> norm = vector<glm::vec3>();
@@ -267,16 +309,19 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v, ve
 		glm::vec3 a = m.vertices[i];
 		glm::vec3 b = m.vertices[i+1];
 		glm::vec3 c = m.vertices[i+2];
-		norm.push_back(glm::normalize(glm::cross(c - a, b - a)));
+		norm.push_back(glm::normalize(glm::cross(b - a, c - a)));
 	}
 	for (size_t i = 0; i < m.vertices.size(); i++)
 	{
 		v->push_back(m.vertices[i].x);
 		v->push_back(m.vertices[i].y);
 		v->push_back(m.vertices[i].z);
-		v->push_back((rand() % a) / b - c + color.x);
+		/*v->push_back((rand() % a) / b - c + color.x);
 		v->push_back((rand() % a) / b - c + color.y);
-		v->push_back((rand() % a) / b - c + color.z);
+		v->push_back((rand() % a) / b - c + color.z);*/
+		v->push_back(color.x);
+		v->push_back(color.y);
+		v->push_back(color.z);
 		int nr = i / 3;
 		v->push_back(norm[nr].x);
 		v->push_back(norm[nr].y);

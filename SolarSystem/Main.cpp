@@ -82,11 +82,11 @@ int main(int, char**)
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
 	Body sun = Body(1.09/3, { 1.0, 1.0, 0.0 });
-	sun.step = 0.1f;
+	//sun.step = 0.1f;
 	Body b1 = Body(0.1, color);
-	b1.step = 0.9f;
-	b1.step2 = 0.005f;
-	b1.radius = 1.0f;
+	b1.step = 0.5f;
+	//b1.step2 = 0.005f;
+	b1.radius = 5.0f;
 
 	list<Body> bodies = list<Body>();
 	bodies.push_back(sun);
@@ -113,8 +113,8 @@ int main(int, char**)
 
 	//
 
-	//glFrontFace(GL_CCW);
-	//glCullFace(GL_BACK);
+	
+	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{

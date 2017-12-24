@@ -24,14 +24,14 @@ void GraphicsLibrary::Draw(list<Body>* bodies, Shader ourShader)
 	//	glm::vec4 a= mProj * (mView *(mModel * glm::vec4(0.0, 0.0, 0.0, 1.0)));
 		glBindVertexArray(b.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b.EBO);
-		//glDrawArrays(GL_TRIANGLES, 0, 6); 
-		glDrawElements(GL_TRIANGLES, 3 * b.vertCount, GL_UNSIGNED_INT, 0);
-		//glDrawElements(GL_TRIANGLES, 3 * 12, GL_UNSIGNED_INT, 0);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b.EBO);
+		glDrawArrays(GL_TRIANGLES, 0, 36); 
+		//glDrawElements(GL_TRIANGLES, b.vertCount/2, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 3 * 1, GL_UNSIGNED_INT, 0);
 
 		glBindVertexArray(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 }
 
