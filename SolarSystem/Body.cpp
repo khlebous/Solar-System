@@ -11,10 +11,10 @@ float c = 0.5;
 Body::Body(float s, glm::vec3 color)
 {
 	int vertSize = 6 * 8;
-	vector<float> vertices = GetCubeVertices(s, color);
-	//vector<float> vertices;
+	//vector<float> vertices = GetCubeVertices(s, color);
+	vector<float> vertices;
 	vector<int> indices;
-	//GetIcosahedronVertices(s, color, &vertices, &indices);
+	GetIcosahedronVertices(s, color, &vertices);
 	vertCount = vertices.size();
 	//unsigned int indices[] = {  // note that we start from 0!
 	//	// front
@@ -289,44 +289,53 @@ void SubdivideMesh(const Mesh &meshIn, Mesh &meshOut)
 		meshOut.addTriangle(f3, f4, f5);
 	}
 }
-void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v, vector<int>* idx)
+void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 {
 	srand(1);
 	Mesh m;
 	Mesh m1;
 	Mesh m2;
 	Mesh m3;
+	Mesh m4;
 	Icosahedron(m1);
 	Icosahedron(m);
-	/*SubdivideMesh(m1, m2);
+	SubdivideMesh(m1, m2);
 	SubdivideMesh(m2, m3);
-	SubdivideMesh(m2, m);*/
+	SubdivideMesh(m3, m4);
+	SubdivideMesh(m4, m);
 	for (auto &el : m.vertices)
 		el *= s;
-	vector<glm::vec3> norm = vector<glm::vec3>();
-	for (size_t i = 0; i < m.vertices.size(); i+=3)
+
+	for (size_t i = 0; i < m.triangles.size(); i+=3)
 	{
-		glm::vec3 a = m.vertices[i];
-		glm::vec3 b = m.vertices[i+1];
-		glm::vec3 c = m.vertices[i+2];
-		norm.push_back(glm::normalize(glm::cross(b - a, c - a)));
+		int t1 = m.triangles[i];
+		int t2 = m.triangles[i + 1];
+		int t3 = m.triangles[i + 2];
+		glm::vec3 a = m.vertices[t1];
+		glm::vec3 b = m.vertices[t2];
+		glm::vec3 c = m.vertices[t3];
+		glm::vec3 norm = glm::normalize(glm::cross(b - a, c - a));
+
+		v->push_back(m.vertices[t1].x);
+		v->push_back(m.vertices[t1].y);
+		v->push_back(m.vertices[t1].z);
+		v->push_back(norm.x);
+		v->push_back(norm.y);
+		v->push_back(norm.z);
+
+		v->push_back(m.vertices[t2].x);
+		v->push_back(m.vertices[t2].y);
+		v->push_back(m.vertices[t2].z);
+		v->push_back(norm.x);
+		v->push_back(norm.y);
+		v->push_back(norm.z);
+
+
+		v->push_back(m.vertices[t3].x);
+		v->push_back(m.vertices[t3].y);
+		v->push_back(m.vertices[t3].z);
+		v->push_back(norm.x);
+		v->push_back(norm.y);
+		v->push_back(norm.z);
 	}
-	for (size_t i = 0; i < m.vertices.size(); i++)
-	{
-		v->push_back(m.vertices[i].x);
-		v->push_back(m.vertices[i].y);
-		v->push_back(m.vertices[i].z);
-		/*v->push_back((rand() % a) / b - c + color.x);
-		v->push_back((rand() % a) / b - c + color.y);
-		v->push_back((rand() % a) / b - c + color.z);*/
-		v->push_back(color.x);
-		v->push_back(color.y);
-		v->push_back(color.z);
-		int nr = i / 3;
-		v->push_back(norm[nr].x);
-		v->push_back(norm[nr].y);
-		v->push_back(norm[nr].z);
-	}
-	for (size_t i = 0; i < m.triangles.size(); i++)
-		idx->push_back(m.triangles[i]);
 }

@@ -25,7 +25,7 @@ void GraphicsLibrary::Draw(list<Body>* bodies, Shader ourShader)
 		glBindVertexArray(b.VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
 		//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, b.EBO);
-		glDrawArrays(GL_TRIANGLES, 0, 36); 
+		glDrawArrays(GL_TRIANGLES, 0, b.vertCount); 
 		//glDrawElements(GL_TRIANGLES, b.vertCount/2, GL_UNSIGNED_INT, 0);
 		//glDrawElements(GL_TRIANGLES, 3 * 1, GL_UNSIGNED_INT, 0);
 

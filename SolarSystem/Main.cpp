@@ -85,8 +85,8 @@ int main(int, char**)
 	//sun.step = 0.1f;
 	Body b1 = Body(0.1, color);
 	b1.step = 0.5f;
-	//b1.step2 = 0.005f;
-	b1.radius = 5.0f;
+	b1.step2 = 0.005f;
+	b1.radius = 1.0f;
 
 	list<Body> bodies = list<Body>();
 	bodies.push_back(sun);

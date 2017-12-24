@@ -28,7 +28,7 @@ public:
 	glm::mat4 getMModel();
 private:
 	vector<float> GetCubeVertices(float s, glm::vec3 color);
-	void GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v, vector<int>* idx);
+	void GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v);
 	void Icosahedron(Mesh &mesh);
 };
 
