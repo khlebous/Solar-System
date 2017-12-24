@@ -4,70 +4,43 @@
 #include <map>
 #include <glm/gtc/type_ptr.hpp>
 
-int a = 100;
-float b = float(a)*2;
-float c = 0.5;
+int aa = 100;
+float bb = float(aa)*2;
+float cc = 0.5;
 
 Body::Body(float s, glm::vec3 color)
 {
-	int vertSize = 6 * 8;
 	//vector<float> vertices = GetCubeVertices(s, color);
 	vector<float> vertices;
-	vector<int> indices;
 	GetIcosahedronVertices(s, color, &vertices);
 	vertCount = vertices.size();
-	//unsigned int indices[] = {  // note that we start from 0!
-	//	// front
-	//	0, 1, 2,
-	//	2, 3, 0,
-	//	// top
-	//	1, 5, 6,
-	//	6, 2, 1,
-	//	// back
-	//	7, 6, 5,
-	//	5, 4, 7,
-	//	// bottom
-	//	4, 0, 3,
-	//	3, 7, 4,
-	//	// left
-	//	4, 5, 1,
-	//	1, 0, 4,
-	//	// right
-	//	3, 2, 6,
-	//	6, 7, 3,
-	//};
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-//	glGenBuffers(1, &EBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(float), vertices.data(), GL_STATIC_DRAW);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(float), indices.data(), GL_STATIC_DRAW);
 
 	glBindVertexArray(VAO);
 	// position attribute
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
 	// color attribute
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
 	glEnableVertexAttribArray(1);
 	// normal attribute
-	/*glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
-	glEnableVertexAttribArray(2);*/
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
+	glEnableVertexAttribArray(2);
 }
 
 Body::~Body()
 {
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
-	glDeleteBuffers(1, &EBO);
 }
 
 glm::mat4 Body::getMModel()
 {
-	//mModel = glm::mat4(scale);
 	angle =step* glfwGetTime();
 	mModel = glm::mat4(
 		cos(angle), -sin(angle), 0, 0,
@@ -79,14 +52,7 @@ glm::mat4 Body::getMModel()
 		sin(angle2), cos(angle2), 0, 0,
 		0, 0, 1, 0,
 		0, 0, 0, 1);
-	/*mModel = glm::mat4(
-		1, 0, 0, 0,
-		0, cos(angle), -sin(angle), 0,
-		0, sin(angle), cos(angle), 0,
-		0, 0, 0, 1);*/
-		//mModel = glm::mat4(1);
 	mModel = glm::transpose(mModel);
-	angle += step;
 	angle2 += step2;
 	return mModel;
 }
@@ -248,6 +214,7 @@ void Body::Icosahedron(Mesh & mesh)
 	mesh.addTriangle(8, 6, 7);
 	mesh.addTriangle(9, 8, 1);
 }
+
 uint32_t subdivideEdge(uint32_t f0, uint32_t f1, const glm::vec3 &v0, const glm::vec3 &v1, Mesh &io_mesh, std::map<Edge, uint32_t> &io_divisions)
 {
 	const Edge edge(f0, f1);
@@ -300,9 +267,9 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 	Icosahedron(m1);
 	Icosahedron(m);
 	SubdivideMesh(m1, m2);
-	SubdivideMesh(m2, m3);
-	SubdivideMesh(m3, m4);
-	SubdivideMesh(m4, m);
+	//SubdivideMesh(m2, m3);
+	//SubdivideMesh(m3, m4);
+	SubdivideMesh(m2, m);
 	for (auto &el : m.vertices)
 		el *= s;
 
@@ -322,6 +289,9 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
+		v->push_back((rand() % aa) / bb - cc + color.x);
+		v->push_back((rand() % aa) / bb - cc + color.y);
+		v->push_back((rand() % aa) / bb - cc + color.z);
 
 		v->push_back(m.vertices[t2].x);
 		v->push_back(m.vertices[t2].y);
@@ -329,6 +299,9 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
+		v->push_back((rand() % aa) / bb - cc + color.x);
+		v->push_back((rand() % aa) / bb - cc + color.y);
+		v->push_back((rand() % aa) / bb - cc + color.z);
 
 
 		v->push_back(m.vertices[t3].x);
@@ -337,5 +310,8 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
+		v->push_back((rand() % aa) / bb - cc + color.x);
+		v->push_back((rand() % aa) / bb - cc + color.y);
+		v->push_back((rand() % aa) / bb - cc + color.z);
 	}
 }

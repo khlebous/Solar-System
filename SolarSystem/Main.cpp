@@ -19,6 +19,7 @@
 #include <vector>
 #include "GraphicsLibrary.h"
 #include "Body.h"
+#include "Sun.h"
 #include "shader_m.h"
 #include <glm/vec4.hpp> 
 
@@ -81,20 +82,20 @@ int main(int, char**)
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
-	Body sun = Body(1.09/3, { 1.0, 1.0, 0.0 });
-	//sun.step = 0.1f;
+	Sun sun = Sun(1.09/3, { 1.0, 1.0, 0.7 });
+	sun.step = 0.1f;
 	Body b1 = Body(0.1, color);
 	b1.step = 0.5f;
 	b1.step2 = 0.005f;
 	b1.radius = 1.0f;
 
 	list<Body> bodies = list<Body>();
-	bodies.push_back(sun);
 	bodies.push_back(b1);
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
 
-	Shader ourShader("shader.vs", "shader.fs");
+	Shader ourShader("shader.vs", "shader.fs"); 
+	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -127,11 +128,10 @@ int main(int, char**)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
-		ourShader.use();
 		//GL::Draw(&bodies, ourShader);
-		gl.Draw(&bodies, ourShader);
-
+		gl.Draw(&sun, &bodies, ourShader, sun_shader);
 		glUseProgram(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		gui.Draw();
 		// Rendering

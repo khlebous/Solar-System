@@ -4,6 +4,7 @@
 #include <list>
 
 #include "Body.h"
+#include "Sun.h"
 #include "shader_m.h"
 
 class GraphicsLibrary
@@ -19,7 +20,7 @@ public:
 	GraphicsLibrary();
 	~GraphicsLibrary();
 
-	void Draw(list<Body>* bodies, Shader ourShader);
+	void Draw(Sun* sun, list<Body>* bodies, Shader ourShader, Shader sun_shader);
 	void DrawBody(Body* body, Shader ourShader);
 
 private:
