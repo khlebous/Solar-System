@@ -25,6 +25,12 @@
     <Filter Include="Body">
       <UniqueIdentifier>{b885c247-77ed-4718-8e31-dee866460bfc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{b121266a-854f-410e-83b4-43ad779c8fd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shaders\Sun">
+      <UniqueIdentifier>{694abae8-0555-4fc7-8b7a-2962c886700a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -53,6 +59,12 @@
     </ClCompile>
     <ClCompile Include="GraphicsLibrary.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.h">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sun.cpp">
+      <Filter>Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,5 +107,18 @@
     <ClInclude Include="GraphicsLibrary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Sun.h">
+      <Filter>Body</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="sun_shader.fs" />
+    <None Include="sun_shader.vs" />
   </ItemGroup>
 </Project>

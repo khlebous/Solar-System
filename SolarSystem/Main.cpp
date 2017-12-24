@@ -19,6 +19,7 @@
 #include <vector>
 #include "GraphicsLibrary.h"
 #include "Body.h"
+#include "Sun.h"
 #include "shader_m.h"
 #include <glm/vec4.hpp> 
 
@@ -79,22 +80,22 @@ int main(int, char**)
 	ImGui_ImplGlfwGL2_Init(window, true);
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
+	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
-	Body sun = Body(0.25);
-	sun.step = 0.0005f;
-	Body b1 = Body(0.15);
-	b1.step = 0.005f;
+	Sun sun = Sun(1.09/3, { 1.0, 1.0, 0.7 });
+	sun.step = 0.1f;
+	Body b1 = Body(0.1, color);
+	b1.step = 0.5f;
 	b1.step2 = 0.005f;
 	b1.radius = 1.0f;
 
 	list<Body> bodies = list<Body>();
-	bodies.push_back(sun);
 	bodies.push_back(b1);
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
 
-
-	Shader ourShader("shader.vs", "shader.fs");
+	Shader ourShader("shader.vs", "shader.fs"); 
+	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -108,10 +109,13 @@ int main(int, char**)
 	gui.cameraPosition = &cameraPosition;
 	gui.cameraTarget = &cameraTarget;
 	gui.upVector = &upVector;
+	gui.color = &color;
+
+
 	//
 
-	//glFrontFace(GL_CCW);
-	//glCullFace(GL_BACK);
+	
+	//glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
@@ -124,11 +128,10 @@ int main(int, char**)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
-		ourShader.use();
 		//GL::Draw(&bodies, ourShader);
-		gl.Draw(&bodies, ourShader);
-
+		gl.Draw(&sun, &bodies, ourShader, sun_shader);
 		glUseProgram(0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		gui.Draw();
 		// Rendering
@@ -158,7 +161,7 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = 2.5 * deltaTime;
+	float cameraSpeed = deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPosition += cameraSpeed * (cameraTarget - cameraPosition);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)

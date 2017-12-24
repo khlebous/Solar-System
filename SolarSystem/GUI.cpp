@@ -35,6 +35,10 @@ void GUI::Draw()
 		ImGui::InputFloat("CamPos Y", &((*cameraPosition).y), 0.1);
 		ImGui::InputFloat("CamPos Z", &((*cameraPosition).z), 0.1);
 
+		static float col1[3] = { 1.0f,0.0f,0.2f };
+		static float col2[4] = { 0.4f,0.7f,0.0f,0.5f };
+		ImGui::ColorEdit3("color 1", col1);
+
 		/*ImGui::Text("Camera target");
 		ImGui::InputFloat("CamTrg X", cameraTarget, 0.01);
 		ImGui::InputFloat("CamTrg Y", cameraTarget + 1, 0.01);

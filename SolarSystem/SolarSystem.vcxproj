@@ -130,6 +130,8 @@
     <ClCompile Include="Includes\imgui\imgui_demo.cpp" />
     <ClCompile Include="Includes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Mesh.h" />
+    <ClCompile Include="Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
@@ -145,6 +147,13 @@
     <ClInclude Include="Includes\imgui\stb_truetype.h" />
     <ClInclude Include="shader_m.h" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Sun.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shader.fs" />
+    <None Include="shader.vs" />
+    <None Include="sun_shader.fs" />
+    <None Include="sun_shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
