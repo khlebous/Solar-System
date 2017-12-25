@@ -6,7 +6,7 @@ in vec3 Normal;
 in vec3 FragPos; 
 
 vec3 lightPos = vec3(0.0, 0.0, 0.0);
-vec3 lightColor = vec3(1.0, 1.0, 0.0);
+uniform vec3 lightColor;
 //vec3 ourColor = vec3(1.0,0.0,0.0);
 vec3 viewPos = vec3(3, 0.2, 0.7);
 

@@ -3,9 +3,6 @@
 #include <GLFW/glfw3.h>
 #include <map>
 #include <glm/gtc/type_ptr.hpp>
-int aaaa = 100;
-float bbbb = float(aaaa) * 2;
-float cccc = 0.5;
 
 Sun::~Sun()
 {
@@ -17,12 +14,37 @@ glm::mat4 Sun::getMModel()
 {
 	angle = step * glfwGetTime();
 	mModel = glm::mat4(
-						cos(angle), -sin(angle), 0, 0,
-						sin(angle), cos(angle), 0, 0,
-						0, 0, 1, 0,
-						0, 0, 0, 1);
+		cos(angle), -sin(angle), 0, 0,
+		sin(angle), cos(angle), 0, 0,
+		0, 0, 1, 0,
+		0, 0, 0, 1);
 	mModel = glm::transpose(mModel);
 	return mModel;
+}
+
+void Sun::SetColor()
+{
+	int aa = 100;
+	float bb = float(aa) * 2.0;
+	float cc = float(aa) / bb / 2.0;
+	vector<float> colors = vector<float>(vertCount);
+	for (size_t i = 6; i < vertices.size(); i += 9)
+	{
+		vertices[i] = color.x;
+		vertices[i + 1] = color.y;
+		//vertices[i ] = (rand() % aa) / bb - cc + color.x;
+		//vertices[i + 1] = (rand() % aa) / bb - cc + color.y;
+		if (rand() % 3 == 0)
+			vertices[i + 2] = (rand() % aa) / bb - cc + color.z;
+		else
+			vertices[i + 2] = color.z;
+	}
+	Body::UpdateBuffers();
+	shader->use();
+	shader->setVec3("lightColor", color);
+	glUseProgram(0);
+
+
 }
 //
 //void Sun::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)

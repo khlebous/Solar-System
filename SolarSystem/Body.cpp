@@ -5,9 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-int aa = 100;
-float bb = float(aa) * 2.0;
-float cc = float(aa)/bb/2.0;
+
 Body::Body(float s, glm::vec3 color)
 {
 	this->color = color;
@@ -29,6 +27,9 @@ Body::~Body()
 
 void Body::SetColor()
 {
+	int aa = 100;
+	float bb = float(aa) * 2.0;
+	float cc = float(aa) / bb / 2.0;
 	vector<float> colors = vector<float>(vertCount);
 	for (size_t i = 6; i < vertices.size(); i+=9)
 	{
@@ -147,6 +148,9 @@ void SubdivideMesh(const Mesh &meshIn, Mesh &meshOut)
 }
 void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 {
+	int aa = 100;
+	float bb = float(aa) * 2.0;
+	float cc = float(aa) / bb / 2.0;
 	srand(1);
 	Mesh m;
 	Mesh m1;

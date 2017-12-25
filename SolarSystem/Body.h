@@ -28,9 +28,9 @@ public:
 
 protected:
 	float angle=0;
-private:
 	void UpdateBuffers();
 
+private:
 	void GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v);
 	void Icosahedron(Mesh &mesh);
 	

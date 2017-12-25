@@ -79,10 +79,18 @@ int main(int, char**)
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL2_Init(window, true);
 
+	Shader ourShader("shader.vs", "shader.fs"); 
+	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
+
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
 	Sun sun = Sun(0.33, { 1.0, 1.0, 0.7 });
+	ourShader.use();
+	ourShader.setVec3("lightColor",color);
+	glUseProgram(0);
+
+	sun.shader = &ourShader;
 	sun.step = 0.1f;
 	Planet b1 = Planet(0.1, { 1.0, 0.0, 0.0 });
 	b1.step = 0.5f;
@@ -91,11 +99,10 @@ int main(int, char**)
 
 	list<Planet> bodies = list<Planet>();
 	bodies.push_back(b1);
+
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
 
-	Shader ourShader("shader.vs", "shader.fs"); 
-	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
