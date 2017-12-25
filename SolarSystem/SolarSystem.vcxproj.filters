@@ -66,6 +66,9 @@
     <ClCompile Include="Sun.cpp">
       <Filter>Body</Filter>
     </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui_impl_glfw.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="Sun.h">
       <Filter>Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

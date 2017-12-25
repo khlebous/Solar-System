@@ -131,6 +131,7 @@
     <ClCompile Include="Includes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.h" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="Includes\imgui\stb_rect_pack.h" />
     <ClInclude Include="Includes\imgui\stb_textedit.h" />
     <ClInclude Include="Includes\imgui\stb_truetype.h" />
+    <ClInclude Include="Planet.h" />
     <ClInclude Include="shader_m.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Sun.h" />

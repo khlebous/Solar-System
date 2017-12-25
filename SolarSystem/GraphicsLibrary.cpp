@@ -9,7 +9,7 @@ GraphicsLibrary::~GraphicsLibrary()
 {
 }
 
-void GraphicsLibrary::Draw(Sun* sun, list<Body>* bodies, Shader ourShader, Shader sun_shader)
+void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader ourShader, Shader sun_shader)
 {
 	CountViewMatrix();
 	CountProjMatrix();
@@ -26,7 +26,7 @@ void GraphicsLibrary::Draw(Sun* sun, list<Body>* bodies, Shader ourShader, Shade
 	ourShader.use();
 	ourShader.setMat4("view", mView);
 	ourShader.setMat4("proj", mProj);
-	for (auto &b : *bodies)
+	for (auto &b: *bodies)
 	{
 		mModel = b.getMModel();
 		ourShader.setMat4("model", mModel);

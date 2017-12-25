@@ -11,21 +11,19 @@ using namespace std;
 class Body
 {
 public:
+	glm::mat4 mModel = glm::mat4(1);
+
 	unsigned int VBO, VAO;
 	glm::vec3 color;
 	size_t vertCount;
 	float angle=0;
-	float angle2=0;
-	float radius = 0;
 	float step = 0;
-	float step2 = 0;
 	float scale = 1;
-	glm::mat4 mModel = glm::mat4(1);
 
 	Body(float s, glm::vec3 color);
 	~Body();
 
-	glm::mat4 getMModel();
+	glm::mat4 virtual getMModel() { return mModel; }
 private:
 	vector<float> GetCubeVertices(float s, glm::vec3 color);
 	void GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v);
