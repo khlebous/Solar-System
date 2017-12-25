@@ -118,7 +118,11 @@
     <None Include="shader.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="sun_shader.fs" />
-    <None Include="sun_shader.vs" />
+    <None Include="sun_shader.fs">
+      <Filter>Shaders\Sun</Filter>
+    </None>
+    <None Include="sun_shader.vs">
+      <Filter>Shaders\Sun</Filter>
+    </None>
   </ItemGroup>
 </Project>
