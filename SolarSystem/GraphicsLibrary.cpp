@@ -19,7 +19,7 @@ void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader ourShader, Sha
 	glm::mat4 mModel = sun->getMModel();
 	sun_shader.setMat4("model", mModel);
 	glBindVertexArray(sun->VAO);
-	glDrawArrays(GL_TRIANGLES, 0, sun->vertCount/9);
+	glDrawArrays(GL_TRIANGLES, 0, sun->vertCount);
 	glBindVertexArray(0);
 	glUseProgram(0);
 
@@ -32,7 +32,7 @@ void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader ourShader, Sha
 		ourShader.setMat4("model", mModel);
 		glBindVertexArray(b.VAO);
 		//glBindBuffer(GL_ARRAY_BUFFER, b.VBO);
-		glDrawArrays(GL_TRIANGLES, 0, b.vertCount/9); 
+		glDrawArrays(GL_TRIANGLES, 0, b.vertCount); 
 		//glDrawElements(GL_TRIANGLES, b.vertCount/2, GL_UNSIGNED_INT, 0);
 		//glDrawElements(GL_TRIANGLES, 3 * 1, GL_UNSIGNED_INT, 0);
 

@@ -104,12 +104,12 @@ int main(int, char**)
 	gl.cameraTarget = &cameraTarget;
 	gl.upVector = &upVector;
 	//
-	//
 	GUI gui = GUI();
 	gui.cameraPosition = &cameraPosition;
 	gui.cameraTarget = &cameraTarget;
 	gui.upVector = &upVector;
 	gui.color = &color;
+	gui.sun = &sun;
 
 
 	//
