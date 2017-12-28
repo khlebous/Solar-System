@@ -18,6 +18,8 @@ public:
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
 
+	Sun* sun;
+
 	GraphicsLibrary();
 	~GraphicsLibrary();
 

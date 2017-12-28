@@ -9,6 +9,12 @@
 Body::Body(float s, glm::vec3 color)
 {
 	this->color = color;
+	this->scale = s;
+	/*mModel = glm::mat4( s,    0.0f, 0.0f, 0.0f,
+						0.0f, s,    0.0f, 0.0f,
+						0.0f, 0.0f, s,    0.0f,
+						0.0f, 0.0f, 0.0f, 1.0f);*/
+	//mModel[3, 3] = 1.0f;
 	GetIcosahedronVertices(s, color, &vertices);
 	vertCount = vertices.size()/9;
 
@@ -152,7 +158,7 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 	float bb = float(aa) * 2.0;
 	float cc = float(aa) / bb / 2.0;
 	srand(1);
-	Mesh m;
+	
 	Mesh m1;
 	Mesh m2;
 	Mesh m3;
@@ -160,12 +166,12 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 	Icosahedron(m1);
 	//Icosahedron(m);
 	SubdivideMesh(m1, m2);
-	//SubdivideMesh(m2, m3);
-	//SubdivideMesh(m3, m4);
 	SubdivideMesh(m2, m);
-	for (auto &el : m.vertices)
+	//SubdivideMesh(m3, m4);
+	//SubdivideMesh(m4, m);
+	/*for (auto &el : m.vertices)
 		el *= s;
-
+*/
 	for (size_t i = 0; i < m.triangles.size(); i += 3)
 	{
 		int t1 = m.triangles[i];
@@ -180,35 +186,38 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		{
 			colors[i] = (rand() % aa) / bb - cc + color.z;
 		}
-		v->push_back(m.vertices[t1].x);
-		v->push_back(m.vertices[t1].y);
-		v->push_back(m.vertices[t1].z);
+		v->push_back(m.vertices[t1].x*s);
+		v->push_back(m.vertices[t1].y*s);
+		v->push_back(m.vertices[t1].z*s);
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
-		v->push_back(colors[t1]);
+		v->push_back(color.z);
+		//v->push_back(colors[t1]);
 
-		v->push_back(m.vertices[t2].x);
-		v->push_back(m.vertices[t2].y);
-		v->push_back(m.vertices[t2].z);
+		v->push_back(m.vertices[t2].x*s);
+		v->push_back(m.vertices[t2].y*s);
+		v->push_back(m.vertices[t2].z*s);
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
-		v->push_back(colors[t2]);
+		v->push_back(color.z);
+		//v->push_back(colors[t2]);
 
-		v->push_back(m.vertices[t3].x);
-		v->push_back(m.vertices[t3].y);
-		v->push_back(m.vertices[t3].z);
+		v->push_back(m.vertices[t3].x*s);
+		v->push_back(m.vertices[t3].y*s);
+		v->push_back(m.vertices[t3].z*s);
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
-		v->push_back(colors[t3]);
+		v->push_back(color.z);
+		//v->push_back(colors[t3]);
 	}
 }
 

@@ -19,6 +19,7 @@ public:
 	size_t vertCount;
 	float step = 0;
 	float scale = 1;
+	Mesh m;
 
 	Body(float s, glm::vec3 color);
 	~Body();

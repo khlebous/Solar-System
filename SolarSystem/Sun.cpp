@@ -34,7 +34,7 @@ void Sun::SetColor()
 		vertices[i + 1] = color.y;
 		//vertices[i ] = (rand() % aa) / bb - cc + color.x;
 		//vertices[i + 1] = (rand() % aa) / bb - cc + color.y;
-		if (rand() % 3 == 0)
+		if (rand() % 2 == 0)
 			vertices[i + 2] = (rand() % aa) / bb - cc + color.z;
 		else
 			vertices[i + 2] = color.z;
@@ -42,9 +42,17 @@ void Sun::SetColor()
 	Body::UpdateBuffers();
 	shader->use();
 	shader->setVec3("lightColor", color);
-	glUseProgram(0);
-
-
+}
+void Sun::SetScale()
+{
+	for (size_t i = 0; i < m.triangles.size(); i++)
+	{
+		int t1 = m.triangles[i];
+		vertices[9*i] = m.vertices[t1].x*scale;
+		vertices[9*i+1] = m.vertices[t1].y*scale;
+		vertices[9*i+2] = m.vertices[t1].z*scale;
+	}
+	Body::UpdateBuffers();
 }
 //
 //void Sun::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)

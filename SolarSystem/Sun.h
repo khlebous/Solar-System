@@ -21,5 +21,6 @@ public:
 
 	glm::mat4 getMModel();
 	void SetColor();
+	void SetScale();
 };
 

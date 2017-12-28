@@ -51,7 +51,10 @@ void GUI::Draw()
 				sun->SetColor();
 			}
 			ImGui::InputFloat("Rotation velocity", &(sun->step), 0.01);
-			ImGui::InputFloat("Scale", &(sun->scale), 0.01);
+			if (ImGui::InputFloat("Scale", &(sun->scale), 0.01))
+			{
+				sun->SetScale();
+			}
 		}
 		ImGui::End();
 	}
