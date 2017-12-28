@@ -39,9 +39,10 @@ void Sun::SetColor()
 		else
 			vertices[i + 2] = color.z;
 	}
-	Body::UpdateBuffers();
 	shader->use();
 	shader->setVec3("lightColor", color);
+	glUseProgram(0);
+	Body::UpdateBuffers();
 }
 void Sun::SetScale()
 {

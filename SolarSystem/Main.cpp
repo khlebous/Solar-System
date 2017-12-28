@@ -121,9 +121,7 @@ int main(int, char**)
 
 
 	//
-
-	
-	//glEnable(GL_CULL_FACE);
+	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose(window))
 	{
@@ -142,6 +140,7 @@ int main(int, char**)
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		gui.Draw();
+		
 		// Rendering
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);

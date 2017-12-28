@@ -194,8 +194,8 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
-		v->push_back(color.z);
-		//v->push_back(colors[t1]);
+		//v->push_back(color.z);
+		v->push_back(colors[t1]);
 
 		v->push_back(m.vertices[t2].x*s);
 		v->push_back(m.vertices[t2].y*s);
@@ -205,8 +205,7 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
-		v->push_back(color.z);
-		//v->push_back(colors[t2]);
+		v->push_back(colors[t2]);
 
 		v->push_back(m.vertices[t3].x*s);
 		v->push_back(m.vertices[t3].y*s);
@@ -216,8 +215,7 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
-		v->push_back(color.z);
-		//v->push_back(colors[t3]);
+		v->push_back(colors[t3]);
 	}
 }
 
