@@ -28,6 +28,17 @@ void GUI::Draw()
 	{
 		ImGui::Begin("Another Window", &show_another_window); 
 		ImGui::SetWindowSize(ImVec2(300.0f, 600.0f));
+		if (ImGui::RadioButton("Phong", &rb_lighting, 0))
+		{
+			*main_shader = Shader("phong_shader.vs", "phong_shader.fs");
+			sun->SetSunColorToShader();
+		} 
+		ImGui::SameLine();
+		if (ImGui::RadioButton("Gouraud", &rb_lighting, 1))
+		{
+			*main_shader = Shader("gouraud_shader.vs", "gouraud_shader.fs");
+			sun->SetSunColorToShader();
+		}
 		ImGui::Text("Position of camera");
 		ImGui::InputFloat("CamPos X", &((*cameraPosition).x), 0.1);
 		ImGui::InputFloat("CamPos Y", &((*cameraPosition).y), 0.1);
@@ -56,6 +67,10 @@ void GUI::Draw()
 				sun->SetScale();
 			}
 		}
+		/*for (size_t i = 0; i < bodies->size(); i++)
+		{
+
+		}*/
 		ImGui::End();
 	}
 

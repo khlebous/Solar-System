@@ -39,9 +39,7 @@ void Sun::SetColor()
 		else
 			vertices[i + 2] = color.z;
 	}
-	shader->use();
-	shader->setVec3("lightColor", color);
-	glUseProgram(0);
+	SetSunColorToShader();
 	Body::UpdateBuffers();
 }
 void Sun::SetScale()
@@ -54,6 +52,12 @@ void Sun::SetScale()
 		vertices[9*i+2] = m.vertices[t1].z*scale;
 	}
 	Body::UpdateBuffers();
+}
+void Sun::SetSunColorToShader()
+{
+	shader->use();
+	shader->setVec3("lightColor", color);
+	glUseProgram(0);
 }
 //
 //void Sun::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)

@@ -79,18 +79,18 @@ int main(int, char**)
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL2_Init(window, true);
 
-	Shader ourShader("shader.vs", "shader.fs"); 
+	Shader main_shader("phong_shader.vs", "phong_shader.fs"); 
 	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
 	Sun sun = Sun(0.327, { 1.0, 1.0, 0.7 });
-	ourShader.use();
-	ourShader.setVec3("lightColor",color);
+	main_shader.use();
+	main_shader.setVec3("lightColor",color);
 	glUseProgram(0);
 
-	sun.shader = &ourShader;
+	sun.shader = &main_shader;
 	sun.step = 0.1f;
 	Planet b1 = Planet(0.1, { 1.0, 0.0, 0.0 });
 	b1.step = 0.5f;
@@ -111,6 +111,7 @@ int main(int, char**)
 	gl.cameraTarget = &cameraTarget;
 	gl.upVector = &upVector;
 	gl.sun = &sun;
+	gl.main_shader = &main_shader;
 	//
 	GUI gui = GUI();
 	gui.cameraPosition = &cameraPosition;
@@ -118,6 +119,8 @@ int main(int, char**)
 	gui.upVector = &upVector;
 	gui.color = &color;
 	gui.sun = &sun;
+	gui.main_shader = &main_shader;
+//	gui.bodies = &bodies;
 
 
 	//
@@ -134,8 +137,8 @@ int main(int, char**)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
-		//GL::Draw(&bodies, ourShader);
-		gl.Draw(&sun, &bodies, ourShader, sun_shader);
+		//GL::Draw(&bodies, main_shader);
+		gl.Draw(&sun, &bodies, sun_shader);
 		glUseProgram(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -145,7 +148,6 @@ int main(int, char**)
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
 		glViewport(0, 0, display_w, display_h);
-		//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}

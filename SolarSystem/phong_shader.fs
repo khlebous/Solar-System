@@ -6,16 +6,12 @@ in vec3 Normal;
 in vec3 FragPos; 
 
 vec3 lightPos = vec3(0.0, 0.0, 0.0);
-uniform vec3 lightColor;
-//vec3 ourColor = vec3(1.0,0.0,0.0);
 vec3 viewPos = vec3(3, 0.2, 0.7);
+uniform vec3 lightColor;
 
 void main()
 {
-   // FragColor = vec4(ourColor, 1.0f);
    // ambient
-   
-   
     float ambientStrength = 0.1;
     vec3 ambient = ambientStrength * lightColor;
   	
@@ -34,10 +30,4 @@ void main()
         
     vec3 result = (ambient + diffuse + specular) * ourColor;
     FragColor = vec4(result, 1.0);
-
-    //float ambientStrength = 0.5;
-    //vec3 ambient = ambientStrength * lightColor;
-
-    //vec3 result = ambient * ourColor;
-    //FragColor = vec4(result, 1.0);
 }

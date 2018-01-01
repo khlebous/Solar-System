@@ -9,7 +9,7 @@ GraphicsLibrary::~GraphicsLibrary()
 {
 }
 
-void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader ourShader, Shader sun_shader)
+void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader)
 {
 	CountViewMatrix();
 	CountProjMatrix();
@@ -22,12 +22,12 @@ void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader ourShader, Sha
 	glDrawArrays(GL_TRIANGLES, 0, sun->vertCount);
 	//
 
-	ourShader.use();
-	ourShader.setMat4("view", mView);
-	ourShader.setMat4("proj", mProj);
+	main_shader->use();
+	main_shader->setMat4("view", mView);
+	main_shader->setMat4("proj", mProj);
 	for (auto &b: *bodies)
 	{
-		ourShader.setMat4("model", b.getMModel());
+		main_shader->setMat4("model", b.getMModel());
 		glBindVertexArray(b.VAO);
 		glDrawArrays(GL_TRIANGLES, 0, b.vertCount); 
 		//glDrawElements(GL_TRIANGLES, b.vertCount/2, GL_UNSIGNED_INT, 0);

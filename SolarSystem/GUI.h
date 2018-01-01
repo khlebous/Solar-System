@@ -3,6 +3,7 @@
 #include "Sun.h"
 #include "shader_m.h"
 #include <glm/vec4.hpp> 
+#include <list>
 
 class GUI
 {
@@ -13,6 +14,10 @@ public:
 	glm::vec3* color;
 
 	Sun *sun;
+	list<Body> *bodies;
+	
+	int rb_lighting = 0;
+	Shader *main_shader;
 
 	GUI();
 	~GUI();
