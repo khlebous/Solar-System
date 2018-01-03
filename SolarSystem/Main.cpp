@@ -88,17 +88,23 @@ int main(int, char**)
 	Sun sun = Sun(0.327, { 1.0, 1.0, 0.7 });
 	main_shader.use();
 	main_shader.setVec3("lightColor",color);
-	glUseProgram(0);
 
 	sun.shader = &main_shader;
+	sun.SetSunColorToShader();
+	glUseProgram(0);
 	sun.step = 0.1f;
+
 	Planet b1 = Planet(0.1, { 1.0, 0.0, 0.0 });
 	b1.step = 0.5f;
 	b1.step2 = 0.5f;
-	b1.radius = 1.0f;
-
+	b1.radius = 0.7f;
+	Planet b2 = Planet(0.2, { 0.0, 1.0, 0.5 });
+	b2.step = 0.5f;
+	b2.step2 = 0.5f;
+	b2.radius = 1.5f;
 	list<Planet> bodies = list<Planet>();
 	bodies.push_back(b1);
+	bodies.push_back(b2);
 
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
@@ -121,7 +127,6 @@ int main(int, char**)
 	gui.sun = &sun;
 	gui.main_shader = &main_shader;
 //	gui.bodies = &bodies;
-
 
 	//
 	glEnable(GL_CULL_FACE);

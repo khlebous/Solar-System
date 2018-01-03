@@ -166,9 +166,9 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 	Icosahedron(m1);
 	//Icosahedron(m);
 	SubdivideMesh(m1, m2);
-	SubdivideMesh(m2, m);
+	//SubdivideMesh(m2, m3);
 	//SubdivideMesh(m3, m4);
-	//SubdivideMesh(m4, m);
+	SubdivideMesh(m2, m);
 	/*for (auto &el : m.vertices)
 		el *= s;
 */

@@ -4,6 +4,10 @@
 #include <map>
 #include <glm/gtc/type_ptr.hpp>
 
+Sun::Sun(float s, glm::vec3 color) :Body(s, color) 
+{
+}
+
 Sun::~Sun()
 {
 	glDeleteVertexArrays(1, &VAO);

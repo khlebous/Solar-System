@@ -16,7 +16,7 @@ class Sun :
 public:
 	Shader* shader;
 
-	Sun(float s, glm::vec3 color) :Body(s, color) {};
+	Sun(float s, glm::vec3 color);
 	~Sun();
 
 	glm::mat4 getMModel();
