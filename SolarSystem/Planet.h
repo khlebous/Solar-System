@@ -11,6 +11,6 @@ public:
 	Planet(float s, glm::vec3 color);
 	~Planet();
 
-	glm::mat4 getMModel();
+	glm::mat4 getMModel() override;
 };
 

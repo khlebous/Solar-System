@@ -18,10 +18,13 @@ public:
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
 
+	Sun* sun;
+	Shader* main_shader;
+
 	GraphicsLibrary();
 	~GraphicsLibrary();
 
-	void Draw(Sun* sun, list<Planet>* bodies, Shader ourShader, Shader sun_shader);
+	void Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader);
 	void DrawBody(Body* body, Shader ourShader);
 
 private:

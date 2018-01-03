@@ -3,20 +3,54 @@
 #include <GLFW/glfw3.h>
 #include <map>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
-int aa = 100;
-float bb = float(aa) * 2;
-float cc = 0.5;
 
 Body::Body(float s, glm::vec3 color)
 {
-	vector<float> vertices;
+	this->color = color;
+	this->scale = s;
+	/*mModel = glm::mat4( s,    0.0f, 0.0f, 0.0f,
+						0.0f, s,    0.0f, 0.0f,
+						0.0f, 0.0f, s,    0.0f,
+						0.0f, 0.0f, 0.0f, 1.0f);*/
+	//mModel[3, 3] = 1.0f;
 	GetIcosahedronVertices(s, color, &vertices);
-	vertCount = vertices.size();
+	vertCount = vertices.size()/9;
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
+	UpdateBuffers();
+}
+
+Body::~Body()
+{
+	glDeleteVertexArrays(1, &VAO);
+	glDeleteBuffers(1, &VBO);
+	vertices.clear();
+}
+
+void Body::SetColor()
+{
+	int aa = 100;
+	float bb = float(aa) * 2.0;
+	float cc = float(aa) / bb / 2.0;
+	vector<float> colors = vector<float>(vertCount);
+	for (size_t i = 6; i < vertices.size(); i+=9)
+	{
+		vertices[i] = color.x;
+		//vertices[i+1] = color.y;
+		//vertices[i+2] = color.z;
+		//vertices[i ] = (rand() % aa) / bb - cc + color.x;
+		vertices[i + 1] = (rand() % aa) / bb - cc + color.y;
+		vertices[i + 2] = (rand() % aa) / bb - cc + color.z;
+	}
+	UpdateBuffers();
+}
+
+void Body::UpdateBuffers()
+{
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
 
@@ -30,128 +64,9 @@ Body::Body(float s, glm::vec3 color)
 	// normal attribute
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(6 * sizeof(float)));
 	glEnableVertexAttribArray(2);
-}
 
-Body::~Body()
-{
-	glDeleteVertexArrays(1, &VAO);
-	glDeleteBuffers(1, &VBO);
-}
-
-vector<float> Body::GetCubeVertices(float s, glm::vec3 color)
-{
-	srand(1);
-
-	vector<float> vert = {
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
-		// positions         // colors
-		/*-1.0f*s, -1.0f*s,  1.0f*s,  (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		1.0f*s, -1.0f*s,  1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		1.0f*s,  1.0f*s,  1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		-1.0f*s,  1.0f*s,  1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		-1.0f*s, -1.0f*s, -1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		1.0f*s, -1.0f*s, -1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		1.0f*s,  1.0f*s, -1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		-1.0f*s,  1.0f*s, -1.0f*s, (rand() % a) / b - c + color.x , (rand() % a) / b - c + color.y, (rand() % a) / b - c + color.z,
-		/*-1.0*s, -1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
-		1.0*s, -1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
-		1.0*s,  1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
-		-1.0*s,  1.0*s,  1.0*s,  error(color.x) , error(color.y), error(color.z),
-		-1.0*s, -1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),
-		1.0*s, -1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),
-		1.0*s,  1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),
-		-1.0*s,  1.0*s, -1.0*s,  error(color.x) , error(color.y), error(color.z),*/
-	};
-	/*
-	vector<float> vert = vector<float>();
-	vert.push_back(-1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(-1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(-1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(1.0f*s); vert.push_back(-1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);
-	vert.push_back(-1.0f*s);
-	vert.push_back(1.0f*s);
-	vert.push_back(-1.0f*s);
-	vert.push_back((rand() % a) / b - c + color.x);
-	vert.push_back((rand() % a) / b - c + color.y);
-	vert.push_back((rand() % a) / b - c + color.z);*/
-	return vert;
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }
 
 
@@ -239,8 +154,11 @@ void SubdivideMesh(const Mesh &meshIn, Mesh &meshOut)
 }
 void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 {
+	int aa = 100;
+	float bb = float(aa) * 2.0;
+	float cc = float(aa) / bb / 2.0;
 	srand(1);
-	Mesh m;
+	
 	Mesh m1;
 	Mesh m2;
 	Mesh m3;
@@ -248,12 +166,12 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 	Icosahedron(m1);
 	//Icosahedron(m);
 	SubdivideMesh(m1, m2);
-	//SubdivideMesh(m2, m3);
-	//SubdivideMesh(m3, m4);
 	SubdivideMesh(m2, m);
-	for (auto &el : m.vertices)
+	//SubdivideMesh(m3, m4);
+	//SubdivideMesh(m4, m);
+	/*for (auto &el : m.vertices)
 		el *= s;
-
+*/
 	for (size_t i = 0; i < m.triangles.size(); i += 3)
 	{
 		int t1 = m.triangles[i];
@@ -268,19 +186,20 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		{
 			colors[i] = (rand() % aa) / bb - cc + color.z;
 		}
-		v->push_back(m.vertices[t1].x);
-		v->push_back(m.vertices[t1].y);
-		v->push_back(m.vertices[t1].z);
+		v->push_back(m.vertices[t1].x*s);
+		v->push_back(m.vertices[t1].y*s);
+		v->push_back(m.vertices[t1].z*s);
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
+		//v->push_back(color.z);
 		v->push_back(colors[t1]);
 
-		v->push_back(m.vertices[t2].x);
-		v->push_back(m.vertices[t2].y);
-		v->push_back(m.vertices[t2].z);
+		v->push_back(m.vertices[t2].x*s);
+		v->push_back(m.vertices[t2].y*s);
+		v->push_back(m.vertices[t2].z*s);
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
@@ -288,9 +207,9 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(color.y);
 		v->push_back(colors[t2]);
 
-		v->push_back(m.vertices[t3].x);
-		v->push_back(m.vertices[t3].y);
-		v->push_back(m.vertices[t3].z);
+		v->push_back(m.vertices[t3].x*s);
+		v->push_back(m.vertices[t3].y*s);
+		v->push_back(m.vertices[t3].z*s);
 		v->push_back(norm.x);
 		v->push_back(norm.y);
 		v->push_back(norm.z);
@@ -298,4 +217,52 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(color.y);
 		v->push_back(colors[t3]);
 	}
+}
+
+vector<float> Body::GetCubeVertices(float s, glm::vec3 color)
+{
+	vector<float> vert = {
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
+
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+		-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+		-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+	};
+	return vert;
 }

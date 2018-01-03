@@ -152,8 +152,10 @@
     <ClInclude Include="Sun.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.fs" />
-    <None Include="shader.vs" />
+    <None Include="gouraud_shader.fs" />
+    <None Include="gouraud_shader.vs" />
+    <None Include="phong_shader.fs" />
+    <None Include="phong_shader.vs" />
     <None Include="sun_shader.fs" />
     <None Include="sun_shader.vs" />
   </ItemGroup>

@@ -57,17 +57,17 @@
     <ClCompile Include="Body.cpp">
       <Filter>Body</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsLibrary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.h">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Sun.cpp">
       <Filter>Body</Filter>
     </ClCompile>
     <ClCompile Include="Planet.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Body</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.h">
+      <Filter>GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsLibrary.cpp">
+      <Filter>GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,28 +107,34 @@
     <ClInclude Include="Body.h">
       <Filter>Body</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsLibrary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sun.h">
       <Filter>Body</Filter>
     </ClInclude>
     <ClInclude Include="Planet.h">
-      <Filter>Header Files</Filter>
+      <Filter>Body</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsLibrary.h">
+      <Filter>GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shader.vs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="sun_shader.fs">
       <Filter>Shaders\Sun</Filter>
     </None>
     <None Include="sun_shader.vs">
       <Filter>Shaders\Sun</Filter>
+    </None>
+    <None Include="phong_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="phong_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="gouraud_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="gouraud_shader.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>
