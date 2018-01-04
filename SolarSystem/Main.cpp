@@ -22,6 +22,7 @@
 #include "shader_m.h"
 #include <glm/vec4.hpp> 
 #include "Planet.h"
+#include "Camera.h"
 
 using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -39,12 +40,15 @@ glm::vec3 upVector = { 0, 0, 0.5 };
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-bool firstMouse = true;
+Camera camera(glm::vec3(3.0f, 0.2f, 0.7f));
+
 float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
 float pitch = 0.0f;
-float lastX = 800.0f / 2.0;
-float lastY = 600.0 / 2.0;
 float fov = 45.0f;
+
+float lastX = WINDOW_WIDTH / 2.0;
+float lastY = WINDOW_HEIGHT / 2.0;
+bool firstMouse = true;
 
 int main(int, char**)
 {
@@ -99,8 +103,8 @@ int main(int, char**)
 	b1.step2 = 0.5f;
 	b1.radius = 0.7f;
 	Planet b2 = Planet(0.2, { 0.0, 1.0, 0.5 });
-	b2.step = 0.5f;
-	b2.step2 = 0.5f;
+	b2.step = 0.8f;
+	b2.step2 = 0.2f;
 	b2.radius = 1.5f;
 	list<Planet> bodies = list<Planet>();
 	bodies.push_back(b1);
@@ -109,13 +113,16 @@ int main(int, char**)
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
 
+	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
+	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
+	camera.cameraPosition = &cameraPosition;
+	camera.cameraTarget = &cameraTarget;
+	camera.upVector = &upVector;
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
 	gl.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	gl.cameraPosition = &cameraPosition;
-	gl.cameraTarget = &cameraTarget;
-	gl.upVector = &upVector;
+	gl.camera = &camera;
 	gl.sun = &sun;
 	gl.main_shader = &main_shader;
 	//
@@ -175,7 +182,7 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = deltaTime;
+	/*float cameraSpeed = deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		cameraPosition += cameraSpeed * (cameraTarget - cameraPosition);
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
@@ -183,7 +190,15 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
 		cameraPosition -= glm::normalize(glm::cross((cameraTarget - cameraPosition), upVector)) * cameraSpeed;
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cameraPosition += glm::normalize(glm::cross((cameraTarget - cameraPosition), upVector)) * cameraSpeed;
+		cameraPosition += glm::normalize(glm::cross((cameraTarget - cameraPosition), upVector)) * cameraSpeed;*/
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
 //void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

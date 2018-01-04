@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <vector>
 
@@ -22,14 +23,12 @@ const float SPEED = 2.5f;
 const float SENSITIVTY = 0.1f;
 const float ZOOM = 45.0f;
 
-
-// An abstract camera class that processes input and calculates the corresponding Eular Angles, Vectors and Matrices for use in OpenGL
 class Camera
 {
 public:
 	// Camera Attributes
 	glm::vec3 Position;
-	glm::vec3 Front;
+	glm::vec3 Front; //cameraTarget - cameraPosition
 	glm::vec3 Up;
 	glm::vec3 Right;
 	glm::vec3 WorldUp;
@@ -40,6 +39,13 @@ public:
 	float MovementSpeed;
 	float MouseSensitivity;
 	float Zoom;
+
+	int* WINDOW_WIDTH;
+	int* WINDOW_HEIGHT;
+
+	glm::vec3* cameraPosition;
+	glm::vec3* cameraTarget;
+	glm::vec3* upVector;
 
 	// Constructor with vectors
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
@@ -63,7 +69,33 @@ public:
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
-		return glm::lookAt(Position, Position + Front, Up);
+	//	return glm::lookAt(Position, Position + Front, Up);
+		glm::vec3 upVec = glm::normalize(glm::make_vec3(*upVector));
+		glm::vec3 zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
+		glm::vec3 xAxis = glm::normalize(glm::cross(upVec, zAxis)); //cam Right
+		glm::vec3 yAxis = glm::cross(zAxis, xAxis);
+
+		return glm::transpose(
+					glm::inverse(
+						glm::mat4(
+							xAxis.x, yAxis.x, zAxis.x, (*cameraPosition).x,
+							xAxis.y, yAxis.y, zAxis.y, (*cameraPosition).y,
+							xAxis.z, yAxis.z, zAxis.z, (*cameraPosition).z,
+							0, 0, 0, 1)));
+	}
+	glm::mat4 GetProjMatrix()
+	{
+	//	return glm::lookAt(cameraPosition, cameraPosition + Front, Up);
+		float n = 1;
+		float f = 100;
+		float fov = glm::radians(Zoom);
+		float a = float(*WINDOW_HEIGHT) / float(*WINDOW_WIDTH);
+		//float e = 1.0f / tan(fov*glm::pi<float>() / 360.0);
+		float e = 1.0f / tan(fov);
+		return  glm::transpose(glm::mat4(e, 0, 0, 0,
+										0, e / a, 0, 0,
+										0, 0, -(f + n) / (f - n), -2.0*f*n / (f - n),
+										0, 0, -1, 0));
 	}
 
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)

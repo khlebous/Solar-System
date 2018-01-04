@@ -38,6 +38,19 @@ void GUI::Draw()
 		if (ImGui::RadioButton("Blinn-Phong Lighting Model", &rb_lighting, 1))
 			SwitchLightingShadingShader();
 		ImGui::Text("--------------------");
+		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
+		{
+
+		}
+		if (ImGui::RadioButton("Camera on the sun folowing planet", &rb_camera, 1))
+		{
+
+		}
+		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
+		{
+
+		}
+		ImGui::Text("--------------------");
 		ImGui::Text("Position of camera");
 		ImGui::InputFloat("CamPos X", &((*cameraPosition).x), 0.1);
 		ImGui::InputFloat("CamPos Y", &((*cameraPosition).y), 0.1);

@@ -18,6 +18,7 @@ public:
 	
 	int rb_shading = 0;
 	int rb_lighting = 0;
+	int rb_camera = 0;
 	
 	Shader *main_shader;
 
