@@ -16,7 +16,9 @@ public:
 	Sun *sun;
 	list<Body> *bodies;
 	
+	int rb_shading = 0;
 	int rb_lighting = 0;
+	
 	Shader *main_shader;
 
 	GUI();
@@ -25,5 +27,6 @@ public:
 	void Draw();
 
 private:
+	void SwitchLightingShadingShader();
 };
 

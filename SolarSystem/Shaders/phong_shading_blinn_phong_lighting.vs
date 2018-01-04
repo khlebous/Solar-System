@@ -19,8 +19,6 @@ void main()
     gl_Position = proj * view * model * vec4(aPos, 1.0);
     ourColor = aColor;
     
-    // gouraud shading
-    // ------------------------
     vec3 Position = vec3(model * vec4(aPos, 1.0));
     vec3 Normal = mat3(transpose(inverse(model))) * aNormal;
     
@@ -35,10 +33,10 @@ void main()
     vec3 diffuse = diff * lightColor;
     
     // specular
-    float specularStrength = 1.0; // this is set higher to better show the effect of Gouraud shading 
+    float specularStrength = 0.5;
     vec3 viewDir = normalize(viewPos - Position);
-    vec3 reflectDir = reflect(-lightDir, norm);  
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    vec3 halfwayDir = normalize(lightDir + viewDir);  
+    float spec = pow(max(dot(norm, halfwayDir), 0.0), 16.0);
     vec3 specular = specularStrength * spec * lightColor;      
 
     LightingColor = ambient + diffuse + specular;

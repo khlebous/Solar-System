@@ -79,8 +79,8 @@ int main(int, char**)
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL2_Init(window, true);
 
-	Shader main_shader("phong_shader.vs", "phong_shader.fs"); 
-	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
+	Shader main_shader("Shaders/phong_shading_phong_lighting.vs", "Shaders/phong_shading_phong_lighting.fs");
+	Shader sun_shader("Shaders/sun_shader.vs", "Shaders/sun_shader.fs");
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
