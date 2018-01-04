@@ -5,8 +5,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-
 #include <vector>
+
+#include "Planet.h"
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
 enum Camera_Movement {
@@ -47,6 +48,12 @@ public:
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
 
+	Planet *planet;
+private:
+	float n;
+	float f;
+
+public:
 	// Constructor with vectors
 	Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
 	{
@@ -55,6 +62,9 @@ public:
 		Yaw = yaw;
 		Pitch = pitch;
 		updateCameraVectors();
+
+		n = 0.01;
+		f = 20.0;
 	}
 	// Constructor with scalar values
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
@@ -69,9 +79,9 @@ public:
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
-	//	return glm::lookAt(Position, Position + Front, Up);
 		glm::vec3 upVec = glm::normalize(glm::make_vec3(*upVector));
-		glm::vec3 zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
+	//	glm::vec3 zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
+		glm::vec3 zAxis = glm::normalize(*cameraPosition - planet->getCenterPosition()); // camDirection
 		glm::vec3 xAxis = glm::normalize(glm::cross(upVec, zAxis)); //cam Right
 		glm::vec3 yAxis = glm::cross(zAxis, xAxis);
 
@@ -85,13 +95,8 @@ public:
 	}
 	glm::mat4 GetProjMatrix()
 	{
-	//	return glm::lookAt(cameraPosition, cameraPosition + Front, Up);
-		float n = 1;
-		float f = 100;
-		float fov = glm::radians(Zoom);
 		float a = float(*WINDOW_HEIGHT) / float(*WINDOW_WIDTH);
-		//float e = 1.0f / tan(fov*glm::pi<float>() / 360.0);
-		float e = 1.0f / tan(fov);
+		float e = 1.0f / tan(glm::radians(Zoom) /2);
 		return  glm::transpose(glm::mat4(e, 0, 0, 0,
 										0, e / a, 0, 0,
 										0, 0, -(f + n) / (f - n), -2.0*f*n / (f - n),

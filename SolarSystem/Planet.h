@@ -12,5 +12,6 @@ public:
 	~Planet();
 
 	glm::mat4 getMModel() override;
+	glm::vec3 getCenterPosition();
 };
 

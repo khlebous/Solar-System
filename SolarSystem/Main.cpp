@@ -34,6 +34,7 @@ int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
 glm::vec3 cameraPosition = { 3, 0.2, 0.7 };
+//glm::vec3 cameraPosition = { 0.0, 0.0, 0.0 };
 glm::vec3 cameraTarget = { 0, 0, 0 };
 glm::vec3 upVector = { 0, 0, 0.5 };
 
@@ -98,13 +99,13 @@ int main(int, char**)
 	glUseProgram(0);
 	sun.step = 0.1f;
 
-	Planet b1 = Planet(0.1, { 1.0, 0.0, 0.0 });
+	Planet b1 = Planet(0.01, { 1.0, 0.0, 0.0 });
 	b1.step = 0.5f;
 	b1.step2 = 0.5f;
 	b1.radius = 0.7f;
-	Planet b2 = Planet(0.2, { 0.0, 1.0, 0.5 });
-	b2.step = 0.8f;
-	b2.step2 = 0.2f;
+	Planet b2 = Planet(0.08, { 0.0, 1.0, 0.5 });
+	b2.step = 0.5f;
+	b2.step2 = 0.5f;
 	b2.radius = 1.5f;
 	list<Planet> bodies = list<Planet>();
 	bodies.push_back(b1);
@@ -118,6 +119,7 @@ int main(int, char**)
 	camera.cameraPosition = &cameraPosition;
 	camera.cameraTarget = &cameraTarget;
 	camera.upVector = &upVector;
+	camera.planet = &b2;
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -125,6 +127,10 @@ int main(int, char**)
 	gl.camera = &camera;
 	gl.sun = &sun;
 	gl.main_shader = &main_shader;
+
+	gl.cameraPosition = &cameraPosition;
+	gl.cameraTarget = &cameraTarget;
+	gl.upVector = &upVector;
 	//
 	GUI gui = GUI();
 	gui.cameraPosition = &cameraPosition;
