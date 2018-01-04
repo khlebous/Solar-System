@@ -40,11 +40,11 @@ void GUI::Draw()
 		ImGui::Text("--------------------");
 		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
 		{
-
+			camera->camera_mode = STATIC;
 		}
 		if (ImGui::RadioButton("Camera on the sun folowing planet", &rb_camera, 1))
 		{
-
+			camera->camera_mode = FOLLOWING_PLANET;
 		}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{

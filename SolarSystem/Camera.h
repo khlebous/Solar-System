@@ -16,6 +16,10 @@ enum Camera_Movement {
 	LEFT,
 	RIGHT
 };
+enum Camera_Mode {
+	STATIC,
+	FOLLOWING_PLANET
+};
 
 // Default camera values
 const float YAW = -90.0f;
@@ -44,6 +48,8 @@ public:
 	int* WINDOW_WIDTH;
 	int* WINDOW_HEIGHT;
 
+	Camera_Mode camera_mode;
+
 	glm::vec3* cameraPosition;
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
@@ -65,6 +71,7 @@ public:
 
 		n = 0.01;
 		f = 20.0;
+		camera_mode = STATIC;
 	}
 	// Constructor with scalar values
 	Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
@@ -80,27 +87,30 @@ public:
 	glm::mat4 GetViewMatrix()
 	{
 		glm::vec3 upVec = glm::normalize(glm::make_vec3(*upVector));
-	//	glm::vec3 zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
-		glm::vec3 zAxis = glm::normalize(*cameraPosition - planet->getCenterPosition()); // camDirection
+		glm::vec3 zAxis;
+		if (STATIC == camera_mode)
+			zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
+		else if (FOLLOWING_PLANET == camera_mode)
+			zAxis = glm::normalize(*cameraPosition - planet->getCenterPosition()); // camDirection
 		glm::vec3 xAxis = glm::normalize(glm::cross(upVec, zAxis)); //cam Right
 		glm::vec3 yAxis = glm::cross(zAxis, xAxis);
 
 		return glm::transpose(
-					glm::inverse(
-						glm::mat4(
-							xAxis.x, yAxis.x, zAxis.x, (*cameraPosition).x,
-							xAxis.y, yAxis.y, zAxis.y, (*cameraPosition).y,
-							xAxis.z, yAxis.z, zAxis.z, (*cameraPosition).z,
-							0, 0, 0, 1)));
+			glm::inverse(
+				glm::mat4(
+					xAxis.x, yAxis.x, zAxis.x, (*cameraPosition).x,
+					xAxis.y, yAxis.y, zAxis.y, (*cameraPosition).y,
+					xAxis.z, yAxis.z, zAxis.z, (*cameraPosition).z,
+					0, 0, 0, 1)));
 	}
 	glm::mat4 GetProjMatrix()
 	{
 		float a = float(*WINDOW_HEIGHT) / float(*WINDOW_WIDTH);
-		float e = 1.0f / tan(glm::radians(Zoom) /2);
+		float e = 1.0f / tan(glm::radians(Zoom) / 2);
 		return  glm::transpose(glm::mat4(e, 0, 0, 0,
-										0, e / a, 0, 0,
-										0, 0, -(f + n) / (f - n), -2.0*f*n / (f - n),
-										0, 0, -1, 0));
+			0, e / a, 0, 0,
+			0, 0, -(f + n) / (f - n), -2.0*f*n / (f - n),
+			0, 0, -1, 0));
 	}
 
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)

@@ -1,6 +1,6 @@
 #pragma once
-#include "GUI.h"
 #include "Sun.h"
+#include "Camera.h"
 #include "shader_m.h"
 #include <glm/vec4.hpp> 
 #include <list>
@@ -21,6 +21,7 @@ public:
 	int rb_camera = 0;
 	
 	Shader *main_shader;
+	Camera *camera;
 
 	GUI();
 	~GUI();

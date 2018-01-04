@@ -139,6 +139,7 @@ int main(int, char**)
 	gui.color = &color;
 	gui.sun = &sun;
 	gui.main_shader = &main_shader;
+	gui.camera = &camera;
 //	gui.bodies = &bodies;
 
 	//
