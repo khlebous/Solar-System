@@ -93,23 +93,23 @@ public:
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
-		return glm::lookAt(*Position, *Position + *Front, *Up);
-		//glm::vec3 upVec = glm::normalize(glm::make_vec3(*upVector));
-		//glm::vec3 zAxis;
-		//if (STATIC == camera_mode)
-		//	zAxis = glm::normalize(*cameraPosition - *cameraTarget); // camDirection
-		//else if (FOLLOWING_PLANET == camera_mode)
-		//	zAxis = glm::normalize(*cameraPosition - planet->getCenterPosition()); // camDirection
-		//glm::vec3 xAxis = glm::normalize(glm::cross(upVec, zAxis)); //cam Right
-		//glm::vec3 yAxis = glm::cross(zAxis, xAxis);
+	//	return glm::lookAt(*Position, *Position + *Front, *Up);
+		glm::vec3 upVec = glm::normalize(glm::make_vec3(*Up));
+		glm::vec3 zAxis;
+		if (STATIC == Mode)
+			zAxis = glm::normalize(-*Front); // camDirection
+		else if (FOLLOWING_PLANET == Mode)
+			zAxis = glm::normalize(*Position - planet->getCenterPosition()); // camDirection
+		glm::vec3 xAxis = glm::normalize(glm::cross(upVec, zAxis)); //cam Right
+		glm::vec3 yAxis = glm::cross(zAxis, xAxis);
 
-		//return glm::transpose(
-		//	glm::inverse(
-		//		glm::mat4(
-		//			xAxis.x, yAxis.x, zAxis.x, (*cameraPosition).x,
-		//			xAxis.y, yAxis.y, zAxis.y, (*cameraPosition).y,
-		//			xAxis.z, yAxis.z, zAxis.z, (*cameraPosition).z,
-		//			0, 0, 0, 1)));
+		return glm::transpose(
+			glm::inverse(
+				glm::mat4(
+					xAxis.x, yAxis.x, zAxis.x, (*Position).x,
+					xAxis.y, yAxis.y, zAxis.y, (*Position).y,
+					xAxis.z, yAxis.z, zAxis.z, (*Position).z,
+					0, 0, 0, 1)));
 	}
 	glm::mat4 GetProjMatrix()
 	{

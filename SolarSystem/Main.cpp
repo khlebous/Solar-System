@@ -114,8 +114,8 @@ int main(int, char**)
 
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
-	glm::vec3 cameraPosition = glm::vec3(0.0f, 0.5f, 10.0f);
-	glm::vec3 cameraFront = glm::vec3(7.0f, -2.0f, 0.0f);
+	glm::vec3 cameraPosition = glm::vec3(0.0f, 1.5f, 10.0f);
+	glm::vec3 cameraFront = glm::vec3(0.0f, -5.0f, 0.0f);
 	glm::vec3 cameraUp;
 	glm::vec3 cameraRight;
 	glm::vec3 cameraWorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
