@@ -1,12 +1,10 @@
 #include "Sun.h"
 #include <glad\glad.h>
 #include <GLFW/glfw3.h>
-#include <map>
+
 #include <glm/gtc/type_ptr.hpp>
 
-Sun::Sun(float s, glm::vec3 color) :Body(s, color) 
-{
-}
+#include <map>
 
 Sun::~Sun()
 {
@@ -18,9 +16,9 @@ glm::mat4 Sun::getMModel()
 {
 	angle = step * glfwGetTime();
 	mModel = glm::mat4(
-		cos(angle), -sin(angle), 0, 0,
-		sin(angle), cos(angle), 0, 0,
-		0, 0, 1, 0,
+		cos(angle), 0, sin(angle), 0,
+		0, 1, 0, 0,
+		-sin(angle), 0, cos(angle), 0,
 		0, 0, 0, 1);
 	mModel = glm::transpose(mModel);
 	return mModel;

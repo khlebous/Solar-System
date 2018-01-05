@@ -42,7 +42,7 @@ void GUI::Draw()
 		{
 			camera->camera_mode = STATIC;
 		}
-		if (ImGui::RadioButton("Camera on the sun folowing planet", &rb_camera, 1))
+		if (ImGui::RadioButton("Camera following planet", &rb_camera, 1))
 		{
 			camera->camera_mode = FOLLOWING_PLANET;
 		}

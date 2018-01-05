@@ -27,13 +27,6 @@ public:
 	~GraphicsLibrary();
 
 	void Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader);
-	void DrawBody(Body* body, Shader ourShader);
 
-private:
-	glm::mat4 mView;
-	glm::mat4 mProj;
-
-	void CountViewMatrix();
-	void CountProjMatrix();
 };
 

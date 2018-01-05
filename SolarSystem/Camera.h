@@ -52,6 +52,7 @@ public:
 
 	glm::vec3* cameraPosition;
 	glm::vec3* cameraTarget;
+	glm::vec3* cameraFront;
 	glm::vec3* upVector;
 
 	Planet *planet;
@@ -67,7 +68,7 @@ public:
 		WorldUp = up;
 		Yaw = yaw;
 		Pitch = pitch;
-		updateCameraVectors();
+		//	updateCameraVectors();
 
 		n = 0.01;
 		f = 20.0;
@@ -80,12 +81,13 @@ public:
 		WorldUp = glm::vec3(upX, upY, upZ);
 		Yaw = yaw;
 		Pitch = pitch;
-		updateCameraVectors();
+		//updateCameraVectors();
 	}
 
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
 	{
+		//return glm::lookAt(Position, Position + Front, Up);
 		glm::vec3 upVec = glm::normalize(glm::make_vec3(*upVector));
 		glm::vec3 zAxis;
 		if (STATIC == camera_mode)
@@ -118,13 +120,9 @@ public:
 	{
 		float velocity = MovementSpeed * deltaTime;
 		if (direction == FORWARD)
-			Position += Front * velocity;
+			*cameraPosition += (*cameraTarget - *cameraPosition) * velocity;
 		if (direction == BACKWARD)
-			Position -= Front * velocity;
-		if (direction == LEFT)
-			Position -= Right * velocity;
-		if (direction == RIGHT)
-			Position += Right * velocity;
+			*cameraPosition -= (*cameraTarget - *cameraPosition) * velocity;
 	}
 
 	// Processes input received from a mouse input system. Expects the offset value in both the x and y direction.
@@ -169,10 +167,11 @@ private:
 		front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 		front.y = sin(glm::radians(Pitch));
 		front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-		Front = glm::normalize(front);
+		//Front = glm::normalize(front);
+		*cameraTarget = glm::normalize(front) + *cameraPosition;
 		// Also re-calculate the Right and Up vector
-		Right = glm::normalize(glm::cross(Front, WorldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-		Up = glm::normalize(glm::cross(Right, Front));
+		Right = glm::normalize(glm::cross(*cameraTarget, WorldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+		Up = glm::normalize(glm::cross(Right, *cameraTarget));
 	}
 };
 #endif
