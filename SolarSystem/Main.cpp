@@ -35,9 +35,9 @@ int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
 //glm::vec3 cameraPosition = { 3, 0.2, 0.7 };
-glm::vec3 cameraPosition = { 0.0, 0.8, 4.0 };
-glm::vec3 cameraTarget = { 0.0, 0.0, 0.0 };
-glm::vec3 upVector = { 0.0, 1.0, 0.0 };
+//glm::vec3 cameraPosition = { 0.0, 0.8, 4.0 };
+//glm::vec3 cameraTarget = { 0.0, 0.0, 0.0 };
+//glm::vec3 upVector = { 0.0, 1.0, 0.0 };
 
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
@@ -91,36 +91,56 @@ int main(int, char**)
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
-	Sun sun = Sun(0.327, { 1.0, 1.0, 0.7 });
+	Sun sun = Sun(1.0, { 1.0, 1.0, 0.7 });
 	main_shader.use();
-	main_shader.setVec3("lightColor",color);
+	main_shader.setVec3("lightColor", color);
 
 	sun.shader = &main_shader;
 	sun.SetSunColorToShader();
 	glUseProgram(0);
 	sun.step = 0.1f;
 
-	Planet b1 = Planet(0.01, { 1.0, 0.0, 0.0 });
-	b1.step = 0.5f;
-	b1.step2 = 0.5f;
-	b1.radius = 0.7f;
-	Planet b2 = Planet(0.08, { 0.0, 1.0, 0.5 });
+	Planet b1 = Planet(0.2, { 1.0, 0.0, 0.0 });
+	b1.step = 0.8f;
+	b1.step2 = 0.8f;
+	b1.radius = 2.0f;
+	Planet b2 = Planet(0.4, { 0.0, 1.0, 0.5 });
 	b2.step = 0.5f;
 	b2.step2 = 0.5f;
-	b2.radius = 1.5f;
+	b2.radius = 3.0f;
 	list<Planet> bodies = list<Planet>();
 	bodies.push_back(b1);
 	bodies.push_back(b2);
 
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
+	glm::vec3 cameraPosition = glm::vec3(0.0f, 0.5f, 10.0f);
+	glm::vec3 cameraFront = glm::vec3(7.0f, -2.0f, 0.0f);
+	glm::vec3 cameraUp;
+	glm::vec3 cameraRight;
+	glm::vec3 cameraWorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+	// Eular Angles
+	float cameraYaw = -90.0f;
+	float cameraPitch = 0.0f;
+	// Camera options
+	float cameraMovementSpeed = 2.5f;
+	float cameraMouseSensitivity = 0.1f;
+	float cameraZoom = 45.0f;
 
+	camera.Position = &cameraPosition;
+	camera.Front = &cameraFront; //cameraTarget - cameraPosition
+	camera.Up = &cameraUp;
+	camera.Right = &cameraRight;
+	camera.WorldUp = &cameraWorldUp;
+	camera.Yaw = &cameraYaw;
+	camera.Pitch = &cameraPitch;
+	camera.MovementSpeed = &cameraMovementSpeed;
+	camera.MouseSensitivity = &cameraMouseSensitivity;
+	camera.Zoom = &cameraZoom;
+	camera.Mode = STATIC;
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	camera.cameraPosition = &cameraPosition;
-	camera.cameraTarget = &cameraTarget;
-	camera.upVector = &upVector;
-	camera.planet = &b2;
+	camera.updateCameraVectors();
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -129,20 +149,72 @@ int main(int, char**)
 	gl.sun = &sun;
 	gl.main_shader = &main_shader;
 
-	gl.cameraPosition = &cameraPosition;
+	/*gl.cameraPosition = &cameraPosition;
 	gl.cameraTarget = &cameraTarget;
-	gl.upVector = &upVector;
+	gl.upVector = &upVector;*/
 	//
 	GUI gui = GUI();
-	gui.cameraPosition = &cameraPosition;
+	/*gui.cameraPosition = &cameraPosition;
 	gui.cameraTarget = &cameraTarget;
-	gui.upVector = &upVector;
+	gui.upVector = &upVector;*/
 	gui.color = &color;
 	gui.sun = &sun;
 	gui.main_shader = &main_shader;
 	gui.camera = &camera;
-//	gui.bodies = &bodies;
+	//	gui.bodies = &bodies;
 
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+	};
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	//
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -163,7 +235,7 @@ int main(int, char**)
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		gui.Draw();
-		
+
 		// Rendering
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -190,16 +262,19 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.ProcessKeyboard(FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
 		camera.ProcessKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.ProcessKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-	int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+	int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
 	if (firstMouse)
 	{
 		lastX = xpos;
