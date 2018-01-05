@@ -6,6 +6,7 @@
 #include "Body.h"
 #include "Planet.h"
 #include "Sun.h"
+#include "Camera.h"
 #include "shader_m.h"
 
 class GraphicsLibrary
@@ -18,6 +19,7 @@ public:
 	glm::vec3* cameraTarget;
 	glm::vec3* upVector;
 
+	Camera *camera;
 	Sun* sun;
 	Shader* main_shader;
 
@@ -25,13 +27,6 @@ public:
 	~GraphicsLibrary();
 
 	void Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader);
-	void DrawBody(Body* body, Shader ourShader);
 
-private:
-	glm::mat4 mView;
-	glm::mat4 mProj;
-
-	void CountViewMatrix();
-	void CountProjMatrix();
 };
 

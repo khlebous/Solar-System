@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Edge.h" />
     <ClInclude Include="GraphicsLibrary.h" />
     <ClInclude Include="GUI.h" />
@@ -152,12 +153,16 @@
     <ClInclude Include="Sun.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="gouraud_shader.fs" />
-    <None Include="gouraud_shader.vs" />
-    <None Include="phong_shader.fs" />
-    <None Include="phong_shader.vs" />
-    <None Include="sun_shader.fs" />
-    <None Include="sun_shader.vs" />
+    <None Include="Shaders\gouraud_shading_blinn_phong_lighting.fs" />
+    <None Include="Shaders\gouraud_shading_blinn_phong_lighting.vs" />
+    <None Include="Shaders\gouraud_shading_phong_lighting.fs" />
+    <None Include="Shaders\gouraud_shading_phong_lighting.vs" />
+    <None Include="Shaders\phong_shading_blinn_phong_lighting.fs" />
+    <None Include="Shaders\phong_shading_blinn_phong_lighting.vs" />
+    <None Include="Shaders\phong_shading_phong_lighting.fs" />
+    <None Include="Shaders\phong_shading_phong_lighting.vs" />
+    <None Include="Shaders\sun_shader.fs" />
+    <None Include="Shaders\sun_shader.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -26,19 +26,31 @@ void GUI::Draw()
 	// 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name the window.
 	if (show_another_window)
 	{
-		ImGui::Begin("Another Window", &show_another_window); 
+		ImGui::Begin("Another Window", &show_another_window);
 		ImGui::SetWindowSize(ImVec2(300.0f, 600.0f));
-		if (ImGui::RadioButton("Phong", &rb_lighting, 0))
+		if (ImGui::RadioButton("Phong Shading", &rb_shading, 0))
+			SwitchLightingShadingShader();
+		if (ImGui::RadioButton("Gouraud Shading", &rb_shading, 1))
+			SwitchLightingShadingShader();
+		ImGui::Text("--------------------");
+		if (ImGui::RadioButton("Phong Lighting Model", &rb_lighting, 0))
+			SwitchLightingShadingShader();
+		if (ImGui::RadioButton("Blinn-Phong Lighting Model", &rb_lighting, 1))
+			SwitchLightingShadingShader();
+		ImGui::Text("--------------------");
+		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
 		{
-			*main_shader = Shader("phong_shader.vs", "phong_shader.fs");
-			sun->SetSunColorToShader();
-		} 
-		ImGui::SameLine();
-		if (ImGui::RadioButton("Gouraud", &rb_lighting, 1))
-		{
-			*main_shader = Shader("gouraud_shader.vs", "gouraud_shader.fs");
-			sun->SetSunColorToShader();
+			camera->camera_mode = STATIC;
 		}
+		if (ImGui::RadioButton("Camera following planet", &rb_camera, 1))
+		{
+			camera->camera_mode = FOLLOWING_PLANET;
+		}
+		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
+		{
+
+		}
+		ImGui::Text("--------------------");
 		ImGui::Text("Position of camera");
 		ImGui::InputFloat("CamPos X", &((*cameraPosition).x), 0.1);
 		ImGui::InputFloat("CamPos Y", &((*cameraPosition).y), 0.1);
@@ -85,4 +97,23 @@ void GUI::Draw()
 	//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 	ImGui::Render();
 
+}
+
+void GUI::SwitchLightingShadingShader()
+{
+	if (rb_shading == 0)
+	{
+		if (rb_lighting == 0)
+			*main_shader = Shader("Shaders/phong_shading_phong_lighting.vs", "Shaders/phong_shading_phong_lighting.fs");
+		else
+			*main_shader = Shader("Shaders/phong_shading_blinn_phong_lighting.vs", "shaders/phong_shading_blinn_phong_lighting.fs");
+	}
+	else
+	{
+		if (rb_lighting == 0)
+			*main_shader = Shader("Shaders/gouraud_shading_phong_lighting.vs", "Shaders/gouraud_shading_phong_lighting.fs");
+		else
+			*main_shader = Shader("Shaders/gouraud_shading_blinn_phong_lighting.vs", "Shaders/gouraud_shading_blinn_phong_lighting.fs");
+	}
+	sun->SetSunColorToShader();
 }

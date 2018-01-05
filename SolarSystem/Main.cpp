@@ -22,29 +22,34 @@
 #include "shader_m.h"
 #include <glm/vec4.hpp> 
 #include "Planet.h"
+#include "Camera.h"
 
 using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-//void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void error_callback(int error, const char* description);
 
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
-glm::vec3 cameraPosition = { 3, 0.2, 0.7 };
-glm::vec3 cameraTarget = { 0, 0, 0 };
-glm::vec3 upVector = { 0, 0, 0.5 };
+//glm::vec3 cameraPosition = { 3, 0.2, 0.7 };
+glm::vec3 cameraPosition = { 0.0, 0.8, 4.0 };
+glm::vec3 cameraTarget = { 0.0, 0.0, 0.0 };
+glm::vec3 upVector = { 0.0, 1.0, 0.0 };
 
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
+//Camera camera(glm::vec3(3.0f, 0.2f, 0.7f));
+//Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
+Camera camera = Camera();
+
+float lastX = WINDOW_WIDTH / 2.0;
+float lastY = WINDOW_HEIGHT / 2.0;
 bool firstMouse = true;
-float yaw = -90.0f;	// yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
-float pitch = 0.0f;
-float lastX = 800.0f / 2.0;
-float lastY = 600.0 / 2.0;
-float fov = 45.0f;
+bool leftButtonPressed = false;
 
 int main(int, char**)
 {
@@ -65,7 +70,8 @@ int main(int, char**)
 
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	//glfwSetScrollCallback(window, scroll_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetCursorPosCallback(window, mouse_callback);
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -79,8 +85,8 @@ int main(int, char**)
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL2_Init(window, true);
 
-	Shader main_shader("phong_shader.vs", "phong_shader.fs"); 
-	Shader sun_shader("sun_shader.vs", "sun_shader.fs");
+	Shader main_shader("Shaders/phong_shading_phong_lighting.vs", "Shaders/phong_shading_phong_lighting.fs");
+	Shader sun_shader("Shaders/sun_shader.vs", "Shaders/sun_shader.fs");
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
@@ -88,30 +94,44 @@ int main(int, char**)
 	Sun sun = Sun(0.327, { 1.0, 1.0, 0.7 });
 	main_shader.use();
 	main_shader.setVec3("lightColor",color);
-	glUseProgram(0);
 
 	sun.shader = &main_shader;
+	sun.SetSunColorToShader();
+	glUseProgram(0);
 	sun.step = 0.1f;
-	Planet b1 = Planet(0.1, { 1.0, 0.0, 0.0 });
+
+	Planet b1 = Planet(0.01, { 1.0, 0.0, 0.0 });
 	b1.step = 0.5f;
 	b1.step2 = 0.5f;
-	b1.radius = 1.0f;
-
+	b1.radius = 0.7f;
+	Planet b2 = Planet(0.08, { 0.0, 1.0, 0.5 });
+	b2.step = 0.5f;
+	b2.step2 = 0.5f;
+	b2.radius = 1.5f;
 	list<Planet> bodies = list<Planet>();
 	bodies.push_back(b1);
+	bodies.push_back(b2);
 
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
 
+	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
+	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
+	camera.cameraPosition = &cameraPosition;
+	camera.cameraTarget = &cameraTarget;
+	camera.upVector = &upVector;
+	camera.planet = &b2;
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
 	gl.WINDOW_HEIGHT = &WINDOW_HEIGHT;
+	gl.camera = &camera;
+	gl.sun = &sun;
+	gl.main_shader = &main_shader;
+
 	gl.cameraPosition = &cameraPosition;
 	gl.cameraTarget = &cameraTarget;
 	gl.upVector = &upVector;
-	gl.sun = &sun;
-	gl.main_shader = &main_shader;
 	//
 	GUI gui = GUI();
 	gui.cameraPosition = &cameraPosition;
@@ -120,8 +140,8 @@ int main(int, char**)
 	gui.color = &color;
 	gui.sun = &sun;
 	gui.main_shader = &main_shader;
+	gui.camera = &camera;
 //	gui.bodies = &bodies;
-
 
 	//
 	glEnable(GL_CULL_FACE);
@@ -170,27 +190,39 @@ void processInput(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	float cameraSpeed = deltaTime;
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cameraPosition += cameraSpeed * (cameraTarget - cameraPosition);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cameraPosition -= cameraSpeed * (cameraTarget - cameraPosition);
+	if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+		camera.ProcessKeyboard(FORWARD, deltaTime);
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cameraPosition -= glm::normalize(glm::cross((cameraTarget - cameraPosition), upVector)) * cameraSpeed;
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cameraPosition += glm::normalize(glm::cross((cameraTarget - cameraPosition), upVector)) * cameraSpeed;
+		camera.ProcessKeyboard(BACKWARD, deltaTime);
+		camera.ProcessKeyboard(RIGHT, deltaTime);
 }
 
-//void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-//{
-//	if (fov >= 1.0f && fov <= 45.0f)
-//		fov -= yoffset;
-//	if (fov <= 1.0f)
-//		fov = 1.0f;
-//	if (fov >= 45.0f)
-//		fov = 45.0f;
-//}
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+	int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+	if (firstMouse)
+	{
+		lastX = xpos;
+		lastY = ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = xpos - lastX;
+	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+	lastX = xpos;
+	lastY = ypos;
+
+	if (state == GLFW_RELEASE)
+		return;
+	camera.ProcessMouseMovement(xoffset, yoffset);
+}
 void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error %d: %s\n", error, description);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	camera.ProcessMouseScroll(yoffset);
 }
