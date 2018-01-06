@@ -70,8 +70,8 @@ int main(int, char**)
 
 	glfwMakeContextCurrent(window);
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 
 	// tell GLFW to capture our mouse
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -119,16 +119,14 @@ int main(int, char**)
 	glm::vec3 cameraUp;
 	glm::vec3 cameraRight;
 	glm::vec3 cameraWorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	// Eular Angles
 	float cameraYaw = -90.0f;
-	float cameraPitch = 0.0f;
-	// Camera options
+	float cameraPitch = -7.0f;
 	float cameraMovementSpeed = 2.5f;
 	float cameraMouseSensitivity = 0.1f;
 	float cameraZoom = 45.0f;
 
 	camera.Position = &cameraPosition;
-	camera.Front = &cameraFront; //cameraTarget - cameraPosition
+	camera.Front = &cameraFront;
 	camera.Up = &cameraUp;
 	camera.Right = &cameraRight;
 	camera.WorldUp = &cameraWorldUp;
@@ -141,6 +139,7 @@ int main(int, char**)
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
 	camera.updateCameraVectors();
+	camera.planet = &b1;
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -149,14 +148,7 @@ int main(int, char**)
 	gl.sun = &sun;
 	gl.main_shader = &main_shader;
 
-	/*gl.cameraPosition = &cameraPosition;
-	gl.cameraTarget = &cameraTarget;
-	gl.upVector = &upVector;*/
-	//
 	GUI gui = GUI();
-	/*gui.cameraPosition = &cameraPosition;
-	gui.cameraTarget = &cameraTarget;
-	gui.upVector = &upVector;*/
 	gui.color = &color;
 	gui.sun = &sun;
 	gui.main_shader = &main_shader;
@@ -218,8 +210,12 @@ int main(int, char**)
 	//
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	
+	glfwSetScrollCallback(window, scroll_callback);
+	
 	while (!glfwWindowShouldClose(window))
 	{
+
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
@@ -296,6 +292,7 @@ void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error %d: %s\n", error, description);
 }
+
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {

@@ -49,13 +49,8 @@ public:
 	int* WINDOW_HEIGHT;
 
 	Camera_Mode Mode;
-
-	/*glm::vec3* cameraPosition;
-	glm::vec3* cameraTarget;
-	glm::vec3* cameraFront;
-	glm::vec3* upVector;*/
-
 	Planet *planet;
+
 private:
 	float n;
 	float f;
@@ -67,28 +62,6 @@ public:
 		f = 20.0;
 		Mode = STATIC;
 	}
-	// Constructor with vectors
-	//Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH) : Front(	), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
-	//{
-	//	/*Position = position;
-	//	WorldUp = up;
-	//	Yaw = yaw;
-	//	Pitch = pitch;
-	//	updateCameraVectors();*/
-
-	//	n = 0.01;
-	//	f = 20.0;
-	//	Mode = STATIC;
-	//}
-	// Constructor with scalar values
-	//Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVTY), Zoom(ZOOM)
-	///{
-		/*Position = glm::vec3(posX, posY, posZ);
-		WorldUp = glm::vec3(upX, upY, upZ);
-		Yaw = yaw;
-		Pitch = pitch;
-		updateCameraVectors();*/
-	//}
 
 	// Returns the view matrix calculated using Eular Angles and the LookAt Matrix
 	glm::mat4 GetViewMatrix()
@@ -124,12 +97,6 @@ public:
 	// Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
 	void ProcessKeyboard(Camera_Movement direction, float deltaTime)
 	{
-		/*float velocity = MovementSpeed * deltaTime;
-		if (direction == FORWARD)
-			*cameraPosition += (*cameraTarget - *cameraPosition) * velocity;
-		if (direction == BACKWARD)
-			*cameraPosition -= (*cameraTarget - *cameraPosition) * velocity;
-*/
 		float velocity = *MovementSpeed * deltaTime;
 		if (direction == FORWARD)
 			*Position += *Front * velocity;
