@@ -40,11 +40,11 @@ void GUI::Draw()
 		ImGui::Text("--------------------");
 		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
 		{
-			camera->camera_mode = STATIC;
+			camera->Mode = STATIC;
 		}
 		if (ImGui::RadioButton("Camera following planet", &rb_camera, 1))
 		{
-			camera->camera_mode = FOLLOWING_PLANET;
+			camera->Mode = FOLLOWING_PLANET;
 		}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
@@ -52,21 +52,34 @@ void GUI::Draw()
 		}
 		ImGui::Text("--------------------");
 		ImGui::Text("Position of camera");
-		ImGui::InputFloat("CamPos X", &((*cameraPosition).x), 0.1);
-		ImGui::InputFloat("CamPos Y", &((*cameraPosition).y), 0.1);
-		ImGui::InputFloat("CamPos Z", &((*cameraPosition).z), 0.1);
-
-		ImGui::Text("Camera target");
-		ImGui::InputFloat("CamTrg X", &((*cameraTarget).x), 0.1);
-		ImGui::InputFloat("CamTrg Y", &((*cameraTarget).y), 0.1);
-		ImGui::InputFloat("CamTrg Z", &((*cameraTarget).z), 0.1);
-
+		ImGui::InputFloat("CamPos X", &((*camera->Position).x), 0.1);
+		ImGui::InputFloat("CamPos Y", &((*camera->Position).y), 0.1);
+		ImGui::InputFloat("CamPos Z", &((*camera->Position).z), 0.1);
+		ImGui::Text("Camera Front");
+		ImGui::InputFloat("CamFront X", &((*camera->Front).x), 0.1);
+		ImGui::InputFloat("CamFront Y", &((*camera->Front).y), 0.1);
+		ImGui::InputFloat("CamFront Z", &((*camera->Front).z), 0.1);
 		ImGui::Text("Up vector");
-		ImGui::InputFloat("UpVec X", &((*upVector).x), 0.01);
-		ImGui::InputFloat("UpVec Y", &((*upVector).y), 0.01);
-		ImGui::InputFloat("UpVec Z", &((*upVector).z), 0.01);
+		ImGui::InputFloat("UpVec X", &((*camera->Up).x), 0.01);
+		ImGui::InputFloat("UpVec Y", &((*camera->Up).y), 0.01);
+		ImGui::InputFloat("UpVec Z", &((*camera->Up).z), 0.01);
+		ImGui::Text("Right vector");
+		ImGui::InputFloat("RightVec X", &((*camera->Right).x), 0.01);
+		ImGui::InputFloat("RightVec Y", &((*camera->Right).y), 0.01);
+		ImGui::InputFloat("RightVec Z", &((*camera->Right).z), 0.01);
+		ImGui::Text("WorldUp vector");
+		ImGui::InputFloat("WorldUpVec X", &((*camera->WorldUp).x), 0.01);
+		ImGui::InputFloat("WorldUpVec Y", &((*camera->WorldUp).y), 0.01);
+		ImGui::InputFloat("WorldUpVec Z", &((*camera->WorldUp).z), 0.01);
+		ImGui::Text("--------------------");
+		ImGui::InputFloat("Yaw", camera->Yaw, 0.01);
+		ImGui::InputFloat("Pitch", camera->Pitch, 0.01);
+		ImGui::InputFloat("MovementSpeed", camera->MovementSpeed, 0.01);
+		ImGui::InputFloat("MouseSensitivity", camera->MouseSensitivity, 0.01);
+		ImGui::InputFloat("Zoom", camera->Zoom, 0.01);
+		ImGui::Text("--------------------");
 
-		ImGui::GetStateStorage()->SetInt(ImGui::GetID("Sun"), 1);
+		//ImGui::GetStateStorage()->SetInt(ImGui::GetID("Sun"), 1);
 		if (ImGui::CollapsingHeader("Sun"))
 		{
 			if (ImGui::ColorEdit3("color 1", &sun->color.x))
