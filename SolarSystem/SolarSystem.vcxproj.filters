@@ -151,5 +151,7 @@
     <None Include="Shaders\sun_shader.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="skybox.vs" />
+    <None Include="skybox.fs" />
   </ItemGroup>
 </Project>
