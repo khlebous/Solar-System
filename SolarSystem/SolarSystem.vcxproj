@@ -163,6 +163,8 @@
     <None Include="Shaders\phong_shading_phong_lighting.vs" />
     <None Include="Shaders\sun_shader.fs" />
     <None Include="Shaders\sun_shader.vs" />
+    <None Include="skybox.fs" />
+    <None Include="skybox.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

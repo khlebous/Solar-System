@@ -12,15 +12,17 @@
 #include "imgui_impl_glfw.h"
 #include <stdio.h>
 #include <GLFW/glfw3.h>
-#include "GUI.h"
 #include <iostream>
-#include "Edge.h"
-#include "Point.h"
 #include <vector>
+#include <glm/vec4.hpp> 
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
+#include "shader_m.h"
+#include "GUI.h"
 #include "GraphicsLibrary.h"
 #include "Sun.h"
-#include "shader_m.h"
-#include <glm/vec4.hpp> 
 #include "Planet.h"
 #include "Camera.h"
 
@@ -30,7 +32,7 @@ void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void error_callback(int error, const char* description);
-
+unsigned int loadCubemap(vector<std::string> faces);
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
@@ -207,12 +209,26 @@ int main(int, char**)
 	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	vector<std::string> faces
+	{
+		"Skybox/bkg1_right.png",
+		"Skybox/bkg1_left.png",
+		"Skybox/bkg1_top.png",
+		"Skybox/bkg1_bot.png",
+		"Skybox/bkg1_front.png",
+		"Skybox/bkg1_back.png"
+	};
+	unsigned int cubemapTexture = loadCubemap(faces);
+	Shader skyboxShader("skybox.vs", "skybox.fs");
+	skyboxShader.use();
+	skyboxShader.setInt("skybox", 0);
 	//
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	
+
 	glfwSetScrollCallback(window, scroll_callback);
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 
@@ -224,6 +240,18 @@ int main(int, char**)
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+
+		glDepthFunc(GL_LEQUAL);
+		skyboxShader.use();
+		skyboxShader.setMat4("view", glm::mat4(glm::mat3(camera.GetViewMatrix())));
+		skyboxShader.setMat4("projection", camera.GetProjMatrix());
+		glBindVertexArray(skyboxVAO);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glBindVertexArray(0);
+		glDepthFunc(GL_LESS); // set depth function back to default
+
 
 		//GL::Draw(&bodies, main_shader);
 		gl.Draw(&sun, &bodies, sun_shader);
@@ -297,4 +325,34 @@ void error_callback(int error, const char* description)
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(yoffset);
+}
+
+unsigned int loadCubemap(vector<std::string> faces)
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+	int width, height, nrChannels;
+	for (unsigned int i = 0; i < faces.size(); i++)
+	{
+		unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nrChannels, 0);
+		if (data)
+		{
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			stbi_image_free(data);
+		}
+		else
+		{
+			std::cout << "Cubemap texture failed to load at path: " << faces[i] << std::endl;
+			stbi_image_free(data);
+		}
+	}
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return textureID;
 }
