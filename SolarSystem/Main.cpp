@@ -210,23 +210,14 @@ int main(int, char**)
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-	//vector<std::string> faces
-	//{
-	//	"ame_nebula/purplenebula_rt.tga",
-	//	"ame_nebula/purplenebula_lf.tga",
-	//	"ame_nebula/purplenebula_up.tga",
-	//	"ame_nebula/purplenebula_dn.tga",
-	//	"ame_nebula/purplenebula_bk.tga",
-	//	"ame_nebula/purplenebula_ft.tga"
-	//};
 	vector<std::string> faces
 	{
-		"blue/bkg1_right.png",
-		"blue/bkg1_left.png",
-		"blue/bkg1_top.png",
-		"blue/bkg1_bot.png",
-		"blue/bkg1_front.png",
-		"blue/bkg1_back.png"
+		"Skybox/bkg1_right.png",
+		"Skybox/bkg1_left.png",
+		"Skybox/bkg1_top.png",
+		"Skybox/bkg1_bot.png",
+		"Skybox/bkg1_front.png",
+		"Skybox/bkg1_back.png"
 	};
 	unsigned int cubemapTexture = loadCubemap(faces);
 	Shader skyboxShader("skybox.vs", "skybox.fs");
@@ -235,9 +226,9 @@ int main(int, char**)
 	//
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	
+
 	glfwSetScrollCallback(window, scroll_callback);
-	
+
 	while (!glfwWindowShouldClose(window))
 	{
 
