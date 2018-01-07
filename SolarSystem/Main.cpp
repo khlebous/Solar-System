@@ -116,32 +116,12 @@ int main(int, char**)
 
 	/*bodies.push_back(b2);
 	bodies.push_back(b3);*/
-	glm::vec3 cameraPosition = glm::vec3(0.0f, 1.5f, 10.0f);
-	glm::vec3 cameraFront = glm::vec3(0.0f, -5.0f, 0.0f);
-	glm::vec3 cameraUp;
-	glm::vec3 cameraRight;
-	glm::vec3 cameraWorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-	float cameraYaw = -90.0f;
-	float cameraPitch = -7.0f;
-	float cameraMovementSpeed = 2.5f;
-	float cameraMouseSensitivity = 0.1f;
-	float cameraZoom = 45.0f;
 
-	camera.Position = &cameraPosition;
-	camera.Front = &cameraFront;
-	camera.Up = &cameraUp;
-	camera.Right = &cameraRight;
-	camera.WorldUp = &cameraWorldUp;
-	camera.Yaw = &cameraYaw;
-	camera.Pitch = &cameraPitch;
-	camera.MovementSpeed = &cameraMovementSpeed;
-	camera.MouseSensitivity = &cameraMouseSensitivity;
-	camera.Zoom = &cameraZoom;
-	camera.Mode = STATIC;
+
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	camera.updateCameraVectors();
 	camera.planet = &b1;
+	//camera.updateCameraVectors();
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;

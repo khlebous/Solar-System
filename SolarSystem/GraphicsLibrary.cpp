@@ -21,8 +21,7 @@ void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader)
 	main_shader->use();
 	main_shader->setMat4("view", camera->GetViewMatrix());
 	main_shader->setMat4("proj", camera->GetProjMatrix());
-	//main_shader->setVec3("viewPos", *camera->cameraPosition);
-	main_shader->setVec3("viewPos", *camera->Position);
+	main_shader->setVec3("viewPos", camera->Position);
 	for (auto &b : *bodies)
 	{
 		main_shader->setMat4("model", b.getMModel());
