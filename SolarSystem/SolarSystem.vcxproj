@@ -132,6 +132,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Mesh.h" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,7 @@
     <ClInclude Include="Includes\imgui\stb_truetype.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="shader_m.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Sun.h" />
   </ItemGroup>

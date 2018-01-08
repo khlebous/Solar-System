@@ -8,6 +8,7 @@
 
 Body::Body(float s, glm::vec3 color)
 {
+	name = "body";
 	this->color = color;
 	this->scale = s;
 	/*mModel = glm::mat4( s,    0.0f, 0.0f, 0.0f,
