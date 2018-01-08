@@ -6,6 +6,7 @@ layout (location = 2) in vec3 aColor;
 out vec3 ourColor;
 out vec3 Normal;
 out vec3 FragPos;
+
 uniform mat4 proj;
 uniform mat4 view;
 uniform mat4 model;

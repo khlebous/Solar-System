@@ -7,7 +7,7 @@ out vec3 LightingColor; // resulting color from lighting calculations
 out vec3 ourColor;
 
 vec3 lightPos = vec3(0.0, 0.0, 0.0);
-vec3 viewPos = vec3(3, 0.2, 0.7);
+uniform vec3 viewPos;
 uniform vec3 lightColor;
 
 uniform mat4 model;

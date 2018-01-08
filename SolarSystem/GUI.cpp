@@ -9,6 +9,14 @@
 
 GUI::GUI()
 {
+	char somebuffer[20] = "new name";
+	string s = somebuffer;
+	//new_planet_name = s.c_str();
+	new_planet_color = glm::vec3(1.0,1.0,1.0);
+	new_planet_step = 0.5;
+	new_planet_step2 = 1.0;
+	new_planet_radius = 2.0;
+	new_planet_scale = 0.5;
 }
 
 GUI::~GUI()
@@ -17,20 +25,19 @@ GUI::~GUI()
 
 void GUI::Draw()
 {
-	bool show_test_window = true;
-	bool show_another_window = true;
+	
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	ImGui_ImplGlfwGL2_NewFrame();
 
 	// 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name the window.
-	if (show_another_window)
+	if (show_main_window)
 	{
-		ImGui::Begin("Another Window", &show_another_window);
+		ImGui::Begin("Settings", &show_main_window);
 		ImGui::SetWindowSize(ImVec2(300.0f, 600.0f));
-		if (ImGui::RadioButton("Phong Shading", &rb_shading, 0))
+		if (ImGui::RadioButton("Gouraud Shading", &rb_shading, 0))
 			SwitchLightingShadingShader();
-		if (ImGui::RadioButton("Gouraud Shading", &rb_shading, 1))
+		if (ImGui::RadioButton("Blinn Shading", &rb_shading, 1))
 			SwitchLightingShadingShader();
 		ImGui::Text("--------------------");
 		if (ImGui::RadioButton("Phong Lighting Model", &rb_lighting, 0))
@@ -95,7 +102,7 @@ void GUI::Draw()
 			{
 				sun->SetScale();
 			}
-			for (auto &p : *planets)
+			for (auto &p : sun->planets)
 			{
 				if (ImGui::TreeNode(p.name.c_str()))
 					//if (ImGui::CollapsingHeader(p.name.c_str()))
@@ -114,7 +121,22 @@ void GUI::Draw()
 					ImGui::TreePop();
 				}
 			}
+			if(ImGui::Button("Add new planet"))
+				show_add_new_planet_window = true;
 		}
+		ImGui::End();
+	}
+
+	if (show_add_new_planet_window)
+	{
+		ImGui::Begin("New planet", &show_add_new_planet_window);
+		
+		ImGui::InputText("Planet name", new_planet_name, 20);
+		ImGui::ColorEdit3("Planet color", &(new_planet_color.x));
+		ImGui::InputFloat("Planet rotation velocity", &new_planet_step, 0.01);
+		ImGui::InputFloat("Planet rotation velocity2", &new_planet_step, 0.01);
+		ImGui::InputFloat("Planet radius", &new_planet_radius, 0.01);
+		ImGui::InputFloat("Planet scale", &new_planet_scale, 0.01);
 		ImGui::End();
 	}
 

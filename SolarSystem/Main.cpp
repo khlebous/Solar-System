@@ -31,7 +31,6 @@ void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void error_callback(int error, const char* description);
-unsigned int loadCubemap(vector<std::string> faces);
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
@@ -136,9 +135,8 @@ int main(int, char**)
 	gui.sun = &sun;
 	gui.main_shader = &planet_shader;
 	gui.camera = &camera;
-	gui.planets = &planets;
 	
-	//Skybox skybox = Skybox();
+	Skybox skybox = Skybox();
 	
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -157,7 +155,7 @@ int main(int, char**)
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
 		// 
-		//skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
+		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		gl.Draw(&sun, &planets);
 		//
 
@@ -226,7 +224,6 @@ void error_callback(int error, const char* description)
 {
 	fprintf(stderr, "Error %d: %s\n", error, description);
 }
-
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {

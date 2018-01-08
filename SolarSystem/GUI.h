@@ -14,7 +14,6 @@ public:
 	glm::vec3* color;
 
 	Sun *sun;
-	list<Planet> *planets;
 	
 	int rb_shading = 0;
 	int rb_lighting = 0;
@@ -29,6 +28,18 @@ public:
 	void Draw();
 
 private:
+	//
+	char *new_planet_name;
+	glm::vec3 new_planet_color;
+	float new_planet_step;
+	float new_planet_step2;
+	float new_planet_radius;
+	float new_planet_scale;
+	//
+	bool show_test_window = true;
+	bool show_main_window = true;
+	bool show_add_new_planet_window = false;
+
 	void SwitchLightingShadingShader();
 };
 

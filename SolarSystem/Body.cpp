@@ -193,7 +193,7 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		glm::vec3 a = m.vertices[t1];
 		glm::vec3 b = m.vertices[t2];
 		glm::vec3 c = m.vertices[t3];
-		glm::vec3 norm = glm::normalize(glm::cross(b - a, c - a));
+	//	glm::vec3 norm = glm::normalize(glm::cross(b - a, c - a));
 		vector<float> colors = vector<float>(m.vertices.size());
 		for (size_t i = 0; i < m.vertices.size(); i++)
 		{
@@ -202,9 +202,12 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(m.vertices[t1].x*s);
 		v->push_back(m.vertices[t1].y*s);
 		v->push_back(m.vertices[t1].z*s);
-		v->push_back(norm.x);
+		/*v->push_back(norm.x);
 		v->push_back(norm.y);
-		v->push_back(norm.z);
+		v->push_back(norm.z);*/
+		v->push_back(a.x);
+		v->push_back(a.y);
+		v->push_back(a.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
 		//v->push_back(color.z);
@@ -213,9 +216,12 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(m.vertices[t2].x*s);
 		v->push_back(m.vertices[t2].y*s);
 		v->push_back(m.vertices[t2].z*s);
-		v->push_back(norm.x);
+		/*v->push_back(norm.x);
 		v->push_back(norm.y);
-		v->push_back(norm.z);
+		v->push_back(norm.z);*/
+		v->push_back(b.x);
+		v->push_back(b.y);
+		v->push_back(b.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
 		v->push_back(colors[t2]);
@@ -223,9 +229,12 @@ void Body::GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v)
 		v->push_back(m.vertices[t3].x*s);
 		v->push_back(m.vertices[t3].y*s);
 		v->push_back(m.vertices[t3].z*s);
-		v->push_back(norm.x);
+		/*v->push_back(norm.x);
 		v->push_back(norm.y);
-		v->push_back(norm.z);
+		v->push_back(norm.z);*/
+		v->push_back(c.x);
+		v->push_back(c.y);
+		v->push_back(c.z);
 		v->push_back(color.x);
 		v->push_back(color.y);
 		v->push_back(colors[t3]);
