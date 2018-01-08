@@ -14,14 +14,16 @@ class Sun :
 	public Body
 {
 public:
-	Shader* shader;
-
-	Sun(float s, glm::vec3 color) :Body(s, color) {};
+	Sun(float s, glm::vec3 color);
 	~Sun();
 
+	Shader* shader;
+	Shader sun_shader;
+	
 	glm::mat4 getMModel();
 	void SetColor();
 	void SetScale();
 	void SetSunColorToShader();
+	void Draw(glm::mat4 viewM, glm::mat4 projM);
 };
 

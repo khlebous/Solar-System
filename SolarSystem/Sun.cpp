@@ -6,6 +6,12 @@
 
 #include <map>
 
+Sun::Sun(float s, glm::vec3 color) :Body(s, color) 
+{
+	sun_shader = Shader("Shaders/sun_shader.vs", "Shaders/sun_shader.fs");
+};
+
+
 Sun::~Sun()
 {
 	glDeleteVertexArrays(1, &VAO);
@@ -60,4 +66,17 @@ void Sun::SetSunColorToShader()
 	shader->use();
 	shader->setVec3("lightColor", color);
 	glUseProgram(0);
+}
+
+void Sun::Draw(glm::mat4 viewM, glm::mat4 projM)
+{
+	sun_shader.use();
+	sun_shader.setMat4("view", viewM);
+	sun_shader.setMat4("proj", projM);
+	sun_shader.setMat4("model", getMModel());
+	glBindVertexArray(VAO);
+	glDrawArrays(GL_TRIANGLES, 0, vertCount);
+
+	glUseProgram(0);
+	glBindVertexArray(0);
 }

@@ -95,21 +95,23 @@ void GUI::Draw()
 			{
 				sun->SetScale();
 			}
-		}
-		for (auto &p : *planets)
-		{
-			if (ImGui::CollapsingHeader(p.name.c_str()))
+			for (auto &p : *planets)
 			{
-				if (ImGui::ColorEdit3((p.name + " color").c_str(), &(p.color.x)))
+				if (ImGui::TreeNode(p.name.c_str()))
+					//if (ImGui::CollapsingHeader(p.name.c_str()))
 				{
-					p.SetColor();
-				}
-				ImGui::InputFloat((p.name + " rotation velocity").c_str(), &(p.step), 0.01);
-				ImGui::InputFloat((p.name + " rotation velocity2").c_str(), &(p.step2), 0.01);
-				ImGui::InputFloat((p.name + " radius").c_str(), &(p.radius), 0.01);
-				if (ImGui::InputFloat((p.name + " scale").c_str(), &(p.scale), 0.01))
-				{
-					p.SetScale();
+					if (ImGui::ColorEdit3((p.name + " color").c_str(), &(p.color.x)))
+					{
+						p.SetColor();
+					}
+					ImGui::InputFloat((p.name + " rotation velocity").c_str(), &(p.step), 0.01);
+					ImGui::InputFloat((p.name + " rotation velocity2").c_str(), &(p.step2), 0.01);
+					ImGui::InputFloat((p.name + " radius").c_str(), &(p.radius), 0.01);
+					if (ImGui::InputFloat((p.name + " scale").c_str(), &(p.scale), 0.01))
+					{
+						p.SetScale();
+					}
+					ImGui::TreePop();
 				}
 			}
 		}

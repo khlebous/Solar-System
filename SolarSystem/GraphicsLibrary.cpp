@@ -9,14 +9,12 @@ GraphicsLibrary::~GraphicsLibrary()
 {
 }
 
-void GraphicsLibrary::Draw(Sun* sun, list<Planet>* planets, Shader sun_shader)
+void GraphicsLibrary::Draw(Sun* sun, list<Planet>* planets)
 {
-	sun_shader.use();
-	sun_shader.setMat4("view", camera->GetViewMatrix());
-	sun_shader.setMat4("proj", camera->GetProjMatrix());
-	sun_shader.setMat4("model", sun->getMModel());
-	glBindVertexArray(sun->VAO);
-	glDrawArrays(GL_TRIANGLES, 0, sun->vertCount);
+	glm::mat4 viewM = camera->GetViewMatrix();
+	glm::mat4 projM = camera->GetProjMatrix();
+
+	sun->Draw(viewM, projM);
 	//
 	main_shader->use();
 	main_shader->setMat4("view", camera->GetViewMatrix());

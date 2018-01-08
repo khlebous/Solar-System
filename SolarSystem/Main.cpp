@@ -87,7 +87,6 @@ int main(int, char**)
 	ImGui_ImplGlfwGL2_Init(window, true);
 
 	Shader main_shader("Shaders/phong_shading_phong_lighting.vs", "Shaders/phong_shading_phong_lighting.fs");
-	Shader sun_shader("Shaders/sun_shader.vs", "Shaders/sun_shader.fs");
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
@@ -159,7 +158,7 @@ int main(int, char**)
 
 		// 
 		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
-		gl.Draw(&sun, &planets, sun_shader);
+		gl.Draw(&sun, &planets);
 		//
 
 		glUseProgram(0);
