@@ -9,6 +9,7 @@
 Sun::Sun(float s, glm::vec3 color) :Body(s, color) 
 {
 	sun_shader = Shader("Shaders/sun_shader.vs", "Shaders/sun_shader.fs");
+	planets = list<Planet>();
 };
 
 
@@ -63,12 +64,12 @@ void Sun::SetScale()
 }
 void Sun::SetSunColorToShader()
 {
-	shader->use();
-	shader->setVec3("lightColor", color);
+	planet_shader->use();
+	planet_shader->setVec3("lightColor", color);
 	glUseProgram(0);
 }
 
-void Sun::Draw(glm::mat4 viewM, glm::mat4 projM)
+void Sun::DrawSunWithPlanets(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos)
 {
 	sun_shader.use();
 	sun_shader.setMat4("view", viewM);
@@ -76,6 +77,22 @@ void Sun::Draw(glm::mat4 viewM, glm::mat4 projM)
 	sun_shader.setMat4("model", getMModel());
 	glBindVertexArray(VAO);
 	glDrawArrays(GL_TRIANGLES, 0, vertCount);
+
+	planet_shader->use();
+	planet_shader->setMat4("view", viewM);
+	planet_shader->setMat4("proj", projM);
+	planet_shader->setVec3("viewPos",camPos);
+	for (Planet &b : planets)
+	{
+		planet_shader->setMat4("model", b.getMModel());
+		glBindVertexArray(b.VAO);
+		glDrawArrays(GL_TRIANGLES, 0, b.vertCount);
+		//glDrawElements(GL_TRIANGLES, b.vertCount/2, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 3 * 1, GL_UNSIGNED_INT, 0);
+
+		glBindVertexArray(0);
+	}
+	glUseProgram(0);
 
 	glUseProgram(0);
 	glBindVertexArray(0);

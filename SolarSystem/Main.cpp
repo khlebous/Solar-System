@@ -86,34 +86,34 @@ int main(int, char**)
 	// Setup ImGui binding
 	ImGui_ImplGlfwGL2_Init(window, true);
 
-	Shader main_shader("Shaders/phong_shading_phong_lighting.vs", "Shaders/phong_shading_phong_lighting.fs");
+	Shader planet_shader("Shaders/phong_shading_phong_lighting.vs", "Shaders/phong_shading_phong_lighting.fs");
 
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
 	Sun sun = Sun(1.0, { 1.0, 1.0, 0.7 });
 	sun.name = "Sun";
-	main_shader.use();
-	main_shader.setVec3("lightColor", color);
+	planet_shader.use();
+	planet_shader.setVec3("lightColor", color);
 
-	sun.shader = &main_shader;
+	sun.planet_shader = &planet_shader;
 	sun.SetSunColorToShader();
 	glUseProgram(0);
 	sun.step = 0.1f;
 
-	Planet b1 = Planet(0.2, { 1.0, 0.0, 0.0 });
-	b1.step = 0.8f;
-	b1.step2 = 0.8f;
-	b1.radius = 2.0f;
-	b1.name = "Mars";
-	Planet b2 = Planet(0.4, { 0.0, 1.0, 0.5 });
-	b2.step = 0.5f;
-	b2.step2 = 0.5f;
-	b2.radius = 3.0f;
-	b2.name = "Earth";
+	Planet p1 = Planet(0.2, { 1.0, 0.0, 0.0 });
+	p1.step = 0.8f;
+	p1.step2 = 0.8f;
+	p1.radius = 2.0f;
+	p1.name = "Mars";
+	Planet p2 = Planet(0.4, { 0.0, 1.0, 0.5 });
+	p2.step = 0.5f;
+	p2.step2 = 0.5f;
+	p2.radius = 3.0f;
+	p2.name = "Earth";
 	list<Planet> planets = list<Planet>();
-	planets.push_back(b1);
-	planets.push_back(b2);
+	sun.planets.push_back(p1);
+	sun.planets.push_back(p2);
 
 	/*planets.push_back(b2);
 	planets.push_back(b3);*/
@@ -121,7 +121,7 @@ int main(int, char**)
 
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	camera.planet = &b1;
+	camera.planet = &p1;
 	//camera.updateCameraVectors();
 	//
 	GraphicsLibrary gl = GraphicsLibrary();
@@ -129,16 +129,16 @@ int main(int, char**)
 	gl.WINDOW_HEIGHT = &WINDOW_HEIGHT;
 	gl.camera = &camera;
 	gl.sun = &sun;
-	gl.main_shader = &main_shader;
+	gl.main_shader = &planet_shader;
 
 	GUI gui = GUI();
 	gui.color = &color;
 	gui.sun = &sun;
-	gui.main_shader = &main_shader;
+	gui.main_shader = &planet_shader;
 	gui.camera = &camera;
 	gui.planets = &planets;
 	
-	Skybox skybox = Skybox();
+	//Skybox skybox = Skybox();
 	
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -157,7 +157,7 @@ int main(int, char**)
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
 		// 
-		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
+		//skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		gl.Draw(&sun, &planets);
 		//
 

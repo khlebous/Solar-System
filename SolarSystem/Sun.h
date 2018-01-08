@@ -1,13 +1,15 @@
 #pragma once
-#include "Edge.h"
-#include "Body.h"
-#include "Point.h"
-#include <vector>
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/vec3.hpp> // glm::mat4
+
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
+#include <list>
 #include <time.h>
-#include "Mesh.h"
+
 #include "shader_m.h"
+#include "Body.h"
+#include "Mesh.h"
+#include "Planet.h"
+
 
 using namespace std;
 class Sun :
@@ -17,13 +19,14 @@ public:
 	Sun(float s, glm::vec3 color);
 	~Sun();
 
-	Shader* shader;
+	list<Planet> planets;
+	Shader* planet_shader;
 	Shader sun_shader;
 	
 	glm::mat4 getMModel();
 	void SetColor();
 	void SetScale();
 	void SetSunColorToShader();
-	void Draw(glm::mat4 viewM, glm::mat4 projM);
+	void DrawSunWithPlanets(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos);
 };
 
