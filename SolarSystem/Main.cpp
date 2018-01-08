@@ -115,11 +115,6 @@ int main(int, char**)
 	p3.radius = 2.5f;
 	p3.name = "Cos";
 
-	// CAMERA
-	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
-	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	//camera.planet = &(sun.planets[0]);
-	//camera.updateCameraVectors();
 	// SOLAR SYSYEM
 	SolarSystem ss = SolarSystem();
 	ss.sun = &sun;
@@ -128,6 +123,11 @@ int main(int, char**)
 	ss.planets.push_back(&p3);
 	ss.planet_shader = &planet_shader;
 	ss.SetSunColorToShader();
+	// CAMERA
+	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
+	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
+	camera.planet = (ss.planets[0]);
+	camera.updateCameraVectors();
 
 	// GUI
 	GUI gui = GUI();

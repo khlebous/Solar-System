@@ -59,8 +59,9 @@ void GUI::Draw()
 		for (size_t i = 0; i < ss->planets.size(); i++)
 		{
 			ImGui::Text("	"); ImGui::SameLine();
-			ImGui::Text("sdsds	");
-			//ImGui::RadioButton(, &planet_to_follow, i);
+			//ImGui::Text("sdsds	");
+			if (ImGui::RadioButton(ss->planets[i]->name.c_str(), &planet_to_follow, i))
+				camera->planet = ss->planets[i];
 		}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
