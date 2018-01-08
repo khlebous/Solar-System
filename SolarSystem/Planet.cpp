@@ -37,7 +37,6 @@ glm::mat4 Planet::getMModel()
 glm::vec3 Planet::getCenterPosition()
 {
 	//return glm::vec3(0.5);
-	angle = step * glfwGetTime();
 	angle2 = step2 * glfwGetTime();
 	glm::vec4 a = glm::vec4(0);
 	a.z= radius;
@@ -47,7 +46,6 @@ glm::vec3 Planet::getCenterPosition()
 		0, 1, 0, 0,
 		-sin(angle2), 0, cos(angle2), 0,
 		0, 0, 0, 1);
-	glm::vec4 tmp = a * b;
-	return glm::vec3(tmp);
+	return glm::vec3(a*b);
 }
 

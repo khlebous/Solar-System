@@ -48,10 +48,19 @@ void GUI::Draw()
 		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
 		{
 			camera->Mode = STATIC;
+			camera_following_planet = false;
 		}
 		if (ImGui::RadioButton("Camera following planet", &rb_camera, 1))
 		{
 			camera->Mode = FOLLOWING_PLANET;
+			camera_following_planet = true;
+		}
+		if(camera_following_planet)
+		for (size_t i = 0; i < ss->planets.size(); i++)
+		{
+			ImGui::Text("	"); ImGui::SameLine();
+			ImGui::Text("sdsds	");
+			//ImGui::RadioButton(, &planet_to_follow, i);
 		}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
@@ -93,30 +102,31 @@ void GUI::Draw()
 		//ImGui::GetStateStorage()->SetInt(ImGui::GetID("Sun"), 1);
 		if (ImGui::CollapsingHeader("Sun"))
 		{
-			if (ImGui::ColorEdit3("color 1", &sun->color.x))
+			if (ImGui::ColorEdit3("color 1", &ss->sun->color.x))
 			{
-				sun->SetColor();
+				ss->sun->SetColor();
+				ss->SetSunColorToShader();
 			}
-			ImGui::InputFloat("Rotation velocity", &(sun->step), 0.01);
-			if (ImGui::InputFloat("Scale", &(sun->scale), 0.01))
+			ImGui::InputFloat("Rotation velocity", &(ss->sun->step), 0.01);
+			if (ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01))
 			{
-				sun->SetScale();
+				ss->sun->SetScale();
 			}
-			for (auto &p : sun->planets)
+			for (auto p : ss->planets)
 			{
-				if (ImGui::TreeNode(p.name.c_str()))
-					//if (ImGui::CollapsingHeader(p.name.c_str()))
+				if (ImGui::TreeNode(p->name.c_str()))
+					//if (ImGui::CollapsingHeader(p->name.c_str()))
 				{
-					if (ImGui::ColorEdit3((p.name + " color").c_str(), &(p.color.x)))
+					if (ImGui::ColorEdit3((p->name + " color").c_str(), &(p->color.x)))
 					{
-						p.SetColor();
+						p->SetColor();
 					}
-					ImGui::InputFloat((p.name + " rotation velocity").c_str(), &(p.step), 0.01);
-					ImGui::InputFloat((p.name + " rotation velocity2").c_str(), &(p.step2), 0.01);
-					ImGui::InputFloat((p.name + " radius").c_str(), &(p.radius), 0.01);
-					if (ImGui::InputFloat((p.name + " scale").c_str(), &(p.scale), 0.01))
+					ImGui::InputFloat((p->name + " rotation velocity").c_str(), &(p->step), 0.01);
+					ImGui::InputFloat((p->name + " rotation velocity2").c_str(), &(p->step2), 0.01);
+					ImGui::InputFloat((p->name + " radius").c_str(), &(p->radius), 0.01);
+					if (ImGui::InputFloat((p->name + " scale").c_str(), &(p->scale), 0.01))
 					{
-						p.SetScale();
+						p->SetScale();
 					}
 					ImGui::TreePop();
 				}
@@ -169,5 +179,5 @@ void GUI::SwitchLightingShadingShader()
 		else
 			*main_shader = Shader("Shaders/gouraud_shading_blinn_phong_lighting.vs", "Shaders/gouraud_shading_blinn_phong_lighting.fs");
 	}
-	sun->SetSunColorToShader();
+	ss->SetSunColorToShader();
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "SolarSystem.h"
 #include "Sun.h"
 #include "Camera.h"
 #include "shader_m.h"
@@ -8,17 +9,12 @@
 class GUI
 {
 public:
-	glm::vec3* cameraPosition;
-	glm::vec3* cameraTarget;
-	glm::vec3* upVector;
-	glm::vec3* color;
-
-	Sun *sun;
 	
 	int rb_shading = 0;
 	int rb_lighting = 0;
 	int rb_camera = 0;
 	
+	SolarSystem *ss;
 	Shader *main_shader;
 	Camera *camera;
 
@@ -39,6 +35,9 @@ private:
 	bool show_test_window = true;
 	bool show_main_window = true;
 	bool show_add_new_planet_window = false;
+
+	bool camera_following_planet = false;
+	int planet_to_follow = 0;
 
 	void SwitchLightingShadingShader();
 };

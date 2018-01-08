@@ -9,12 +9,12 @@ GraphicsLibrary::~GraphicsLibrary()
 {
 }
 
-void GraphicsLibrary::Draw(Sun* sun, list<Planet>* planets)
+void GraphicsLibrary::Draw()
 {
 	glm::mat4 viewM = camera->GetViewMatrix();
 	glm::mat4 projM = camera->GetProjMatrix();
 
-	sun->DrawSunWithPlanets(viewM, projM, camera->Position);
+	ss->Draw(viewM, projM, camera->Position);
 	//
 	
 }

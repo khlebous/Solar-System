@@ -20,6 +20,7 @@
 #include "shader_m.h"
 #include "GUI.h"
 #include "GraphicsLibrary.h"
+#include "SolarSystem.h"
 #include "Sun.h"
 #include "Planet.h"
 #include "Camera.h"
@@ -95,8 +96,6 @@ int main(int, char**)
 	planet_shader.use();
 	planet_shader.setVec3("lightColor", color);
 
-	sun.planet_shader = &planet_shader;
-	sun.SetSunColorToShader();
 	glUseProgram(0);
 	sun.step = 0.1f;
 
@@ -110,32 +109,39 @@ int main(int, char**)
 	p2.step2 = 0.5f;
 	p2.radius = 3.0f;
 	p2.name = "Earth";
-	list<Planet> planets = list<Planet>();
-	sun.planets.push_back(p1);
-	sun.planets.push_back(p2);
+	Planet p3 = Planet(0.3, { 0.0, 0.0, 1.0 });
+	p3.step = 0.1f;
+	p3.step2 = 0.4f;
+	p3.radius = 2.5f;
+	p3.name = "Cos";
 
-	/*planets.push_back(b2);
-	planets.push_back(b3);*/
-
-
+	// CAMERA
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	camera.planet = &p1;
+	//camera.planet = &(sun.planets[0]);
 	//camera.updateCameraVectors();
-	//
+	// SOLAR SYSYEM
+	SolarSystem ss = SolarSystem();
+	ss.sun = &sun;
+	ss.planets.push_back(&p1);
+	ss.planets.push_back(&p2);
+	ss.planets.push_back(&p3);
+	ss.planet_shader = &planet_shader;
+	ss.SetSunColorToShader();
+
+	// GUI
+	GUI gui = GUI();
+	gui.ss = &ss;
+	gui.main_shader = &planet_shader;
+	gui.camera = &camera;
+	
+	// GL
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
 	gl.WINDOW_HEIGHT = &WINDOW_HEIGHT;
 	gl.camera = &camera;
-	gl.sun = &sun;
-	gl.main_shader = &planet_shader;
-
-	GUI gui = GUI();
-	gui.color = &color;
-	gui.sun = &sun;
-	gui.main_shader = &planet_shader;
-	gui.camera = &camera;
-	
+	gl.ss = &ss;
+	// SKYBOX
 	Skybox skybox = Skybox();
 	
 	glEnable(GL_CULL_FACE);
@@ -156,7 +162,7 @@ int main(int, char**)
 
 		// 
 		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
-		gl.Draw(&sun, &planets);
+		gl.Draw();
 		//
 
 		glUseProgram(0);

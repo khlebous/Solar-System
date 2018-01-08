@@ -3,7 +3,7 @@
 #include <glm/mat4x4.hpp> 
 #include <list>
 
-#include "Body.h"
+#include "SolarSystem.h"
 #include "Planet.h"
 #include "Sun.h"
 #include "Camera.h"
@@ -20,13 +20,13 @@ public:
 	glm::vec3* upVector;
 
 	Camera *camera;
-	Sun* sun;
+	SolarSystem *ss;
 	Shader* main_shader;
 
 	GraphicsLibrary();
 	~GraphicsLibrary();
 
-	void Draw(Sun* sun, list<Planet>* planets);
+	void Draw();
 
 };
 
