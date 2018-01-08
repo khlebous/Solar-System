@@ -14,7 +14,7 @@ public:
 	glm::vec3* color;
 
 	Sun *sun;
-	list<Body> *bodies;
+	list<Planet> *planets;
 	
 	int rb_shading = 0;
 	int rb_lighting = 0;

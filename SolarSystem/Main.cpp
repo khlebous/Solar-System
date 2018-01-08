@@ -93,7 +93,7 @@ int main(int, char**)
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
 	Sun sun = Sun(1.0, { 1.0, 1.0, 0.7 });
-	sun.name = "sun";
+	sun.name = "Sun";
 	main_shader.use();
 	main_shader.setVec3("lightColor", color);
 
@@ -106,18 +106,18 @@ int main(int, char**)
 	b1.step = 0.8f;
 	b1.step2 = 0.8f;
 	b1.radius = 2.0f;
-	b1.name = "mars";
+	b1.name = "Mars";
 	Planet b2 = Planet(0.4, { 0.0, 1.0, 0.5 });
 	b2.step = 0.5f;
 	b2.step2 = 0.5f;
 	b2.radius = 3.0f;
-	b2.name = "earth";
-	list<Planet> bodies = list<Planet>();
-	bodies.push_back(b1);
-	bodies.push_back(b2);
+	b2.name = "Earth";
+	list<Planet> planets = list<Planet>();
+	planets.push_back(b1);
+	planets.push_back(b2);
 
-	/*bodies.push_back(b2);
-	bodies.push_back(b3);*/
+	/*planets.push_back(b2);
+	planets.push_back(b3);*/
 
 
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -137,7 +137,7 @@ int main(int, char**)
 	gui.sun = &sun;
 	gui.main_shader = &main_shader;
 	gui.camera = &camera;
-	//	gui.bodies = &bodies;
+	gui.planets = &planets;
 	
 	Skybox skybox = Skybox();
 	
@@ -159,7 +159,7 @@ int main(int, char**)
 
 		// 
 		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
-		gl.Draw(&sun, &bodies, sun_shader);
+		gl.Draw(&sun, &planets, sun_shader);
 		//
 
 		glUseProgram(0);

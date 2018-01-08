@@ -26,7 +26,7 @@ public:
 	GraphicsLibrary();
 	~GraphicsLibrary();
 
-	void Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader);
+	void Draw(Sun* sun, list<Planet>* planets, Shader sun_shader);
 
 };
 

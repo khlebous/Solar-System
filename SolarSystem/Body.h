@@ -11,6 +11,8 @@ using namespace std;
 class Body
 {
 public:
+	string name;
+
 	glm::mat4 mModel = glm::mat4(1);
 	vector<float> vertices;
 
@@ -26,6 +28,7 @@ public:
 
 	glm::mat4 virtual getMModel() { return mModel; }
 	void SetColor();
+	void SetScale();
 
 protected:
 	float angle=0;

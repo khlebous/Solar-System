@@ -41,13 +41,25 @@ void Body::SetColor()
 	for (size_t i = 6; i < vertices.size(); i+=9)
 	{
 		vertices[i] = color.x;
-		//vertices[i+1] = color.y;
+		vertices[i+1] = color.y;
 		//vertices[i+2] = color.z;
 		//vertices[i ] = (rand() % aa) / bb - cc + color.x;
-		vertices[i + 1] = (rand() % aa) / bb - cc + color.y;
+		//vertices[i + 1] = (rand() % aa) / bb - cc + color.y;
 		vertices[i + 2] = (rand() % aa) / bb - cc + color.z;
 	}
 	UpdateBuffers();
+}
+
+void Body::SetScale()
+{
+	for (size_t i = 0; i < m.triangles.size(); i++)
+	{
+		int t1 = m.triangles[i];
+		vertices[9 * i] = m.vertices[t1].x*scale;
+		vertices[9 * i + 1] = m.vertices[t1].y*scale;
+		vertices[9 * i + 2] = m.vertices[t1].z*scale;
+	}
+	Body::UpdateBuffers();
 }
 
 void Body::UpdateBuffers()

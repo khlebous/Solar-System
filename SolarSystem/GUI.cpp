@@ -96,14 +96,23 @@ void GUI::Draw()
 				sun->SetScale();
 			}
 		}
-		/*for (size_t i = 0; i < bodies->size(); i++)
+		for (auto &p : *planets)
 		{
-			if (ImGui::CollapsingHeader(bodies[i].))
-		}*/
-	/*	for (Planet &p : bodies)
-		{
-
-		}*/
+			if (ImGui::CollapsingHeader(p.name.c_str()))
+			{
+				if (ImGui::ColorEdit3((p.name + " color").c_str(), &(p.color.x)))
+				{
+					p.SetColor();
+				}
+				ImGui::InputFloat((p.name + " rotation velocity").c_str(), &(p.step), 0.01);
+				ImGui::InputFloat((p.name + " rotation velocity2").c_str(), &(p.step2), 0.01);
+				ImGui::InputFloat((p.name + " radius").c_str(), &(p.radius), 0.01);
+				if (ImGui::InputFloat((p.name + " scale").c_str(), &(p.scale), 0.01))
+				{
+					p.SetScale();
+				}
+			}
+		}
 		ImGui::End();
 	}
 

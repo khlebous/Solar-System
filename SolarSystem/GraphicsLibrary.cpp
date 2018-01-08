@@ -9,7 +9,7 @@ GraphicsLibrary::~GraphicsLibrary()
 {
 }
 
-void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader)
+void GraphicsLibrary::Draw(Sun* sun, list<Planet>* planets, Shader sun_shader)
 {
 	sun_shader.use();
 	sun_shader.setMat4("view", camera->GetViewMatrix());
@@ -22,7 +22,7 @@ void GraphicsLibrary::Draw(Sun* sun, list<Planet>* bodies, Shader sun_shader)
 	main_shader->setMat4("view", camera->GetViewMatrix());
 	main_shader->setMat4("proj", camera->GetProjMatrix());
 	main_shader->setVec3("viewPos", camera->Position);
-	for (auto &b : *bodies)
+	for (auto &b : *planets)
 	{
 		main_shader->setMat4("model", b.getMModel());
 		glBindVertexArray(b.VAO);
