@@ -12,7 +12,7 @@ GUI::GUI()
 	char somebuffer[20] = "new name";
 	string s = somebuffer;
 	//new_planet_name = s.c_str();
-	new_planet_color = glm::vec3(1.0,1.0,1.0);
+	new_planet_color = glm::vec3(1.0, 1.0, 1.0);
 	new_planet_step = 0.5;
 	new_planet_step2 = 1.0;
 	new_planet_radius = 2.0;
@@ -25,7 +25,7 @@ GUI::~GUI()
 
 void GUI::Draw()
 {
-	
+
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	ImGui_ImplGlfwGL2_NewFrame();
@@ -55,14 +55,14 @@ void GUI::Draw()
 			camera->Mode = FOLLOWING_PLANET;
 			camera_following_planet = true;
 		}
-		if(camera_following_planet)
-		for (size_t i = 0; i < ss->planets.size(); i++)
-		{
-			ImGui::Text("	"); ImGui::SameLine();
-			//ImGui::Text("sdsds	");
-			if (ImGui::RadioButton(ss->planets[i]->name.c_str(), &planet_to_follow, i))
-				camera->planet = ss->planets[i];
-		}
+		
+		if (camera_following_planet)
+			for (size_t i = 0; i < ss->planets.size(); i++)
+			{
+				ImGui::Text("	"); ImGui::SameLine();
+				if (ImGui::RadioButton(ss->planets[i]->name.c_str(), &planet_to_follow, i))
+					camera->planet = ss->planets[i];
+			}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
 
@@ -115,8 +115,8 @@ void GUI::Draw()
 			}
 			for (auto p : ss->planets)
 			{
-				if (ImGui::TreeNode(p->name.c_str()))
-					//if (ImGui::CollapsingHeader(p->name.c_str()))
+				//if (ImGui::CollapsingHeader(p->name.c_str()))
+				if (ImGui::TreeNode(("planet: " + p->name).c_str()))
 				{
 					if (ImGui::ColorEdit3((p->name + " color").c_str(), &(p->color.x)))
 					{
@@ -132,7 +132,7 @@ void GUI::Draw()
 					ImGui::TreePop();
 				}
 			}
-			if(ImGui::Button("Add new planet"))
+			if (ImGui::Button("Add new planet"))
 				show_add_new_planet_window = true;
 		}
 		ImGui::End();
@@ -141,7 +141,7 @@ void GUI::Draw()
 	if (show_add_new_planet_window)
 	{
 		ImGui::Begin("New planet", &show_add_new_planet_window);
-		
+
 		ImGui::InputText("Planet name", new_planet_name, 20);
 		ImGui::ColorEdit3("Planet color", &(new_planet_color.x));
 		ImGui::InputFloat("Planet rotation velocity", &new_planet_step, 0.01);
