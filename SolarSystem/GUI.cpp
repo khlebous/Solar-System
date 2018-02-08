@@ -35,9 +35,9 @@ void GUI::Draw()
 	{
 		ImGui::Begin("Settings", &show_main_window);
 		ImGui::SetWindowSize(ImVec2(300.0f, 600.0f));
-		if (ImGui::RadioButton("Gouraud Shading", &rb_shading, 0))
+		if (ImGui::RadioButton("Phong Shading", &rb_shading, 0))
 			SwitchLightingShadingShader();
-		if (ImGui::RadioButton("Blinn Shading", &rb_shading, 1))
+		if (ImGui::RadioButton("Gouraud Shading", &rb_shading, 1))
 			SwitchLightingShadingShader();
 		ImGui::Text("--------------------");
 		if (ImGui::RadioButton("Phong Lighting Model", &rb_lighting, 0))
@@ -65,7 +65,12 @@ void GUI::Draw()
 			}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
-
+			
+		}
+		if (rb_camera == 2)
+		{
+			camera->Position = ss->planets[0]->getCenterPosition();
+			camera->Front = -camera->Position;
 		}
 		if (ImGui::CollapsingHeader("Camera Settings"))
 		{

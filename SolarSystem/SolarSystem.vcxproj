@@ -134,12 +134,12 @@
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SolarSystem.cpp" />
+    <ClCompile Include="SpaceShip.cpp" />
     <ClCompile Include="Sun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Body.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Edge.h" />
     <ClInclude Include="GraphicsLibrary.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="imgui_impl_glfw.h" />
@@ -153,6 +153,7 @@
     <ClInclude Include="shader_m.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SolarSystem.h" />
+    <ClInclude Include="SpaceShip.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Sun.h" />
   </ItemGroup>
@@ -165,6 +166,8 @@
     <None Include="Shaders\phong_shading_blinn_phong_lighting.vs" />
     <None Include="Shaders\phong_shading_phong_lighting.fs" />
     <None Include="Shaders\phong_shading_phong_lighting.vs" />
+    <None Include="Shaders\space_ship_shader.fs" />
+    <None Include="Shaders\space_ship_shader.vs" />
     <None Include="Shaders\sun_shader.fs" />
     <None Include="Shaders\sun_shader.vs" />
     <None Include="skybox.fs" />

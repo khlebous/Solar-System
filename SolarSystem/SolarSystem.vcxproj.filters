@@ -31,6 +31,12 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{4376d355-f9e6-4e95-a1c0-8dd53286a1ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SpaceShip">
+      <UniqueIdentifier>{4d4f743e-1c28-4d94-8256-917ca9e28052}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Skybox">
+      <UniqueIdentifier>{e9aabf33-1028-4aca-98d0-dccf96d6e4ef}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -69,11 +75,14 @@
     <ClCompile Include="GraphicsLibrary.cpp">
       <Filter>GL</Filter>
     </ClCompile>
-    <ClCompile Include="Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SolarSystem.cpp">
       <Filter>Body</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceShip.cpp">
+      <Filter>SpaceShip</Filter>
+    </ClCompile>
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Skybox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -107,9 +116,6 @@
     <ClInclude Include="GUI.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Edge.h">
-      <Filter>GL</Filter>
-    </ClInclude>
     <ClInclude Include="Body.h">
       <Filter>Body</Filter>
     </ClInclude>
@@ -125,11 +131,14 @@
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Skybox.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SolarSystem.h">
       <Filter>Body</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceShip.h">
+      <Filter>SpaceShip</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h">
+      <Filter>Skybox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,5 +174,11 @@
     </None>
     <None Include="skybox.vs" />
     <None Include="skybox.fs" />
+    <None Include="Shaders\space_ship_shader.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\space_ship_shader.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -25,6 +25,7 @@
 #include "Planet.h"
 #include "Camera.h"
 #include "Skybox.h"
+#include "SpaceShip.h"
 
 using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -100,8 +101,8 @@ int main(int, char**)
 	sun.step = 0.1f;
 
 	Planet p1 = Planet(0.2, { 1.0, 0.0, 0.0 });
-	p1.step = 0.8f;
-	p1.step2 = 0.8f;
+	p1.step = 0.0f;
+	p1.step2 = 0.0f;
 	p1.radius = 2.0f;
 	p1.name = "Mars";
 	Planet p2 = Planet(0.4, { 0.0, 1.0, 0.5 });
@@ -143,9 +144,11 @@ int main(int, char**)
 	gl.ss = &ss;
 	// SKYBOX
 	Skybox skybox = Skybox();
-	
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
+	// SPACESHIP
+	SpaceShip spaceShip = SpaceShip();
+	spaceShip.camera = &camera;
 
 	glfwSetScrollCallback(window, scroll_callback);
 
@@ -162,6 +165,7 @@ int main(int, char**)
 
 		// 
 		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
+		//spaceShip.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		gl.Draw();
 		//
 

@@ -40,8 +40,5 @@ protected:
 private:
 	void GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v);
 	void Icosahedron(Mesh &mesh);
-	
-	//TODO delete
-	vector<float> GetCubeVertices(float s, glm::vec3 color);
-};
+	};
 
