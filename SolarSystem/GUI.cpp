@@ -33,8 +33,11 @@ void GUI::Draw()
 	// 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name the window.
 	if (show_main_window)
 	{
-		ImGui::Begin("Settings", &show_main_window);
+		ImGui::Begin("Application configuration", &show_main_window);
 		ImGui::SetWindowSize(ImVec2(300.0f, 600.0f));
+		ImGui::Text("Application average %.3f ms/frame", 1000.0f / ImGui::GetIO().Framerate);
+		ImGui::Text("(%.1f FPS)", ImGui::GetIO().Framerate);
+		ImGui::Text("--------------------");
 		if (ImGui::RadioButton("Phong Shading", &rb_shading, 0))
 			SwitchLightingShadingShader();
 		if (ImGui::RadioButton("Gouraud Shading", &rb_shading, 1))
