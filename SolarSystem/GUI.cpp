@@ -63,8 +63,8 @@ void GUI::Draw()
 			for (size_t i = 0; i < ss->planets.size(); i++)
 			{
 				ImGui::Text("	"); ImGui::SameLine();
-				if (ImGui::RadioButton(ss->planets[i]->name.c_str(), &planet_to_follow, i))
-					camera->planet = ss->planets[i];
+				if (ImGui::RadioButton(ss->planets[i].name.c_str(), &planet_to_follow, i))
+					camera->planet = &ss->planets[i];
 			}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
@@ -72,7 +72,7 @@ void GUI::Draw()
 		}
 		if (rb_camera == 2)
 		{
-			camera->Position = ss->planets[0]->getCenterPosition();
+			camera->Position = ss->planets[0].getCenterPosition();
 			camera->Front = -camera->Position;
 		}
 		if (ImGui::CollapsingHeader("Camera Settings"))
@@ -121,21 +121,21 @@ void GUI::Draw()
 			{
 				ss->sun->SetScale();
 			}
-			for (auto p : ss->planets)
+			for (auto &p : ss->planets)
 			{
 				//if (ImGui::CollapsingHeader(p->name.c_str()))
-				if (ImGui::TreeNode(("planet: " + p->name).c_str()))
+				if (ImGui::TreeNode(("planet: " + p.name).c_str()))
 				{
-					if (ImGui::ColorEdit3((p->name + " color").c_str(), &(p->color.x)))
+					if (ImGui::ColorEdit3(("color " + p.name).c_str(), &(p.color.x)))
 					{
-						p->SetColor();
+						p.SetColor();
 					}
-					ImGui::InputFloat((p->name + " rotation velocity").c_str(), &(p->step), 0.01);
-					ImGui::InputFloat((p->name + " rotation velocity2").c_str(), &(p->step2), 0.01);
-					ImGui::InputFloat((p->name + " radius").c_str(), &(p->radius), 0.01);
-					if (ImGui::InputFloat((p->name + " scale").c_str(), &(p->scale), 0.01))
+					ImGui::InputFloat(("rotation velocity" + p.name).c_str(), &(p.step), 0.01);
+					ImGui::InputFloat(("rotation velocity2" + p.name).c_str(), &(p.step2), 0.01);
+					ImGui::InputFloat(("radius" + p.name).c_str(), &(p.radius), 0.01);
+					if (ImGui::InputFloat(("scale" + p.name).c_str(), &(p.scale), 0.01))
 					{
-						p->SetScale();
+						p.SetScale();
 					}
 					ImGui::TreePop();
 				}

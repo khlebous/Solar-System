@@ -6,7 +6,7 @@ class SolarSystem
 {
 public:
 	Sun *sun;
-	vector<Planet*> planets;
+	vector<Planet> planets;
 	Shader* planet_shader;
 
 	SolarSystem();
@@ -14,6 +14,6 @@ public:
 
 	void Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::vec3 camFront);
 	void SetSunColorToShader();
-	void AddNewPlanet(char* planetName, glm::vec3 color, float velocity1, float velocity2, float radius, float scale);
+	void AddNewPlanet(const char* planetName, glm::vec3 color, float velocity1, float velocity2, float radius, float scale);
 };
 

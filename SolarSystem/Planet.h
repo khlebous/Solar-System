@@ -10,6 +10,7 @@ public:
 
 	Planet(float s, glm::vec3 color);
 	~Planet();
+	Planet(const Planet &planet);
 
 	glm::mat4 getMModel() override;
 	glm::vec3 getCenterPosition() override;

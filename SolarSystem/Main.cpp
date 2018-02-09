@@ -119,15 +119,16 @@ int main(int, char**)
 	// SOLAR SYSYEM
 	SolarSystem ss = SolarSystem();
 	ss.sun = &sun;
-	ss.planets.push_back(&p1);
-	ss.planets.push_back(&p2);
-	ss.planets.push_back(&p3);
+	ss.AddNewPlanet("mars", { 1.0, 0.0, 0.0 }, 0.0f, 0.0f, 2.0f, 0.2f);
+	/*ss.planets.push_back(p1);
+	ss.planets.push_back(p2);
+	ss.planets.push_back(p3);*/
 	ss.planet_shader = &planet_shader;
 	ss.SetSunColorToShader();
 	// CAMERA
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
-	camera.planet = (ss.planets[0]);
+	camera.planet = (&ss.planets[0]);
 	camera.updateCameraVectors();
 
 	// GUI

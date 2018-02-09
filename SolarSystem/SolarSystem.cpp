@@ -35,11 +35,11 @@ void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::
 	planet_shader->setFloat("spotLight.quadratic", 0.032);
 	planet_shader->setFloat("spotLight.cutOff", glm::cos(glm::radians(0.5f)));
 	planet_shader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(1.5f)));
-	for (Planet *p : planets)
+	for (Planet &p : planets)
 	{
-		planet_shader->setMat4("model", p->getMModel());
-		glBindVertexArray(p->VAO);
-		glDrawArrays(GL_TRIANGLES, 0, p->vertCount);
+		planet_shader->setMat4("model", p.getMModel());
+		glBindVertexArray(p.VAO);
+		glDrawArrays(GL_TRIANGLES, 0, p.vertCount);
 		//glDrawElements(GL_TRIANGLES, b.vertCount/2, GL_UNSIGNED_INT, 0);
 		//glDrawElements(GL_TRIANGLES, 3 * 1, GL_UNSIGNED_INT, 0);
 	}
@@ -55,12 +55,13 @@ void SolarSystem::SetSunColorToShader()
 	glUseProgram(0);
 }
 
-void SolarSystem::AddNewPlanet(char * planetName, glm::vec3 color, float velocity1, float velocity2, float radius, float scale)
+void SolarSystem::AddNewPlanet(const char * planetName, glm::vec3 color, float velocity1, float velocity2, float radius, float scale)
 {
 	Planet p1 = Planet(scale, color);
 	p1.step = velocity1;
 	p1.step2 = velocity2;
 	p1.radius = radius;
 	p1.name = planetName;
-	planets.push_back(&p1);
+	planets.push_back(p1);
 }
+

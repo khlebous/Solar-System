@@ -16,6 +16,24 @@ Planet::~Planet()
 	glDeleteBuffers(1, &VBO);
 }
 
+Planet::Planet(const Planet & planet):Body(planet.scale, planet.color)
+{
+	//body
+	name = planet.name;
+	/*vertices = planet.vertices;
+	VBO = planet.VBO;
+	VAO = planet.VAO;
+	color = planet.color;
+	vertCount = planet.vertCount;
+	step = planet.step;
+	scale = planet.scale;
+	m = planet.m;*/
+	//planet
+	angle2 = planet.angle2;
+	step2 = planet.step2;
+	radius = planet.radius;
+}
+
 glm::mat4 Planet::getMModel()
 {
 	angle = step * glfwGetTime();
