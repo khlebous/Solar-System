@@ -149,13 +149,20 @@ void GUI::Draw()
 	if (show_add_new_planet_window)
 	{
 		ImGui::Begin("New planet", &show_add_new_planet_window);
-
-		ImGui::InputText("Planet name", new_planet_name, 20);
+		ImGui::InputText("Planet name", new_planet_name, IM_ARRAYSIZE(new_planet_name));
 		ImGui::ColorEdit3("Planet color", &(new_planet_color.x));
 		ImGui::InputFloat("Planet rotation velocity", &new_planet_step, 0.01);
-		ImGui::InputFloat("Planet rotation velocity2", &new_planet_step, 0.01);
+		ImGui::InputFloat("Planet rotation velocity2", &new_planet_step2, 0.01);
 		ImGui::InputFloat("Planet radius", &new_planet_radius, 0.01);
 		ImGui::InputFloat("Planet scale", &new_planet_scale, 0.01);
+		if (ImGui::Button("Add planet"))
+		{
+			ss->AddNewPlanet(new_planet_name, new_planet_color, new_planet_step, new_planet_step2, new_planet_radius, new_planet_scale);
+			show_add_new_planet_window = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+			show_add_new_planet_window = false;
 		ImGui::End();
 	}
 

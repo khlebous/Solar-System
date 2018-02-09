@@ -25,7 +25,7 @@ public:
 
 private:
 	//
-	char *new_planet_name;
+	char new_planet_name[20] = "Your Name";
 	glm::vec3 new_planet_color;
 	float new_planet_step;
 	float new_planet_step2;

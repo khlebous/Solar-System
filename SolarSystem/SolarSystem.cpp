@@ -54,3 +54,13 @@ void SolarSystem::SetSunColorToShader()
 	planet_shader->setVec3("lightColor", sun->color);
 	glUseProgram(0);
 }
+
+void SolarSystem::AddNewPlanet(char * planetName, glm::vec3 color, float velocity1, float velocity2, float radius, float scale)
+{
+	Planet p1 = Planet(scale, color);
+	p1.step = velocity1;
+	p1.step2 = velocity2;
+	p1.radius = radius;
+	p1.name = planetName;
+	planets.push_back(&p1);
+}
