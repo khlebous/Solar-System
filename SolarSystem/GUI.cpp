@@ -9,10 +9,7 @@
 
 GUI::GUI()
 {
-	char somebuffer[20] = "new name";
-	string s = somebuffer;
-	//new_planet_name = s.c_str();
-	new_planet_color = glm::vec3(1.0, 1.0, 1.0);
+	new_planet_color = glm::vec3(1.0, 1.0, 0.0);
 	new_planet_step = 0.5;
 	new_planet_step2 = 1.0;
 	new_planet_radius = 2.0;
@@ -58,7 +55,7 @@ void GUI::Draw()
 			camera->Mode = FOLLOWING_PLANET;
 			camera_following_planet = true;
 		}
-		
+
 		if (camera_following_planet)
 			for (size_t i = 0; i < ss->planets.size(); i++)
 			{
@@ -68,7 +65,7 @@ void GUI::Draw()
 			}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
-			
+
 		}
 		if (rb_camera == 2)
 		{
@@ -121,6 +118,7 @@ void GUI::Draw()
 			{
 				ss->sun->SetScale();
 			}
+			int planetNr = 0;
 			for (auto &p : ss->planets)
 			{
 				//if (ImGui::CollapsingHeader(p->name.c_str()))
@@ -137,11 +135,22 @@ void GUI::Draw()
 					{
 						p.SetScale();
 					}
+					if (ImGui::Button("Delete planet"))
+						ss->DeletePlanet(planetNr);
 					ImGui::TreePop();
 				}
+				planetNr++;
 			}
 			if (ImGui::Button("Add new planet"))
+			{
+				srand(time(NULL));
+				new_planet_color = { (rand() % 100) / 100.0, (rand() % 100) / 100.0, (rand() % 100) / 100.0 };
+				new_planet_step = (rand() % 100) / 100.0;
+				new_planet_step2 = (rand() % 100) / 100.0;
+				new_planet_radius = (rand() % 100) / 20.0+2.5;
+				new_planet_scale = (rand() % 100) / 100.0 + 0.01;
 				show_add_new_planet_window = true;
+			}
 		}
 		ImGui::End();
 	}
@@ -172,7 +181,6 @@ void GUI::Draw()
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::ShowTestWindow(&show_test_window);
 	}
-
 
 	//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
 	ImGui::Render();

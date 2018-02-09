@@ -65,3 +65,8 @@ void SolarSystem::AddNewPlanet(const char * planetName, glm::vec3 color, float v
 	planets.push_back(p1);
 }
 
+void SolarSystem::DeletePlanet(int nr)
+{
+	planets.erase(planets.begin() + nr);
+}
+
