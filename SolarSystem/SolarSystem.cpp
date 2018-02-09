@@ -29,7 +29,7 @@ void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::
 	planet_shader->setVec3("spotLight.direction", camFront);
 	planet_shader->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
 	planet_shader->setVec3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
-	planet_shader->setVec3("spotLight.specular", 0.0f, 0.0f, 0.0f);
+	planet_shader->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
 	planet_shader->setFloat("spotLight.constant", 1.0f);
 	planet_shader->setFloat("spotLight.linear", 0.09);
 	planet_shader->setFloat("spotLight.quadratic", 0.032);

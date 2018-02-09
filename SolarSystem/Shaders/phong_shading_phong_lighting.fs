@@ -7,9 +7,6 @@ in vec3 FragPos;
 
 vec3 lightPos = vec3(0.0, 0.0, 0.0);
 
-uniform vec3 viewPos;
-uniform vec3 lightColor;
-
 struct SpotLight {
     vec3 position;
     vec3 direction;
@@ -24,7 +21,10 @@ struct SpotLight {
     vec3 diffuse;
     vec3 specular;       
 };
+
 uniform SpotLight spotLight;
+uniform vec3 viewPos;
+uniform vec3 lightColor;
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec3 color);
 
