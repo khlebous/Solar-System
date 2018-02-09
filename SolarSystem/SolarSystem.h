@@ -12,7 +12,7 @@ public:
 	SolarSystem();
 	~SolarSystem();
 
-	void Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos);
+	void Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::vec3 camFront);
 	void SetSunColorToShader();
 };
 

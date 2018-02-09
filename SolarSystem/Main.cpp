@@ -143,7 +143,7 @@ int main(int, char**)
 	gl.camera = &camera;
 	gl.ss = &ss;
 	// SKYBOX
-	Skybox skybox = Skybox();
+	//Skybox skybox = Skybox();
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	// SPACESHIP
@@ -164,7 +164,7 @@ int main(int, char**)
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
 		// 
-		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
+		//skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		//spaceShip.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		gl.Draw();
 		//
