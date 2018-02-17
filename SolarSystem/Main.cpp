@@ -36,17 +36,11 @@ void error_callback(int error, const char* description);
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
 
-//glm::vec3 cameraPosition = { 3, 0.2, 0.7 };
-//glm::vec3 cameraPosition = { 0.0, 0.8, 4.0 };
-//glm::vec3 cameraTarget = { 0.0, 0.0, 0.0 };
-//glm::vec3 upVector = { 0.0, 1.0, 0.0 };
-
 float deltaTime = 0.0f;	// time between current frame and last frame
 float lastFrame = 0.0f;
 
-//Camera camera(glm::vec3(3.0f, 0.2f, 0.7f));
-//Camera camera(glm::vec3(0.0f, 0.0f, 0.0f));
 Camera camera = Camera();
+GUI gui = GUI();
 
 float lastX = WINDOW_WIDTH / 2.0;
 float lastY = WINDOW_HEIGHT / 2.0;
@@ -92,7 +86,7 @@ int main(int, char**)
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
-	Sun sun = Sun(1.5, { 1.0, 1.0, 0.7 });
+	Sun sun = Sun(2.0, { 1.0, 1.0, 0.7 });
 	sun.name = "Sun";
 	planet_shader.use();
 	planet_shader.setVec3("lightColor", color);
@@ -100,26 +94,30 @@ int main(int, char**)
 	glUseProgram(0);
 	sun.step = 0.1f;
 
-	Planet p1 = Planet(0.2, { 1.0, 0.0, 0.0 });
-	p1.step = 0.0f;
-	p1.step2 = 0.0f;
-	p1.radius = 2.0f;
-	p1.name = "Mars";
-	Planet p2 = Planet(0.4, { 0.0, 1.0, 0.5 });
-	p2.step = 0.5f;
-	p2.step2 = 0.5f;
-	p2.radius = 3.0f;
-	p2.name = "Earth";
-	Planet p3 = Planet(0.3, { 0.0, 0.0, 1.0 });
-	p3.step = 0.1f;
-	p3.step2 = 0.4f;
-	p3.radius = 2.5f;
-	p3.name = "Cos";
+	//Planet p1 = Planet(0.2, { 1.0, 0.0, 0.0 });
+	//p1.step = 0.0f;
+	//p1.step2 = 0.0f;
+	//p1.radius = 2.0f;
+	//p1.name = "Mars";
+	//Planet p2 = Planet(0.4, { 0.0, 1.0, 0.5 });
+	//p2.step = 0.5f;
+	//p2.step2 = 0.5f;
+	//p2.radius = 3.0f;
+	//p2.name = "Earth";
+	//Planet p3 = Planet(0.3, { 0.0, 0.0, 1.0 });
+	//p3.step = 0.1f;
+	//p3.step2 = 0.4f;
+	//p3.radius = 2.5f;
+	//p3.name = "Cos";
 
 	// SOLAR SYSYEM
 	SolarSystem ss = SolarSystem();
 	ss.sun = &sun;
-	ss.AddNewPlanet("mars", { 1.0, 0.0, 0.0 }, 0.0f, 0.0f, 2.0f, 0.2f);
+	ss.AddNewPlanet("mercury", { 0.8, 0.4, 0.2 }, 0.3f, 0.8324f, 4.0f, 0.15f);
+	ss.AddNewPlanet("venus", { 1.0, 0.7, 0.2 }, 0.4f, 0.7234f, 5.0f, 0.2f);
+	ss.AddNewPlanet("earth", { 0.4, 0.9, 0.5 }, 0.3f, 0.5234f, 6.0f, 0.3f);
+	ss.AddNewPlanet("mars", { 1.0, 0.0, 0.0 }, 0.2f, 0.434f, 7.0f, 0.3f);
+	ss.AddNewPlanet("jowisz", { 0.2, 0.5, 0.8 }, 0.6f, 0.24234f, 8.0f, 0.7f);
 	/*ss.planets.push_back(p1);
 	ss.planets.push_back(p2);
 	ss.planets.push_back(p3);*/
@@ -132,11 +130,10 @@ int main(int, char**)
 	camera.updateCameraVectors();
 
 	// GUI
-	GUI gui = GUI();
 	gui.ss = &ss;
 	gui.main_shader = &planet_shader;
 	gui.camera = &camera;
-	
+
 	// GL
 	GraphicsLibrary gl = GraphicsLibrary();
 	gl.WINDOW_WIDTH = &WINDOW_WIDTH;
@@ -198,6 +195,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 }
 void processInput(GLFWwindow *window)
 {
+	if (gui.show_add_new_planet_window)
+		return;
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 

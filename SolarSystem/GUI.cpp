@@ -1,11 +1,11 @@
-﻿#include "GUI.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "GUI.h"
 #include <imgui\imgui.h>
 #include <iostream>
 #include <imgui\imgui_internal.h>
 #include "imgui_impl_glfw.h"
 #include <stdio.h>
 #include <glm/vec3.hpp> 
-
 
 GUI::GUI()
 {
@@ -48,15 +48,18 @@ void GUI::Draw()
 		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
 		{
 			camera->Mode = STATIC;
-			camera_following_planet = false;
 		}
 		if (ImGui::RadioButton("Camera following planet", &rb_camera, 1))
 		{
-			camera->Mode = FOLLOWING_PLANET;
-			camera_following_planet = true;
+			if (ss->planets.empty())
+				rb_camera = 0;
+			else
+			{
+				camera->Mode = FOLLOWING_PLANET;
+			}
 		}
 
-		if (camera_following_planet)
+		if (rb_camera == 1)
 			for (size_t i = 0; i < ss->planets.size(); i++)
 			{
 				ImGui::Text("	"); ImGui::SameLine();
@@ -65,13 +68,24 @@ void GUI::Draw()
 			}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
-
+			camera->Mode = STATIC;
+			camera->Up = glm::vec3(0.0, 1.0, 0.0);
+			if (ss->planets.empty())
+				rb_camera = 0;
+			else
+				camera->Position = ss->planets[camera_on_planet].getCenterPosition();
 		}
 		if (rb_camera == 2)
 		{
-			camera->Position = ss->planets[0].getCenterPosition();
+			for (size_t i = 0; i < ss->planets.size(); i++)
+			{
+				ImGui::Text("	"); ImGui::SameLine();
+				if (ImGui::RadioButton(ss->planets[i].name.c_str(), &camera_on_planet, i))
+					camera->Position = ss->planets[i].getCenterPosition();
+			}
 			camera->Front = -camera->Position;
 		}
+
 		if (ImGui::CollapsingHeader("Camera Settings"))
 		{
 			ImGui::Text("Position of camera");
@@ -130,8 +144,8 @@ void GUI::Draw()
 					}
 					ImGui::InputFloat(("rotation velocity" + p.name).c_str(), &(p.step), 0.01);
 					ImGui::InputFloat(("rotation velocity2" + p.name).c_str(), &(p.step2), 0.01);
-					ImGui::InputFloat(("radius" + p.name).c_str(), &(p.radius), 0.01);
-					if (ImGui::InputFloat(("scale" + p.name).c_str(), &(p.scale), 0.01))
+					ImGui::InputFloat(("radius " + p.name).c_str(), &(p.radius), 0.01);
+					if (ImGui::InputFloat(("scale " + p.name).c_str(), &(p.scale), 0.01))
 					{
 						p.SetScale();
 					}
@@ -147,7 +161,7 @@ void GUI::Draw()
 				new_planet_color = { (rand() % 100) / 100.0, (rand() % 100) / 100.0, (rand() % 100) / 100.0 };
 				new_planet_step = (rand() % 100) / 100.0;
 				new_planet_step2 = (rand() % 100) / 100.0;
-				new_planet_radius = (rand() % 100) / 20.0+2.5;
+				new_planet_radius = (rand() % 100) / 20.0 + 4.5;
 				new_planet_scale = (rand() % 100) / 100.0 + 0.01;
 				show_add_new_planet_window = true;
 			}
@@ -157,6 +171,7 @@ void GUI::Draw()
 
 	if (show_add_new_planet_window)
 	{
+
 		ImGui::Begin("New planet", &show_add_new_planet_window);
 		ImGui::InputText("Planet name", new_planet_name, IM_ARRAYSIZE(new_planet_name));
 		ImGui::ColorEdit3("Planet color", &(new_planet_color.x));
@@ -168,6 +183,7 @@ void GUI::Draw()
 		{
 			ss->AddNewPlanet(new_planet_name, new_planet_color, new_planet_step, new_planet_step2, new_planet_radius, new_planet_scale);
 			show_add_new_planet_window = false;
+			sprintf(new_planet_name + 9, "%d", new_planet_nr++);
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))
