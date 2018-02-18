@@ -7,7 +7,7 @@
 #include "Planet.h"
 #include "Sun.h"
 #include "Camera.h"
-#include "shader_m.h"
+#include "shader.h"
 
 class GraphicsLibrary
 {

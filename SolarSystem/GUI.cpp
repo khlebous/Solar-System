@@ -22,12 +22,7 @@ GUI::~GUI()
 
 void GUI::Draw()
 {
-
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
 	ImGui_ImplGlfwGL2_NewFrame();
-
-	// 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name the window.
 	if (show_main_window)
 	{
 		ImGui::Begin("Application configuration", &show_main_window);
@@ -119,7 +114,6 @@ void GUI::Draw()
 			ImGui::Text("--------------------");
 		}
 
-		//ImGui::GetStateStorage()->SetInt(ImGui::GetID("Sun"), 1);
 		if (ImGui::CollapsingHeader("Sun"))
 		{
 			if (ImGui::ColorEdit3("color 1", &ss->sun->color.x))
@@ -135,7 +129,6 @@ void GUI::Draw()
 			int planetNr = 0;
 			for (auto &p : ss->planets)
 			{
-				//if (ImGui::CollapsingHeader(p->name.c_str()))
 				if (ImGui::TreeNode(("planet: " + p.name).c_str()))
 				{
 					if (ImGui::ColorEdit3(("color " + p.name).c_str(), &(p.color.x)))
@@ -171,7 +164,6 @@ void GUI::Draw()
 
 	if (show_add_new_planet_window)
 	{
-
 		ImGui::Begin("New planet", &show_add_new_planet_window);
 		ImGui::InputText("Planet name", new_planet_name, IM_ARRAYSIZE(new_planet_name));
 		ImGui::ColorEdit3("Planet color", &(new_planet_color.x));
@@ -191,14 +183,13 @@ void GUI::Draw()
 		ImGui::End();
 	}
 
-	// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow().
 	if (show_test_window)
 	{
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::ShowTestWindow(&show_test_window);
 	}
 
-	//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
+	glUseProgram(0);
 	ImGui::Render();
 
 }

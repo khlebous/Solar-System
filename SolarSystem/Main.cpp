@@ -17,7 +17,7 @@
 #include <glm/vec4.hpp> 
 
 
-#include "shader_m.h"
+#include "shader.h"
 #include "GUI.h"
 #include "GraphicsLibrary.h"
 #include "SolarSystem.h"

@@ -150,7 +150,7 @@
     <ClInclude Include="Includes\imgui\stb_textedit.h" />
     <ClInclude Include="Includes\imgui\stb_truetype.h" />
     <ClInclude Include="Planet.h" />
-    <ClInclude Include="shader_m.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SolarSystem.h" />
     <ClInclude Include="SpaceShip.h" />

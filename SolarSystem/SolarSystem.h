@@ -1,7 +1,7 @@
 #pragma once
 #include "Sun.h"
 #include "Planet.h"
-#include "shader_m.h"
+#include "shader.h"
 class SolarSystem
 {
 public:

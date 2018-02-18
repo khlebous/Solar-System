@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "shader_m.h"
+#include "shader.h"
 #include "Camera.h"
 #include <glm/vec3.hpp> 
 
