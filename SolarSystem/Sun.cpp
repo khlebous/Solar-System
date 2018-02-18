@@ -22,6 +22,11 @@ glm::mat4 Sun::getMModel()
 {
 	angle = step * glfwGetTime();
 	mModel = glm::mat4(
+		scale, 0, 0, 0,
+		0, scale, 0, 0,
+		0, 0, scale, 0,
+		0, 0, 0, 1);
+	mModel = mModel * glm::mat4(
 		cos(angle), 0, sin(angle), 0,
 		0, 1, 0, 0,
 		-sin(angle), 0, cos(angle), 0,
@@ -49,16 +54,6 @@ void Sun::SetColor()
 	}
 	Body::UpdateBuffers();
 }
-void Sun::SetScale()
-{
-	for (size_t i = 0; i < m.triangles.size(); i++)
-	{
-		int t1 = m.triangles[i];
-		vertices[9*i] = m.vertices[t1].x*scale;
-		vertices[9*i+1] = m.vertices[t1].y*scale;
-		vertices[9*i+2] = m.vertices[t1].z*scale;
-	}
-	Body::UpdateBuffers();
-}
+
 
 

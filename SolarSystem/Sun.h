@@ -6,7 +6,7 @@
 #include <list>
 #include <time.h>
 
-#include "shader_m.h"
+#include "shader.h"
 #include "Body.h"
 #include "Mesh.h"
 #include "Planet.h"
@@ -23,6 +23,5 @@ public:
 	
 	glm::mat4 getMModel();
 	void SetColor();
-	void SetScale();
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 
-#include "shader_m.h"
+#include "shader.h"
 using namespace std;
 
 class Skybox

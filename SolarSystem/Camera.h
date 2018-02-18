@@ -56,16 +56,16 @@ public:
 
 	Camera()
 	{
-		Position = glm::vec3(0.0f, 1.5f, 10.0f);
-		Front = glm::vec3(0.0f, -5.0f, 0.0f);
-		WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-		Yaw = -90.0f;
-		Pitch = -7.0f;
+		Position = glm::vec3(-11.0f, 16.5f, 18.0f);
+		Front = glm::vec3(0.437881f, -0.608762f, -0.661566f);
+		WorldUp = glm::vec3(0.000000f, 1.000000f, 0.000000f);
+		Yaw = -56.499973f;
+		Pitch = -37.500008f;
 		MovementSpeed = 2.5f;
 		MouseSensitivity = 0.1f;
 		Zoom = 45.0f;
 		n = 0.01;
-		f = 20.0;
+		f = 100.0;
 		Mode = STATIC;
 		updateCameraVectors();
 	}
@@ -151,7 +151,7 @@ public:
 	// Calculates the front vector from the Camera's (updated) Eular Angles
 	void updateCameraVectors()
 	{
-		glm::vec3 front;
+		glm::vec3 front = glm::vec3();
 		front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
 		front.y = sin(glm::radians(Pitch));
 		front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));

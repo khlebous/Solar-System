@@ -1,4 +1,5 @@
-﻿#include "GUI.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "GUI.h"
 #include <imgui\imgui.h>
 #include <iostream>
 #include <imgui\imgui_internal.h>
@@ -6,13 +7,9 @@
 #include <stdio.h>
 #include <glm/vec3.hpp> 
 
-
 GUI::GUI()
 {
-	char somebuffer[20] = "new name";
-	string s = somebuffer;
-	//new_planet_name = s.c_str();
-	new_planet_color = glm::vec3(1.0, 1.0, 1.0);
+	new_planet_color = glm::vec3(1.0, 1.0, 0.0);
 	new_planet_step = 0.5;
 	new_planet_step2 = 1.0;
 	new_planet_radius = 2.0;
@@ -25,12 +22,7 @@ GUI::~GUI()
 
 void GUI::Draw()
 {
-
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
 	ImGui_ImplGlfwGL2_NewFrame();
-
-	// 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name the window.
 	if (show_main_window)
 	{
 		ImGui::Begin("Application configuration", &show_main_window);
@@ -51,30 +43,44 @@ void GUI::Draw()
 		if (ImGui::RadioButton("Camera on space ship", &rb_camera, 0))
 		{
 			camera->Mode = STATIC;
-			camera_following_planet = false;
 		}
 		if (ImGui::RadioButton("Camera following planet", &rb_camera, 1))
 		{
-			camera->Mode = FOLLOWING_PLANET;
-			camera_following_planet = true;
+			if (ss->planets.empty())
+				rb_camera = 0;
+			else
+			{
+				camera->Mode = FOLLOWING_PLANET;
+			}
 		}
-		
-		if (camera_following_planet)
+
+		if (rb_camera == 1)
 			for (size_t i = 0; i < ss->planets.size(); i++)
 			{
 				ImGui::Text("	"); ImGui::SameLine();
-				if (ImGui::RadioButton(ss->planets[i]->name.c_str(), &planet_to_follow, i))
-					camera->planet = ss->planets[i];
+				if (ImGui::RadioButton(ss->planets[i].name.c_str(), &planet_to_follow, i))
+					camera->planet = &ss->planets[i];
 			}
 		if (ImGui::RadioButton("Camera on a planet", &rb_camera, 2))
 		{
-			
+			camera->Mode = STATIC;
+			camera->Up = glm::vec3(0.0, 1.0, 0.0);
+			if (ss->planets.empty())
+				rb_camera = 0;
+			else
+				camera->Position = ss->planets[camera_on_planet].getCenterPosition();
 		}
 		if (rb_camera == 2)
 		{
-			camera->Position = ss->planets[0]->getCenterPosition();
+			for (size_t i = 0; i < ss->planets.size(); i++)
+			{
+				ImGui::Text("	"); ImGui::SameLine();
+				if (ImGui::RadioButton(ss->planets[i].name.c_str(), &camera_on_planet, i))
+					camera->Position = ss->planets[i].getCenterPosition();
+			}
 			camera->Front = -camera->Position;
 		}
+
 		if (ImGui::CollapsingHeader("Camera Settings"))
 		{
 			ImGui::Text("Position of camera");
@@ -108,7 +114,6 @@ void GUI::Draw()
 			ImGui::Text("--------------------");
 		}
 
-		//ImGui::GetStateStorage()->SetInt(ImGui::GetID("Sun"), 1);
 		if (ImGui::CollapsingHeader("Sun"))
 		{
 			if (ImGui::ColorEdit3("color 1", &ss->sun->color.x))
@@ -117,31 +122,36 @@ void GUI::Draw()
 				ss->SetSunColorToShader();
 			}
 			ImGui::InputFloat("Rotation velocity", &(ss->sun->step), 0.01);
-			if (ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01))
+			ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01);
+			int planetNr = 0;
+			for (auto &p : ss->planets)
 			{
-				ss->sun->SetScale();
-			}
-			for (auto p : ss->planets)
-			{
-				//if (ImGui::CollapsingHeader(p->name.c_str()))
-				if (ImGui::TreeNode(("planet: " + p->name).c_str()))
+				if (ImGui::TreeNode(("planet: " + p.name).c_str()))
 				{
-					if (ImGui::ColorEdit3((p->name + " color").c_str(), &(p->color.x)))
+					if (ImGui::ColorEdit3(("color " + p.name).c_str(), &(p.color.x)))
 					{
-						p->SetColor();
+						p.SetColor();
 					}
-					ImGui::InputFloat((p->name + " rotation velocity").c_str(), &(p->step), 0.01);
-					ImGui::InputFloat((p->name + " rotation velocity2").c_str(), &(p->step2), 0.01);
-					ImGui::InputFloat((p->name + " radius").c_str(), &(p->radius), 0.01);
-					if (ImGui::InputFloat((p->name + " scale").c_str(), &(p->scale), 0.01))
-					{
-						p->SetScale();
-					}
+					ImGui::InputFloat(("rotation velocity" + p.name).c_str(), &(p.step), 0.01);
+					ImGui::InputFloat(("rotation velocity2" + p.name).c_str(), &(p.step2), 0.01);
+					ImGui::InputFloat(("radius " + p.name).c_str(), &(p.radius), 0.01);
+					ImGui::InputFloat(("scale " + p.name).c_str(), &(p.scale), 0.01);
+					if (ImGui::Button("Delete planet"))
+						ss->DeletePlanet(planetNr);
 					ImGui::TreePop();
 				}
+				planetNr++;
 			}
 			if (ImGui::Button("Add new planet"))
+			{
+				srand(time(NULL));
+				new_planet_color = { (rand() % 100) / 100.0, (rand() % 100) / 100.0, (rand() % 100) / 100.0 };
+				new_planet_step = (rand() % 100) / 100.0;
+				new_planet_step2 = (rand() % 100) / 100.0;
+				new_planet_radius = (rand() % 100) / 20.0 + 4.5;
+				new_planet_scale = (rand() % 100) / 100.0 + 0.01;
 				show_add_new_planet_window = true;
+			}
 		}
 		ImGui::End();
 	}
@@ -149,25 +159,31 @@ void GUI::Draw()
 	if (show_add_new_planet_window)
 	{
 		ImGui::Begin("New planet", &show_add_new_planet_window);
-
-		ImGui::InputText("Planet name", new_planet_name, 20);
+		ImGui::InputText("Planet name", new_planet_name, IM_ARRAYSIZE(new_planet_name));
 		ImGui::ColorEdit3("Planet color", &(new_planet_color.x));
 		ImGui::InputFloat("Planet rotation velocity", &new_planet_step, 0.01);
-		ImGui::InputFloat("Planet rotation velocity2", &new_planet_step, 0.01);
+		ImGui::InputFloat("Planet rotation velocity2", &new_planet_step2, 0.01);
 		ImGui::InputFloat("Planet radius", &new_planet_radius, 0.01);
 		ImGui::InputFloat("Planet scale", &new_planet_scale, 0.01);
+		if (ImGui::Button("Add planet"))
+		{
+			ss->AddNewPlanet(new_planet_name, new_planet_color, new_planet_step, new_planet_step2, new_planet_radius, new_planet_scale);
+			show_add_new_planet_window = false;
+			sprintf(new_planet_name + 9, "%d", new_planet_nr++);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+			show_add_new_planet_window = false;
 		ImGui::End();
 	}
 
-	// 3. Show the ImGui test window. Most of the sample code is in ImGui::ShowTestWindow().
 	if (show_test_window)
 	{
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::ShowTestWindow(&show_test_window);
 	}
 
-
-	//glUseProgram(0); // You may want this if using this code in an OpenGL 3+ context where shaders may be bound, but prefer using the GL3+ code.
+	glUseProgram(0);
 	ImGui::Render();
 
 }
