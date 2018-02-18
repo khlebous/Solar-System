@@ -39,6 +39,11 @@ glm::mat4 Planet::getMModel()
 	angle = step * glfwGetTime();
 	angle2 = step2 * glfwGetTime();
 	mModel = glm::mat4(
+		scale, 0, 0, 0,
+		0, scale, 0, 0,
+		0, 0, scale, 0,
+		0, 0, 0, 1);
+	mModel = mModel *glm::mat4(
 		cos(angle), 0, sin(angle), 0,
 		0, 1, 0, 0,
 		-sin(angle), 0, cos(angle), radius,

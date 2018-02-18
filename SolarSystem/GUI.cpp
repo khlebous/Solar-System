@@ -122,10 +122,7 @@ void GUI::Draw()
 				ss->SetSunColorToShader();
 			}
 			ImGui::InputFloat("Rotation velocity", &(ss->sun->step), 0.01);
-			if (ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01))
-			{
-				ss->sun->SetScale();
-			}
+			ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01);
 			int planetNr = 0;
 			for (auto &p : ss->planets)
 			{
@@ -138,10 +135,7 @@ void GUI::Draw()
 					ImGui::InputFloat(("rotation velocity" + p.name).c_str(), &(p.step), 0.01);
 					ImGui::InputFloat(("rotation velocity2" + p.name).c_str(), &(p.step2), 0.01);
 					ImGui::InputFloat(("radius " + p.name).c_str(), &(p.radius), 0.01);
-					if (ImGui::InputFloat(("scale " + p.name).c_str(), &(p.scale), 0.01))
-					{
-						p.SetScale();
-					}
+					ImGui::InputFloat(("scale " + p.name).c_str(), &(p.scale), 0.01);
 					if (ImGui::Button("Delete planet"))
 						ss->DeletePlanet(planetNr);
 					ImGui::TreePop();

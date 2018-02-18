@@ -30,7 +30,6 @@ public:
 	glm::vec3 virtual getCenterPosition() { return glm::vec3(0); };
 
 	void SetColor();
-	void SetScale();
 
 protected:
 	float angle=0;
@@ -38,7 +37,7 @@ protected:
 
 
 private:
-	void GetIcosahedronVertices(float s, glm::vec3 color, vector<float>* v);
+	void GetIcosahedronVertices(glm::vec3 color, vector<float>* v);
 	void Icosahedron(Mesh &mesh);
 	};
 
