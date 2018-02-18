@@ -6,13 +6,12 @@
 #include <iostream>
 
 
-Body::Body(float s, glm::vec3 color)
+Body::Body(glm::vec3 color)
 {
 	name = "body";
 	this->color = color;
-	this->scale = s;
 	GetIcosahedronVertices(color, &vertices);
-	vertCount = vertices.size()/9;
+	vertCount = vertices.size() / 9;
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -33,14 +32,22 @@ void Body::SetColor()
 	float bb = float(aa) * 2.0;
 	float cc = float(aa) / bb / 2.0;
 	vector<float> colors = vector<float>(vertCount);
-	for (size_t i = 6; i < vertices.size(); i+=9)
+	for (size_t i = 6; i < vertices.size(); i += 9)
 	{
 		vertices[i] = color.x;
-		vertices[i+1] = color.y;
-		//vertices[i+2] = color.z;
-		//vertices[i ] = (rand() % aa) / bb - cc + color.x;
-		//vertices[i + 1] = (rand() % aa) / bb - cc + color.y;
-		vertices[i + 2] = (rand() % aa) / bb - cc + color.z;
+		vertices[i + 1] = color.y;
+		//vertices[i + 2] =  color.z;
+		if (rand() % 2 == 0)
+			vertices[i + 2] = (rand() % aa) / bb - cc + color.z;
+		else
+			vertices[i + 2] = color.z;
+		/*if (i % 4 == 0)
+		{
+			float offset = (rand() % aa) / bb - cc;
+			vertices[i] += offset;
+			vertices[i+1] += offset;
+			vertices[i+2] += offset;
+		}*/
 	}
 	UpdateBuffers();
 }
@@ -154,7 +161,7 @@ void Body::GetIcosahedronVertices(glm::vec3 color, vector<float>* v)
 	float bb = float(aa) * 2.0;
 	float cc = float(aa) / bb / 2.0;
 	srand(1);
-	
+
 	Mesh m1;
 	Mesh m2;
 	Mesh m3;
@@ -176,7 +183,7 @@ void Body::GetIcosahedronVertices(glm::vec3 color, vector<float>* v)
 		glm::vec3 a = m.vertices[t1];
 		glm::vec3 b = m.vertices[t2];
 		glm::vec3 c = m.vertices[t3];
-	//	glm::vec3 norm = glm::normalize(glm::cross(b - a, c - a));
+		//	glm::vec3 norm = glm::normalize(glm::cross(b - a, c - a));
 		vector<float> colors = vector<float>(m.vertices.size());
 		for (size_t i = 0; i < m.vertices.size(); i++)
 		{

@@ -8,7 +8,7 @@ public:
 	float step2;
 	float radius;
 
-	Planet(float s, glm::vec3 color);
+	Planet(glm::vec3 color);
 	~Planet();
 	Planet(const Planet &planet);
 

@@ -12,10 +12,7 @@ class Body
 {
 public:
 	string name;
-
-	glm::mat4 mModel = glm::mat4(1);
 	vector<float> vertices;
-
 	unsigned int VBO, VAO;
 	glm::vec3 color;
 	size_t vertCount;
@@ -23,10 +20,10 @@ public:
 	float scale = 1;
 	Mesh m;
 
-	Body(float s, glm::vec3 color);
+	Body(glm::vec3 color);
 	~Body();
 
-	glm::mat4 virtual getMModel() { return mModel; }
+	glm::mat4 virtual getMModel() { return glm::mat4(1); }
 	glm::vec3 virtual getCenterPosition() { return glm::vec3(0); };
 
 	void SetColor();

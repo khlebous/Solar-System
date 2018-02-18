@@ -86,8 +86,9 @@ int main(int, char**)
 	ImVec4 clear_color = ImVec4(0.1f, 0.1f, 0.2f, 1.0f);
 	glm::vec3 color = { 1.0, 0.0, 0.0 };
 
-	Sun sun = Sun(2.0, { 1.0, 1.0, 0.7 });
+	Sun sun = Sun({ 1.0, 1.0, 0.7 });
 	sun.name = "Sun";
+	sun.scale = 2.0;
 	planet_shader.use();
 	planet_shader.setVec3("lightColor", color);
 
