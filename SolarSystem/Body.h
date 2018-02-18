@@ -5,7 +5,7 @@
 #include <glm/mat4x4.hpp> // glm::mat4
 #include <glm/vec3.hpp> // glm::mat4
 #include <time.h>
-#include "Mesh.h"
+#include "IMesh.h"
 
 using namespace std;
 class Body
@@ -18,7 +18,7 @@ public:
 	size_t vertCount;
 	float step = 0;
 	float scale = 1;
-	Mesh m;
+	IMesh m;
 
 	Body(glm::vec3 color);
 	~Body();
@@ -35,6 +35,6 @@ protected:
 
 private:
 	void GetIcosahedronVertices(glm::vec3 color, vector<float>* v);
-	void Icosahedron(Mesh &mesh);
+	void Icosahedron(IMesh &IMesh);
 	};
 

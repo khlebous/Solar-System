@@ -81,7 +81,7 @@
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;glew32.lib;glew32s.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
     <ClCompile Include="Includes\imgui\imgui_demo.cpp" />
     <ClCompile Include="Includes\imgui\imgui_draw.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Mesh.h" />
+    <ClCompile Include="IMesh.h" />
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SolarSystem.cpp" />
@@ -149,6 +149,8 @@
     <ClInclude Include="Includes\imgui\stb_rect_pack.h" />
     <ClInclude Include="Includes\imgui\stb_textedit.h" />
     <ClInclude Include="Includes\imgui\stb_truetype.h" />
+    <ClInclude Include="mesh.h" />
+    <ClInclude Include="model.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="Skybox.h" />

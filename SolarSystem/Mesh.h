@@ -1,177 +1,139 @@
-#pragma once 
-#define _USE_MATH_DEFINES 
-#include <cmath> 
-#include <vector> 
-#include <glm/vec3.hpp> 
-#include <glm/glm.hpp> 
- 
-struct Mesh 
-{ 
-  std::vector<glm::vec3> vertices; 
-  std::vector<uint32_t> triangles; 
- 
-  uint32_t triangleCount() const { return triangles.size() / 3; } 
- 
-  void addTriangle(uint32_t a, uint32_t b, uint32_t c) 
-  { 
-    triangles.emplace_back(a); 
-    triangles.emplace_back(b); 
-    triangles.emplace_back(c); 
-  } 
- 
-  void addQuad(uint32_t a, uint32_t b, uint32_t c, uint32_t d) 
-  { 
-    triangles.emplace_back(a); 
-    triangles.emplace_back(b); 
-    triangles.emplace_back(c); 
-    triangles.emplace_back(a); 
-    triangles.emplace_back(c); 
-    triangles.emplace_back(d); 
-  } 
- 
-  void addQuadAlt(uint32_t a, uint32_t b, uint32_t c, uint32_t d) 
-  { 
-    triangles.emplace_back(a); 
-    triangles.emplace_back(b); 
-    triangles.emplace_back(d); 
-    triangles.emplace_back(b); 
-    triangles.emplace_back(c); 
-    triangles.emplace_back(d); 
-  } 
- 
-  void clear() 
-  { 
-    vertices.clear(); 
-    triangles.clear(); 
-  } 
- 
-  double distance(const glm::vec3 &p, uint32_t tidx) const 
-  { 
-    const uint32_t idx0 = triangles[tidx]; 
-    const uint32_t idx1 = triangles[tidx + 1]; 
-    const uint32_t idx2 = triangles[tidx + 2]; 
-    const glm::vec3 v0 = vertices[idx0]; 
-    const glm::vec3 v1 = vertices[idx1]; 
-    const glm::vec3 v2 = vertices[idx2]; 
-    const glm::vec3 bv = v0; 
-    const glm::vec3 e0 = v1 - v0; 
-    const glm::vec3 e1 = v2 - v0; 
-    const glm::vec3 dv = bv - p; 
-    const double a = glm::dot(e0, e0); 
-    const double b = glm::dot(e0, e1); 
-    const double c = glm::dot(e1, e1); 
-    const double d = glm::dot(e0, dv); 
-    const double e = glm::dot(e1, dv); 
-    const double f = glm::dot(dv, dv); 
- 
-    const double det = a * c - b * b; 
-    double s = b * e - c * d; 
-    double t = b * d - a * e; 
- 
-    if (s + t <= det) 
-    { 
-      if (s < 0.0) 
-      { 
-        if (t < 0.0) 
-        { 
-          // region 4 
-          if (d < 0.0) 
-          { 
-            t = 0.0; 
-            s = -d >= a ? 1.0 : -d / a; 
-          } 
-          else 
-          { 
-            s = 0.0; 
-            t = e >= 0.0 ? 0.0 : (-e >= c ? 1.0 : -e / c); 
-          } 
-        } 
-        else 
-        { 
-          // region 3 
-          s = 0.0; 
-          t = e >= 0.0 ? 0.0 : (-e >= c ? 1.0 : -e / c); 
-        } 
-      } 
-      else if (t < 0.0) 
-      { 
-        // region 5 
-        s = d >= 0.0 ? 0.0 : (-d >= a ? 1.0 : -d / a); 
-        t = 0.0; 
-      } 
-      else 
-      { 
-        // region 0 
-        const double invDet = 1.0 / det; 
-        s *= invDet; 
-        t *= invDet; 
-      } 
-    } 
-    else 
-    { 
-      if (s < 0.0) 
-      { 
-        // region 2 
-        const double tmp0 = b + d; 
-        const double tmp1 = c + e; 
-        if (tmp1 > tmp0) 
-        { 
-          const double numer = tmp1 - tmp0; 
-          const double denom = a - 2.0 * b + c; 
-          s = numer >= denom ? 1.0 : numer / denom; 
-          t = 1.0 - s; 
-        } 
-        else 
-        { 
-          s = 0.0; 
-          t = (tmp1 <= 0.0 ? 1.0 : (e >= 0.0 ? 0.0 : -e / c)); 
-        } 
-      } 
-      else if (t < 0.0) 
-      { 
-        // region 6 
-        const double tmp0 = b + e; 
-        const double tmp1 = a + d; 
-        if (tmp1 > tmp0) 
-        { 
-          const double numer = tmp1 - tmp0; 
-          const double denom = a - 2.0 * b + c; 
-          t = numer >= denom ? 1.0 : numer / denom; 
-          s = 1.0 - t; 
-        } 
-        else 
-        { 
-          s = (tmp1 <= 0.0 ? 1.0 : (d >= 0.0 ? 0.0 : -d / a)); 
-          t = 0.0; 
-        } 
-      } 
-      else 
-      { 
-        // region 1 
-        const double numer = c + e - b - d; 
-        if (numer <= 0) 
-        { 
-          s = 0.0; 
-        } 
-        else 
-        { 
-          const double denom = a - 2.0 * b + c; 
-          s = numer >= denom ? 1.0 : numer / denom; 
-        } 
-        t = 1.0 - s; 
-      } 
-    } 
- 
-    return length(p - (v0 + glm::vec3(s) * e0 + glm::vec3(t) * e1)); 
-  } 
- 
-  double distance(const glm::vec3 &p) const 
-  { 
-    double min = 10e10; 
-    for (uint32_t i = 0; i < triangles.size(); i += 3) 
-    { 
-      min = std::fmin(min, distance(p, i)); 
-    } 
-    return min; 
-  } 
+#ifndef MESH_H
+#define MESH_H
+
+#include <glad/glad.h> // holds all OpenGL type declarations
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "shader.h"
+
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Vertex {
+	// position
+	glm::vec3 Position;
+	// normal
+	glm::vec3 Normal;
+	// texCoords
+	glm::vec2 TexCoords;
+	// tangent
+	glm::vec3 Tangent;
+	// bitangent
+	glm::vec3 Bitangent;
 };
+
+struct Texture {
+	unsigned int id;
+	string type;
+	string path;
+};
+
+class Mesh {
+public:
+	/*  Mesh Data  */
+	vector<Vertex> vertices;
+	vector<unsigned int> indices;
+	vector<Texture> textures;
+	unsigned int VAO;
+
+	/*  Functions  */
+	// constructor
+	Mesh(vector<Vertex> vertices, vector<unsigned int> indices, vector<Texture> textures)
+	{
+		this->vertices = vertices;
+		this->indices = indices;
+		this->textures = textures;
+
+		// now that we have all the required data, set the vertex buffers and its attribute pointers.
+		setupMesh();
+	}
+
+	// render the mesh
+	void Draw(Shader shader)
+	{
+		// bind appropriate textures
+		unsigned int diffuseNr = 1;
+		unsigned int specularNr = 1;
+		unsigned int normalNr = 1;
+		unsigned int heightNr = 1;
+		for (unsigned int i = 0; i < textures.size(); i++)
+		{
+			glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
+											  // retrieve texture number (the N in diffuse_textureN)
+			string number;
+			string name = textures[i].type;
+			if (name == "texture_diffuse")
+				number = std::to_string(diffuseNr++);
+			else if (name == "texture_specular")
+				number = std::to_string(specularNr++); // transfer unsigned int to stream
+			else if (name == "texture_normal")
+				number = std::to_string(normalNr++); // transfer unsigned int to stream
+			else if (name == "texture_height")
+				number = std::to_string(heightNr++); // transfer unsigned int to stream
+
+													 // now set the sampler to the correct texture unit
+			glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+			// and finally bind the texture
+			glBindTexture(GL_TEXTURE_2D, textures[i].id);
+		}
+
+		// draw mesh
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+
+		// always good practice to set everything back to defaults once configured.
+		glActiveTexture(GL_TEXTURE0);
+	}
+
+private:
+	/*  Render data  */
+	unsigned int VBO, EBO;
+
+	/*  Functions    */
+	// initializes all the buffer objects/arrays
+	void setupMesh()
+	{
+		// create buffers/arrays
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		glGenBuffers(1, &EBO);
+
+		glBindVertexArray(VAO);
+		// load data into vertex buffers
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		// A great thing about structs is that their memory layout is sequential for all its items.
+		// The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
+		// again translates to 3/2 floats which translates to a byte array.
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+		// set the vertex attribute pointers
+		// vertex Positions
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+		// vertex normals
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+		// vertex texture coords
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+		// vertex tangent
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+		// vertex bitangent
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+
+		glBindVertexArray(0);
+	}
+};
+#endif

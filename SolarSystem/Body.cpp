@@ -73,48 +73,48 @@ void Body::UpdateBuffers()
 }
 
 
-void Body::Icosahedron(Mesh & mesh)
+void Body::Icosahedron(IMesh & IMesh)
 {
 	const double t = (1.0 + std::sqrt(5.0)) / 2.0;
 
 	// Vertices
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(-1.0, t, 0.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(1.0, t, 0.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(-1.0, -t, 0.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(1.0, -t, 0.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, -1.0, t)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, 1.0, t)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, -1.0, -t)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, 1.0, -t)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(t, 0.0, -1.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(t, 0.0, 1.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(-t, 0.0, -1.0)));
-	mesh.vertices.emplace_back(glm::normalize(glm::vec3(-t, 0.0, 1.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(-1.0, t, 0.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(1.0, t, 0.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(-1.0, -t, 0.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(1.0, -t, 0.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, -1.0, t)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, 1.0, t)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, -1.0, -t)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(0.0, 1.0, -t)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(t, 0.0, -1.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(t, 0.0, 1.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(-t, 0.0, -1.0)));
+	IMesh.vertices.emplace_back(glm::normalize(glm::vec3(-t, 0.0, 1.0)));
 
 	// Faces
-	mesh.addTriangle(0, 11, 5);
-	mesh.addTriangle(0, 5, 1);
-	mesh.addTriangle(0, 1, 7);
-	mesh.addTriangle(0, 7, 10);
-	mesh.addTriangle(0, 10, 11);
-	mesh.addTriangle(1, 5, 9);
-	mesh.addTriangle(5, 11, 4);
-	mesh.addTriangle(11, 10, 2);
-	mesh.addTriangle(10, 7, 6);
-	mesh.addTriangle(7, 1, 8);
-	mesh.addTriangle(3, 9, 4);
-	mesh.addTriangle(3, 4, 2);
-	mesh.addTriangle(3, 2, 6);
-	mesh.addTriangle(3, 6, 8);
-	mesh.addTriangle(3, 8, 9);
-	mesh.addTriangle(4, 9, 5);
-	mesh.addTriangle(2, 4, 11);
-	mesh.addTriangle(6, 2, 10);
-	mesh.addTriangle(8, 6, 7);
-	mesh.addTriangle(9, 8, 1);
+	IMesh.addTriangle(0, 11, 5);
+	IMesh.addTriangle(0, 5, 1);
+	IMesh.addTriangle(0, 1, 7);
+	IMesh.addTriangle(0, 7, 10);
+	IMesh.addTriangle(0, 10, 11);
+	IMesh.addTriangle(1, 5, 9);
+	IMesh.addTriangle(5, 11, 4);
+	IMesh.addTriangle(11, 10, 2);
+	IMesh.addTriangle(10, 7, 6);
+	IMesh.addTriangle(7, 1, 8);
+	IMesh.addTriangle(3, 9, 4);
+	IMesh.addTriangle(3, 4, 2);
+	IMesh.addTriangle(3, 2, 6);
+	IMesh.addTriangle(3, 6, 8);
+	IMesh.addTriangle(3, 8, 9);
+	IMesh.addTriangle(4, 9, 5);
+	IMesh.addTriangle(2, 4, 11);
+	IMesh.addTriangle(6, 2, 10);
+	IMesh.addTriangle(8, 6, 7);
+	IMesh.addTriangle(9, 8, 1);
 }
 
-uint32_t subdivideEdge(uint32_t f0, uint32_t f1, const glm::vec3 &v0, const glm::vec3 &v1, Mesh &io_mesh, std::map<Edge, uint32_t> &io_divisions)
+uint32_t subdivideEdge(uint32_t f0, uint32_t f1, const glm::vec3 &v0, const glm::vec3 &v1, IMesh &io_IMesh, std::map<Edge, uint32_t> &io_divisions)
 {
 	const Edge edge(f0, f1);
 	auto it = io_divisions.find(edge);
@@ -124,35 +124,35 @@ uint32_t subdivideEdge(uint32_t f0, uint32_t f1, const glm::vec3 &v0, const glm:
 	}
 
 	const glm::vec3 v = glm::normalize(glm::vec3(0.5) * (v0 + v1));
-	const uint32_t f = io_mesh.vertices.size();
-	io_mesh.vertices.emplace_back(v);
+	const uint32_t f = io_IMesh.vertices.size();
+	io_IMesh.vertices.emplace_back(v);
 	io_divisions.emplace(edge, f);
 	return f;
 }
-void SubdivideMesh(const Mesh &meshIn, Mesh &meshOut)
+void SubdivideIMesh(const IMesh &IMeshIn, IMesh &IMeshOut)
 {
-	meshOut.vertices = meshIn.vertices;
+	IMeshOut.vertices = IMeshIn.vertices;
 
 	std::map<Edge, uint32_t> divisions; // Edge -> new vertex
 
-	for (uint32_t i = 0; i < meshIn.triangleCount(); ++i)
+	for (uint32_t i = 0; i < IMeshIn.triangleCount(); ++i)
 	{
-		const uint32_t f0 = meshIn.triangles[i * 3];
-		const uint32_t f1 = meshIn.triangles[i * 3 + 1];
-		const uint32_t f2 = meshIn.triangles[i * 3 + 2];
+		const uint32_t f0 = IMeshIn.triangles[i * 3];
+		const uint32_t f1 = IMeshIn.triangles[i * 3 + 1];
+		const uint32_t f2 = IMeshIn.triangles[i * 3 + 2];
 
-		const glm::vec3 v0 = meshIn.vertices[f0];
-		const glm::vec3 v1 = meshIn.vertices[f1];
-		const glm::vec3 v2 = meshIn.vertices[f2];
+		const glm::vec3 v0 = IMeshIn.vertices[f0];
+		const glm::vec3 v1 = IMeshIn.vertices[f1];
+		const glm::vec3 v2 = IMeshIn.vertices[f2];
 
-		const uint32_t f3 = subdivideEdge(f0, f1, v0, v1, meshOut, divisions);
-		const uint32_t f4 = subdivideEdge(f1, f2, v1, v2, meshOut, divisions);
-		const uint32_t f5 = subdivideEdge(f2, f0, v2, v0, meshOut, divisions);
+		const uint32_t f3 = subdivideEdge(f0, f1, v0, v1, IMeshOut, divisions);
+		const uint32_t f4 = subdivideEdge(f1, f2, v1, v2, IMeshOut, divisions);
+		const uint32_t f5 = subdivideEdge(f2, f0, v2, v0, IMeshOut, divisions);
 
-		meshOut.addTriangle(f0, f3, f5);
-		meshOut.addTriangle(f3, f1, f4);
-		meshOut.addTriangle(f4, f2, f5);
-		meshOut.addTriangle(f3, f4, f5);
+		IMeshOut.addTriangle(f0, f3, f5);
+		IMeshOut.addTriangle(f3, f1, f4);
+		IMeshOut.addTriangle(f4, f2, f5);
+		IMeshOut.addTriangle(f3, f4, f5);
 	}
 }
 void Body::GetIcosahedronVertices(glm::vec3 color, vector<float>* v)
@@ -162,16 +162,16 @@ void Body::GetIcosahedronVertices(glm::vec3 color, vector<float>* v)
 	float cc = float(aa) / bb / 2.0;
 	srand(1);
 
-	Mesh m1;
-	Mesh m2;
-	Mesh m3;
-	Mesh m4;
+	IMesh m1;
+	IMesh m2;
+	IMesh m3;
+	IMesh m4;
 	Icosahedron(m1);
 	//Icosahedron(m);
-	SubdivideMesh(m1, m2);
-	SubdivideMesh(m2, m);
-	//SubdivideMesh(m3, m4);
-	//SubdivideMesh(m4, m);
+	SubdivideIMesh(m1, m2);
+	SubdivideIMesh(m2, m);
+	//SubdivideIMesh(m3, m4);
+	//SubdivideIMesh(m4, m);
 	/*for (auto &el : m.vertices)
 		el *= s;
 */

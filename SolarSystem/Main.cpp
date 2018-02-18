@@ -16,6 +16,7 @@
 #include <vector>
 #include <glm/vec4.hpp> 
 
+#include "model.h"
 
 #include "shader.h"
 #include "GUI.h"
@@ -142,7 +143,7 @@ int main(int, char**)
 	gl.camera = &camera;
 	gl.ss = &ss;
 	// SKYBOX
-	//Skybox skybox = Skybox();
+	Skybox skybox = Skybox();
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	// SPACESHIP
@@ -150,6 +151,10 @@ int main(int, char**)
 	spaceShip.camera = &camera;
 
 	glfwSetScrollCallback(window, scroll_callback);
+
+	Shader ourShader("shader.vs", "shader.fs");
+	Model ourModel("earth/earth.obj");
+
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -163,14 +168,28 @@ int main(int, char**)
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
 		// 
-		//skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
+		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		//spaceShip.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		gl.Draw();
 		//
 
 		glUseProgram(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//
+		ourShader.use();
+		glm::mat4 projection =camera.GetProjMatrix();
+		glm::mat4 view = camera.GetViewMatrix();
+		ourShader.setMat4("projection", projection);
+		ourShader.setMat4("view", view);
 
+		// render the loaded model
+		glm::mat4 model = glm::mat4(1);
+		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
+		model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.008f));	// it's a bit too big for our scene, so scale it down
+		ourShader.setMat4("model", model);
+		ourModel.Draw(ourShader);
+		glUseProgram(0);
+		//
 		gui.Draw();
 
 		// 

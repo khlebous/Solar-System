@@ -8,7 +8,7 @@
 
 #include "shader.h"
 #include "Body.h"
-#include "Mesh.h"
+#include "IMesh.h"
 #include "Planet.h"
 
 using namespace std;
