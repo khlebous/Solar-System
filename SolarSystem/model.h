@@ -91,6 +91,32 @@ private:
 		vector<unsigned int> indices;
 		vector<Texture> textures;
 
+		/*if (mesh->mNormals == NULL)
+			mesh->mNormals = mesh->mVertices;
+		if (mesh->mTangents == NULL)
+		{
+			mesh->mTangents = new aiVector3D();
+			mesh->mBitangents = new aiVector3D();
+			for (size_t j = 0; j < mesh->mTangents->Length(); j++)
+			{
+				glm::vec3 tangent;
+				glm::vec3 c1 = glm::cross(glm::vec3(mesh->mTangents[j].x, mesh->mTangents[j].y, mesh->mTangents[j].z), glm::vec3(0.0, 0.0, 1.0));
+				glm::vec3 c2 = glm::cross(glm::vec3(mesh->mTangents[j].x, mesh->mTangents[j].y, mesh->mTangents[j].z), glm::vec3(0.0, 1.0, 0.0));
+				if (length(c1) > length(c2))
+				{
+					tangent = c1;
+				}
+				else
+				{
+					tangent = c2;
+				}
+				tangent = glm::normalize(tangent);
+				mesh->mTangents[j] = aiVector3D(tangent.x, tangent.y, tangent.z);
+				glm::vec3 binormal = glm::cross(glm::vec3(mesh->mNormals[j].x, mesh->mNormals[j].y, mesh->mNormals[j].z), tangent);
+				binormal = normalize(binormal);
+				mesh->mBitangents[j] = aiVector3D(binormal.x, binormal.y, binormal.z);
+			}
+		}*/
 		// Walk through each of the mesh's vertices
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -102,9 +128,9 @@ private:
 			vector.z = mesh->mVertices[i].z;
 			vertex.Position = vector;
 			// normals
-			vector.x = mesh->mNormals[i].x;
+			/*vector.x = mesh->mNormals[i].x;
 			vector.y = mesh->mNormals[i].y;
-			vector.z = mesh->mNormals[i].z;
+			vector.z = mesh->mNormals[i].z;*/
 			vertex.Normal = vector;
 			// texture coordinates
 			if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
@@ -119,14 +145,14 @@ private:
 			else
 				vertex.TexCoords = glm::vec2(0.0f, 0.0f);
 			// tangent
-			vector.x = mesh->mTangents[i].x;
-			vector.y = mesh->mTangents[i].y;
-			vector.z = mesh->mTangents[i].z;
-			vertex.Tangent = vector;
-			// bitangent
-			vector.x = mesh->mBitangents[i].x;
-			vector.y = mesh->mBitangents[i].y;
-			vector.z = mesh->mBitangents[i].z;
+			//vector.x = mesh->mTangents[i].x;
+			//vector.y = mesh->mTangents[i].y;
+			//vector.z = mesh->mTangents[i].z;
+			//vertex.Tangent = vector;
+			//// bitangent
+			//vector.x = mesh->mBitangents[i].x;
+			//vector.y = mesh->mBitangents[i].y;
+			//vector.z = mesh->mBitangents[i].z;
 			vertex.Bitangent = vector;
 			vertices.push_back(vertex);
 		}
