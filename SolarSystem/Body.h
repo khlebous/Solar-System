@@ -2,8 +2,8 @@
 #include "Edge.h"
 #include "Point.h"
 #include <vector>
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/vec3.hpp> // glm::mat4
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
 #include <time.h>
 #include "IMesh.h"
 
@@ -38,7 +38,6 @@ public:
 protected:
 	float angle=0;
 	void UpdateBuffers();
-
 
 private:
 	void GetIcosahedronVertices(glm::vec3 color, vector<float>* v);
