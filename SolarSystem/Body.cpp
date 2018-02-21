@@ -167,14 +167,8 @@ void Body::GetIcosahedronVertices(glm::vec3 color, vector<float>* v)
 	IMesh m3;
 	IMesh m4;
 	Icosahedron(m1);
-	//Icosahedron(m);
 	SubdivideIMesh(m1, m2);
 	SubdivideIMesh(m2, m);
-	//SubdivideIMesh(m3, m4);
-	//SubdivideIMesh(m4, m);
-	/*for (auto &el : m.vertices)
-		el *= s;
-*/
 	for (size_t i = 0; i < m.triangles.size(); i += 3)
 	{
 		int t1 = m.triangles[i];

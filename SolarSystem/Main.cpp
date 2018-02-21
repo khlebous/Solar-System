@@ -1,12 +1,4 @@
-﻿// ImGui - standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
-// If you are new to ImGui, see examples/README.txt and documentation at the top of imgui.cpp.
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan graphics context creation, etc.)
-
-// **DO NOT USE THIS CODE IF YOUR CODE/ENGINE IS USING MODERN OPENGL (SHADERS, VBO, VAO, etc.)**
-// **Prefer using the code in the opengl3_example/ folder**
-// See imgui_impl_glfw.cpp for details.
-
-#include <glad\glad.h>
+﻿#include <glad\glad.h>
 #include <GL/gl.h>
 #include <imgui/imgui.h>
 #include "imgui_impl_glfw.h"
@@ -16,8 +8,6 @@
 #include <vector>
 #include <glm/vec4.hpp> 
 
-#include "model.h"
-
 #include "shader.h"
 #include "GUI.h"
 #include "GraphicsLibrary.h"
@@ -26,7 +16,6 @@
 #include "Planet.h"
 #include "Camera.h"
 #include "Skybox.h"
-#include "SpaceShip.h"
 
 using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -95,8 +84,7 @@ int main(int, char**)
 
 	glUseProgram(0);
 	sun.step = 0.1f;
-
-
+	
 	// SOLAR SYSYEM
 	SolarSystem ss = SolarSystem();
 	ss.sun = &sun;
@@ -105,9 +93,8 @@ int main(int, char**)
 	ss.AddNewPlanet("earth", { 0.4, 0.9, 0.5 }, 0.3f, 0.5234f, 6.0f, 0.3f);
 	ss.AddNewPlanet("mars", { 1.0, 0.0, 0.0 }, 0.2f, 0.434f, 7.0f, 0.3f);
 	ss.AddNewPlanet("jowisz", { 0.2, 0.5, 0.8 }, 0.6f, 0.24234f, 8.0f, 0.7f);
-
 	ss.planet_shader = &planet_shader;
-	ss.SetSunColorToShader();
+	
 	// CAMERA
 	camera.WINDOW_WIDTH = &WINDOW_WIDTH;
 	camera.WINDOW_HEIGHT = &WINDOW_HEIGHT;
@@ -125,20 +112,13 @@ int main(int, char**)
 	gl.WINDOW_HEIGHT = &WINDOW_HEIGHT;
 	gl.camera = &camera;
 	gl.ss = &ss;
+
 	// SKYBOX
-	//Skybox skybox = Skybox();
+	Skybox skybox = Skybox();
+
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
-	// SPACESHIP
-	SpaceShip spaceShip = SpaceShip();
-	spaceShip.camera = &camera;
-
 	glfwSetScrollCallback(window, scroll_callback);
-
-	Shader ourShader("shader.vs", "shader.fs");
-	//Model ourModel("sol/sol.obj");
-	Model ourModel("earth2/earth .obj");
-
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -146,36 +126,16 @@ int main(int, char**)
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		processInput(window);
-
 		glfwPollEvents();
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
-
 		// 
-	//	skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
-		//spaceShip.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
+		skybox.Draw(camera.GetViewMatrix(), camera.GetProjMatrix());
 		gl.Draw();
 		//
-
 		glUseProgram(0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		//
-		ourShader.use();
-		glm::mat4 projection =camera.GetProjMatrix();
-		glm::mat4 view = camera.GetViewMatrix();
-		ourShader.setMat4("projection", projection);
-		ourShader.setMat4("view", view);
-
-		// render the loaded model
-		glm::mat4 model = glm::mat4(1);
-		//model = glm::translate(model, glm::vec3(0.0f, -1.75f, 0.0f)); // translate it down so it's at the center of the scene
-		model = glm::scale(model, glm::vec3(0.008f, 0.008f, 0.008f));	// it's a bit too big for our scene, so scale it down
-		ourShader.setMat4("model", model);
-		ourModel.Draw(ourShader);
-		glUseProgram(0);
-		//
 		gui.Draw();
-
 		// 
 		int display_w, display_h;
 		glfwGetFramebufferSize(window, &display_w, &display_h);
@@ -225,7 +185,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 	}
 
 	float xoffset = xpos - lastX;
-	float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+	float yoffset = lastY - ypos;
 
 	lastX = xpos;
 	lastY = ypos;

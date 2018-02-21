@@ -11,7 +11,6 @@ Sun::Sun(glm::vec3 color) :Body(color)
 	sun_shader = Shader("Shaders/sun_shader.vs", "Shaders/sun_shader.fs");
 };
 
-
 Sun::~Sun()
 {
 	glDeleteVertexArrays(1, &VAO);

@@ -67,11 +67,10 @@ Skybox::Skybox()
 	};
 
 	cubemapTexture = loadCubemap(faces);
-	skyboxShader = Shader("skybox.vs", "skybox.fs");
+	skyboxShader = Shader("Shaders/skybox.vs", "Shaders/skybox.fs");
 	skyboxShader.use();
 	skyboxShader.setInt("skybox", 0);
 }
-
 
 Skybox::~Skybox()
 {

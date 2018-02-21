@@ -23,8 +23,8 @@ public:
 	SolarSystem *ss;
 	Shader* main_shader;
 
-	GraphicsLibrary();
-	~GraphicsLibrary();
+	GraphicsLibrary() {};
+	~GraphicsLibrary() {};
 
 	void Draw();
 

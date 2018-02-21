@@ -9,7 +9,6 @@ Planet::Planet(glm::vec3 color) :Body(color)
 	angle2 = 0;
 }
 
-
 Planet::~Planet()
 {
 	glDeleteVertexArrays(1, &VAO);
@@ -52,7 +51,6 @@ glm::mat4 Planet::getMModel()
 
 glm::vec3 Planet::getCenterPosition()
 {
-	//return glm::vec3(0.5);
 	angle2 = step2 * glfwGetTime();
 	glm::vec4 a = glm::vec4(0);
 	a.z= radius;

@@ -1,16 +1,5 @@
 #include "SolarSystem.h"
 
-
-
-SolarSystem::SolarSystem()
-{
-}
-
-
-SolarSystem::~SolarSystem()
-{
-}
-
 void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::vec3 camFront)
 {
 	sun->sun_shader.use();
@@ -68,13 +57,6 @@ void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::
 
 	glUseProgram(0);
 	glBindVertexArray(0);
-}
-
-void SolarSystem::SetSunColorToShader()
-{
-	planet_shader->use();
-	planet_shader->setVec3("lightColor", sun->color);
-	glUseProgram(0);
 }
 
 void SolarSystem::AddNewPlanet(const char * planetName, glm::vec3 color, float velocity1, float velocity2, float radius, float scale)

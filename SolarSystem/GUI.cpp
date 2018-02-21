@@ -119,7 +119,6 @@ void GUI::Draw()
 			if (ImGui::ColorEdit3("color 1", &ss->sun->color.x))
 			{
 				ss->sun->SetColor();
-				ss->SetSunColorToShader();
 			}
 			ImGui::InputFloat("Rotation velocity", &(ss->sun->step), 0.01);
 			ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01);
@@ -222,10 +221,8 @@ void GUI::Draw()
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver);
 		ImGui::ShowTestWindow(&show_test_window);
 	}
-
 	glUseProgram(0);
 	ImGui::Render();
-
 }
 
 void GUI::SwitchLightingShadingShader()
@@ -244,5 +241,4 @@ void GUI::SwitchLightingShadingShader()
 		else
 			*main_shader = Shader("Shaders/gouraud_shading_blinn_phong_lighting.vs", "Shaders/gouraud_shading_blinn_phong_lighting.fs");
 	}
-	ss->SetSunColorToShader();
 }
