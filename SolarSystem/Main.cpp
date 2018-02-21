@@ -96,21 +96,6 @@ int main(int, char**)
 	glUseProgram(0);
 	sun.step = 0.1f;
 
-	//Planet p1 = Planet(0.2, { 1.0, 0.0, 0.0 });
-	//p1.step = 0.0f;
-	//p1.step2 = 0.0f;
-	//p1.radius = 2.0f;
-	//p1.name = "Mars";
-	//Planet p2 = Planet(0.4, { 0.0, 1.0, 0.5 });
-	//p2.step = 0.5f;
-	//p2.step2 = 0.5f;
-	//p2.radius = 3.0f;
-	//p2.name = "Earth";
-	//Planet p3 = Planet(0.3, { 0.0, 0.0, 1.0 });
-	//p3.step = 0.1f;
-	//p3.step2 = 0.4f;
-	//p3.radius = 2.5f;
-	//p3.name = "Cos";
 
 	// SOLAR SYSYEM
 	SolarSystem ss = SolarSystem();
@@ -120,9 +105,7 @@ int main(int, char**)
 	ss.AddNewPlanet("earth", { 0.4, 0.9, 0.5 }, 0.3f, 0.5234f, 6.0f, 0.3f);
 	ss.AddNewPlanet("mars", { 1.0, 0.0, 0.0 }, 0.2f, 0.434f, 7.0f, 0.3f);
 	ss.AddNewPlanet("jowisz", { 0.2, 0.5, 0.8 }, 0.6f, 0.24234f, 8.0f, 0.7f);
-	/*ss.planets.push_back(p1);
-	ss.planets.push_back(p2);
-	ss.planets.push_back(p3);*/
+
 	ss.planet_shader = &planet_shader;
 	ss.SetSunColorToShader();
 	// CAMERA
@@ -154,7 +137,7 @@ int main(int, char**)
 
 	Shader ourShader("shader.vs", "shader.fs");
 	//Model ourModel("sol/sol.obj");
-	Model ourModel("earth2/earth.obj");
+	Model ourModel("earth2/earth .obj");
 
 
 	while (!glfwWindowShouldClose(window))

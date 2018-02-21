@@ -123,7 +123,28 @@ void GUI::Draw()
 			}
 			ImGui::InputFloat("Rotation velocity", &(ss->sun->step), 0.01);
 			ImGui::InputFloat("Scale", &(ss->sun->scale), 0.01);
+			if (ImGui::TreeNode("Point Light Settings:"))
+			{
+				ImGui::InputFloat("ambient X", &(ss->sun->ambient.x), 0.01);
+				ImGui::InputFloat("ambient Y", &(ss->sun->ambient.y), 0.01);
+				ImGui::InputFloat("ambient Z", &(ss->sun->ambient.z), 0.01);
+				ImGui::Text("--------------------");
+				ImGui::InputFloat("diffuse X", &(ss->sun->diffuse.x), 0.01);
+				ImGui::InputFloat("diffuse Y", &(ss->sun->diffuse.y), 0.01);
+				ImGui::InputFloat("diffuse Z", &(ss->sun->diffuse.z), 0.01); 
+				ImGui::Text("--------------------");
+				ImGui::InputFloat("specular X", &(ss->sun->specular.x), 0.01);
+				ImGui::InputFloat("specular Y", &(ss->sun->specular.y), 0.01);
+				ImGui::InputFloat("specular Z", &(ss->sun->specular.z), 0.01);
+				ImGui::Text("--------------------");
+				ImGui::InputFloat("constant", &(ss->sun->constant), 0.01);
+				ImGui::InputFloat("linear", &(ss->sun->linear), 0.01);
+				ImGui::InputFloat("quadratic", &(ss->sun->quadratic), 0.01);
+				ImGui::TreePop();
+			}
 			int planetNr = 0;
+			ImGui::Text("--------------------");
+			ImGui::Text("PLANETS");
 			for (auto &p : ss->planets)
 			{
 				if (ImGui::TreeNode(("planet: " + p.name).c_str()))
@@ -138,6 +159,25 @@ void GUI::Draw()
 					ImGui::InputFloat(("scale " + p.name).c_str(), &(p.scale), 0.01);
 					if (ImGui::Button("Delete planet"))
 						ss->DeletePlanet(planetNr);
+					if (ImGui::TreeNode((p.name+ " Point Light Settings:").c_str()))
+					{
+						ImGui::InputFloat(("ambient X"+p.name).c_str(), &(p.ambient.x), 0.01);
+						ImGui::InputFloat(("ambient Y" + p.name).c_str(), &(p.ambient.y), 0.01);
+						ImGui::InputFloat(("ambient Z" + p.name).c_str(), &(p.ambient.z), 0.01);
+						ImGui::Text("--------------------");
+						ImGui::InputFloat(("diffuse X" + p.name).c_str(), &(p.diffuse.x), 0.01);
+						ImGui::InputFloat(("diffuse Y" + p.name).c_str(), &(p.diffuse.y), 0.01);
+						ImGui::InputFloat(("diffuse Z" + p.name).c_str(), &(p.diffuse.z), 0.01);
+						ImGui::Text("--------------------");
+						ImGui::InputFloat(("specular X" + p.name).c_str(), &(p.specular.x), 0.01);
+						ImGui::InputFloat(("specular Y" + p.name).c_str(), &(p.specular.y), 0.01);
+						ImGui::InputFloat(("specular Z" + p.name).c_str(), &(p.specular.z), 0.01);
+						ImGui::Text("--------------------");
+						ImGui::InputFloat(("constant" + p.name).c_str(), &(p.constant), 0.01);
+						ImGui::InputFloat(("linear" + p.name).c_str(), &(p.linear), 0.01);
+						ImGui::InputFloat(("quadratic" + p.name).c_str(), &(p.quadratic), 0.01);
+						ImGui::TreePop();
+					}
 					ImGui::TreePop();
 				}
 				planetNr++;
