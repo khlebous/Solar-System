@@ -24,6 +24,7 @@ void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::
 	planet_shader->setMat4("view", viewM);
 	planet_shader->setMat4("proj", projM);
 	planet_shader->setVec3("viewPos", camPos);
+	// spot light
 	planet_shader->setVec3("spotLight.position", camPos);
 	planet_shader->setVec3("spotLight.direction", camFront);
 	planet_shader->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
@@ -34,7 +35,28 @@ void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::
 	planet_shader->setFloat("spotLight.quadratic", 0.032);
 	planet_shader->setFloat("spotLight.cutOff", glm::cos(glm::radians(0.5f)));
 	planet_shader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(1.5f)));
-	
+	// sun point light
+	planet_shader->setVec3("pointLights[0].position", sun->getCenterPosition());
+	planet_shader->setVec3("pointLights[0].color", sun->color);
+	planet_shader->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
+	planet_shader->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
+	planet_shader->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
+	planet_shader->setFloat("pointLights[0].constant", 1.0f);
+	planet_shader->setFloat("pointLights[0].linear", 0.09);
+	planet_shader->setFloat("pointLights[0].quadratic", 0.032);
+	// planets point light
+	for (size_t i = 1; i <= planets.size(); i++)
+	{
+		planet_shader->setVec3(("pointLights[" + to_string(i) + "].position").c_str(), planets[i-1].getCenterPosition());
+		planet_shader->setVec3("pointLights[" + to_string(i) + "].color", planets[i-1].color);
+		planet_shader->setVec3("pointLights[" + to_string(i) + "].ambient", 0.05f, 0.05f, 0.05f);
+		planet_shader->setVec3("pointLights[" + to_string(i) + "].diffuse", 0.8f, 0.8f, 0.8f);
+		planet_shader->setVec3("pointLights[" + to_string(i) + "].specular", 1.0f, 1.0f, 1.0f);
+		planet_shader->setFloat("pointLights[" + to_string(i) + "].constant", 1.0f);
+		planet_shader->setFloat("pointLights[" + to_string(i) + "].linear", 0.09);
+		planet_shader->setFloat("pointLights[" + to_string(i) + "].quadratic", 0.032);
+	}
+
 	for (Planet &p : planets)
 	{
 		planet_shader->setMat4("model", p.getMModel());

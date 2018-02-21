@@ -154,7 +154,7 @@ int main(int, char**)
 
 	Shader ourShader("shader.vs", "shader.fs");
 	//Model ourModel("sol/sol.obj");
-	Model ourModel("earth2/earth.obj");
+	Model ourModel("earth2/earth .obj");
 
 
 	while (!glfwWindowShouldClose(window))
