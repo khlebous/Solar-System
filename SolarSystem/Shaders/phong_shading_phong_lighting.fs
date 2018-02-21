@@ -29,18 +29,16 @@ struct SpotLight {
     vec3 specular;       
 };
 
-#define NR_POINT_LIGHTS 6
+#define MAX_POINT_LIGHTS 6
 
 in vec3 ourColor;
 in vec3 Normal;  
 in vec3 FragPos; 
 
+uniform float pointLightLength;
 uniform vec3 viewPos;
 uniform SpotLight spotLight;
-uniform PointLight pointLights[NR_POINT_LIGHTS];
-// ???
-uniform vec3 lightColor;
-vec3 lightPos = vec3(0.0, 0.0, 0.0);
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
 
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
@@ -51,7 +49,7 @@ void main()
     vec3 viewDir = normalize(viewPos - FragPos);
 
     vec3 result = vec3(0.0, 0.0, 0.0);
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < pointLightLength; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);  
     result += CalcSpotLight(spotLight, norm, FragPos, viewDir); 
 
@@ -80,7 +78,6 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 }
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
 {
-    //return vec3(0.0,0.0,0.0);
     vec3 lightDir = normalize(light.position - fragPos);
     // diffuse shading
     float diff = max(dot(normal, lightDir), 0.0);

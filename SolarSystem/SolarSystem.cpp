@@ -38,23 +38,25 @@ void SolarSystem::Draw(glm::mat4 viewM, glm::mat4 projM, glm::vec3 camPos, glm::
 	// sun point light
 	planet_shader->setVec3("pointLights[0].position", sun->getCenterPosition());
 	planet_shader->setVec3("pointLights[0].color", sun->color);
-	planet_shader->setVec3("pointLights[0].ambient", 0.05f, 0.05f, 0.05f);
-	planet_shader->setVec3("pointLights[0].diffuse", 0.8f, 0.8f, 0.8f);
-	planet_shader->setVec3("pointLights[0].specular", 1.0f, 1.0f, 1.0f);
-	planet_shader->setFloat("pointLights[0].constant", 1.0f);
-	planet_shader->setFloat("pointLights[0].linear", 0.09);
-	planet_shader->setFloat("pointLights[0].quadratic", 0.032);
+	planet_shader->setVec3("pointLights[0].ambient", sun->ambient);
+	planet_shader->setVec3("pointLights[0].diffuse", sun->diffuse);
+	planet_shader->setVec3("pointLights[0].specular", sun->specular);
+	planet_shader->setFloat("pointLights[0].constant", sun->constant);
+	planet_shader->setFloat("pointLights[0].linear", sun->linear);
+	planet_shader->setFloat("pointLights[0].quadratic", sun->quadratic);
 	// planets point light
-	for (size_t i = 1; i <= planets.size(); i++)
+	planet_shader->setFloat("pointLightLength", planets.size() + 1);
+	for (size_t i = 0; i < planets.size(); i++)
 	{
-		planet_shader->setVec3(("pointLights[" + to_string(i) + "].position").c_str(), planets[i-1].getCenterPosition());
-		planet_shader->setVec3("pointLights[" + to_string(i) + "].color", planets[i-1].color);
-		planet_shader->setVec3("pointLights[" + to_string(i) + "].ambient", 0.05f, 0.05f, 0.05f);
-		planet_shader->setVec3("pointLights[" + to_string(i) + "].diffuse", 0.8f, 0.8f, 0.8f);
-		planet_shader->setVec3("pointLights[" + to_string(i) + "].specular", 1.0f, 1.0f, 1.0f);
-		planet_shader->setFloat("pointLights[" + to_string(i) + "].constant", 1.0f);
-		planet_shader->setFloat("pointLights[" + to_string(i) + "].linear", 0.09);
-		planet_shader->setFloat("pointLights[" + to_string(i) + "].quadratic", 0.032);
+		std::string s = "pointLights[" + to_string(i + 1);
+		planet_shader->setVec3(s + "].position", planets[i].getCenterPosition());
+		planet_shader->setVec3(s + "].color", planets[i].color);
+		planet_shader->setVec3(s + "].ambient", planets[i].ambient);
+		planet_shader->setVec3(s + "].diffuse", planets[i].diffuse);
+		planet_shader->setVec3(s + "].specular", planets[i].specular);
+		planet_shader->setFloat(s + "].constant", planets[i].constant);
+		planet_shader->setFloat(s + "].linear", planets[i].linear);
+		planet_shader->setFloat(s + "].quadratic", planets[i].quadratic);
 	}
 
 	for (Planet &p : planets)
